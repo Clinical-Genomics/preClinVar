@@ -6,7 +6,7 @@ from tempfile import NamedTemporaryFile
 LOG = logging.getLogger(__name__)
 
 
-async def csv_header_lines(csv_file):
+async def csv_lines(csv_file):
     """Extracts header and file lines from a csv file
 
     Args:
