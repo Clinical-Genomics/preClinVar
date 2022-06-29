@@ -7,7 +7,7 @@ LOG = logging.getLogger(__name__)
 
 
 async def csv_lines(csv_file):
-    """Extracts header and file lines from a csv file
+    """Extracts lines from a csv file using a csv DictReader
 
     Args:
         csv_file(starlette.datastructures.UploadFile)
