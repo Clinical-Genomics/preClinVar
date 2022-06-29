@@ -12,7 +12,7 @@ async def csv_header_lines(csv_file):
     Args:
         csv_file(starlette.datastructures.UploadFile)
     Returns:
-        (header[list(str)], lines(list(str)))
+        lines(list of dictionaries). Example [{'##Local ID': '1d9ce6ebf2f82d913cfbe20c5085947b', 'Linking ID': '1d9ce6ebf2f82d913cfbe20c5085947b', 'Gene symbol': 'XDH'}, ..]
     """
 
     contents = await csv_file.read()
