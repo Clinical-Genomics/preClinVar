@@ -5,7 +5,11 @@ import uvicorn
 from fastapi import FastAPI, File, UploadFile
 from preClinVar.parse import csv_lines
 
-LOG = logging.getLogger(__name__)
+LOG = logging.getLogger("api")
+LOG.setLevel(logging.DEBUG)
+sh = logging.StreamHandler()
+sh.setLevel(logging.DEBUG)
+LOG.addHandler(sh)
 
 app = FastAPI()
 
