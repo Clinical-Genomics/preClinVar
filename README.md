@@ -24,7 +24,7 @@ poetry install
 You can run an instance of the server by typing:
 
 ```
-uvicorn preClinVar.main:app --reload
+uvicorn preClinVar.main:app --reload --log-level debug 
 ```
 
 The server will run on localhost and default port 8000 (http://127.0.0.1:8000)

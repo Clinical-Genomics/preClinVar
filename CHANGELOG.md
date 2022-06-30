@@ -7,4 +7,4 @@
 - tests folder
 - Basic howto on README.md
 - submission_from_csv endpoint and function to read csv files
-- Set logging level to debug
+- Add custom logging formatting

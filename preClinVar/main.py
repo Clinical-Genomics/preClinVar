@@ -5,14 +5,18 @@ import uvicorn
 from fastapi import FastAPI, File, UploadFile
 from preClinVar.parse import csv_lines
 
-LOG = logging.getLogger("api")
-LOG.setLevel(logging.DEBUG)
-sh = logging.StreamHandler()
-sh.setLevel(logging.DEBUG)
-LOG.addHandler(sh)
+LOG = logging.getLogger("uvicorn.access")
 
 app = FastAPI()
 
+
+@app.on_event("startup")
+async def startup_event():
+    LOG = logging.getLogger("uvicorn.access")
+    console_formatter = uvicorn.logging.ColourizedFormatter(
+        "{levelprefix} {asctime} : {message}",
+        style="{", use_colors=True)
+    LOG.handlers[0].setFormatter(console_formatter)
 
 @app.get("/")
 async def root():
