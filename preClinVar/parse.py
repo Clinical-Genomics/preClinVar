@@ -138,7 +138,21 @@ def set_item_variant_set(item, variant_dict):
         variant_dict(dict). Example: {'##Local ID': '1d9ce6ebf2f82d913cfbe20c5085947b', 'Linking ID': '1d9ce6ebf2f82d913cfbe20c5085947b', 'Gene symbol': 'XDH', 'Reference sequence': 'NM_000379.4', 'HGVS': 'c.2751del', ..}
 
     """
-    pass
+    # According the schema: The interpreted variant must be described either by HGVS or by chromosome coordinates, but not both.
+    # Our cvs files contain HGVS so we parse only these at the moment
+    item["variantSet"] = {}
+    variant = {"hgvs": variant_dict.get("HGVS")}
+
+    if variant_dict.get("Gene symbol"):
+        variant["gene"] = variant_dict.get("Gene symbol").split(";")
+
+    # NOT parsing the following key/values for now:
+    # variant.chromosomeCoordinates
+    # variant.copyNumber
+    # variant.gene.id
+    # variant.referenceCopyNumber
+
+    item["variantSet"]["variant"] = [variant]
 
 
 def csv_fields_to_submission(variants_lines, casedata_lines):
@@ -161,9 +175,6 @@ def csv_fields_to_submission(variants_lines, casedata_lines):
     # Loop over the variants to submit and create a
     for linen, line_dict in enumerate(variants_lines):
 
-        LOG.error(line_dict)
-        LOG.warning(casedata_lines[linen])
-
         item = {}  # For each variant in the csv file (one line), create a submission item
 
         set_item_assertion_criteria(item, line_dict)
@@ -182,6 +193,8 @@ def csv_fields_to_submission(variants_lines, casedata_lines):
 
     for item in clinvar_submission["items"]:
         LOG.debug(str(item) + "\n")
+
+    return clinvar_submission
 
 
 async def csv_lines(csv_file):
