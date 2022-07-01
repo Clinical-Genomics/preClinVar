@@ -47,6 +47,7 @@ async def csv_2_json(files: List[UploadFile] = File(...)):
         elif "Variant" in file.filename:
             variants_lines = file_lines
 
+    # Make sure both files were provided in request
     if not casedata_lines or not variants_lines:
         return JSONResponse(
             status_code=400,

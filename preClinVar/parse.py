@@ -168,9 +168,6 @@ def csv_fields_to_submission(variants_lines, casedata_lines):
         https://www.ncbi.nlm.nih.gov/clinvar/docs/api_http/
     """
 
-    clinvar_submission = {
-        "title": "ClinVar Submission Set"
-    }  # The main ClinVar submission dictionary
     items = []
     # Loop over the variants to submit and create a
     for linen, line_dict in enumerate(variants_lines):
@@ -189,12 +186,9 @@ def csv_fields_to_submission(variants_lines, casedata_lines):
 
         items.append(item)
 
-    clinvar_submission["items"] = items
+    # clinvar_submission["items"] = items
 
-    for item in clinvar_submission["items"]:
-        LOG.debug(str(item) + "\n")
-
-    return clinvar_submission
+    return {"clinvarSubmission": items}
 
 
 async def csv_lines(csv_file):
