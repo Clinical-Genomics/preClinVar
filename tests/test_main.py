@@ -12,7 +12,7 @@ def test_heartbeat():
     assert response.json() == {"message": "preClinVar is up and running!"}
 
 
-def test_submission_from_csv():
+def test_csv_2_json_missing_file():
     """Test the function that sends a request to the app to convert 2 cvs files (CaseData.csv, Variant.csv)
     into one json API submission object"""
 
@@ -23,5 +23,5 @@ def test_submission_from_csv():
         ("files", (casedata_csv, open(casedata_csv_path, "rb"))),
     ]
 
-    response = client.post("/submission_from_csv", files=files)
+    response = client.post("/csv_2_json", files=files)
     assert response.status_code == 200

@@ -15,8 +15,8 @@ def set_item_assertion_criteria(item, variant_dict):
     # Add CITATION key/value (a dict)
     citation = {}
     asc = variant_dict.get("Assertion method citation")
-    if asc and ":" in asc:
-        citation["db"] = asc.split(":")[0]
+    if "PMID:" in asc:
+        citation["db"] = "PubMed"
         citation["id"] = asc.split(":")[1]
 
     # Add method key/value (a string)
@@ -143,8 +143,9 @@ def set_item_variant_set(item, variant_dict):
     item["variantSet"] = {}
     variant = {"hgvs": variant_dict.get("HGVS")}
 
-    if variant_dict.get("Gene symbol"):
-        variant["gene"] = variant_dict.get("Gene symbol").split(";")
+    genes = variant_dict.get("Gene symbol")
+    if genes:
+        variant["gene"] = [{"symbol": symbol} for symbol in genes.split(";")]
 
     # NOT parsing the following key/values for now:
     # variant.chromosomeCoordinates
