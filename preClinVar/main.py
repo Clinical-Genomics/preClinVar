@@ -3,7 +3,7 @@ from typing import List
 
 import uvicorn
 from fastapi import FastAPI, File, UploadFile
-from preClinVar.parse import csv_lines
+from preClinVar.parse import csv_fields_to_submission, csv_lines
 
 LOG = logging.getLogger("uvicorn.access")
 
@@ -14,9 +14,10 @@ app = FastAPI()
 async def startup_event():
     LOG = logging.getLogger("uvicorn.access")
     console_formatter = uvicorn.logging.ColourizedFormatter(
-        "{levelprefix} {asctime} : {message}",
-        style="{", use_colors=True)
+        "{levelprefix} {asctime} : {message}", style="{", use_colors=True
+    )
     LOG.handlers[0].setFormatter(console_formatter)
+
 
 @app.get("/")
 async def root():
@@ -44,7 +45,10 @@ async def submission_from_csv(files: List[UploadFile] = File(...)):
         else:
             variants_lines = file_lines
 
-    LOG.debug(f"Variant file contains the following lines:{variants_lines}")
-    LOG.debug(f"Casedata file contains the following lines:{casedata_lines}")
+    # LOG.debug(f"Variant file contains the following lines:{variants_lines}")
+    # LOG.debug(f"CaseData file contains the following lines:{casedata_lines}")
+
+    submission_dict = csv_fields_to_submission(variants_lines, casedata_lines)
+    assert submission_dict
 
     return {"message": "hello"}
