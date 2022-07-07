@@ -1,0 +1,28 @@
+name: Tests and coverage
+on: [pull_request]
+jobs:
+  Pytest_Codecov:
+    runs-on: ubuntu-18.04
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@master
+      with:
+        python-version: 3.8
+    - name: Install repo and its dependencies
+      run: |
+        poetry install
+        pip install pytest
+        pip install pytest-cov
+    - name: Run pytest and write coverage report
+      run: |
+        pytest --cov=./ --cov-report=xml
+
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v2
+      with:
+        flags: unittests
+        files: ./coverage.xml
+        name: codecov-umbrella
+        fail_ci_if_error: true
+        verbose: true
