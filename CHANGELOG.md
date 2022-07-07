@@ -9,4 +9,4 @@
 - submission_from_csv endpoint and function to read csv files
 - Add custom logging formatting
 - Tests and coverage GitHub workflow
-- Updated submission schema in resources following new release of schema by ClinVar
+- Updated submission schema in resources following new release of schema by ClinVar (draft-07)
