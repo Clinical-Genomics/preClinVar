@@ -44,3 +44,14 @@ def test_dry_run_wrong_api_key():
     response = client.post(url, files=json_file)
     assert response.status_code == 200
     assert response.json()["message"] == "No valid API key provided"
+
+
+def test_validate_wrong_api_key():
+    """Test endpoint that sends a request to the ClinVar dry run API endpoint"""
+    json_file = {"json_file": open(subm_json_path, "rb")}
+
+    url = "?api_key=".join(["/validate", DEMO_API_KEY])
+
+    response = client.post(url, files=json_file)
+    assert response.status_code == 200
+    assert response.json()["message"] == "No valid API key provided"

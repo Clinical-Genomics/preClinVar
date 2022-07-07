@@ -114,6 +114,8 @@ def set_item_observed_in(item, casedata_dict):
     if casedata_dict.get("Clinical features"):
         obs_in["clinicalFeatures"] = casedata_dict.get("Clinical features").split(";")
 
+    item["observedIn"] = [obs_in]
+
     # NOT parsing the following key/values for now:
     # clinicalFeaturesComment
     # numberOfIndividuals
