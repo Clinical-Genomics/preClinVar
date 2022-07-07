@@ -11,9 +11,8 @@ jobs:
         python-version: 3.8
     - name: Install repo and its dependencies
       run: |
+        pip install poetry pytest pytest-cov
         poetry install
-        pip install pytest
-        pip install pytest-cov
     - name: Run pytest and write coverage report
       run: |
         pytest --cov=./ --cov-report=xml
