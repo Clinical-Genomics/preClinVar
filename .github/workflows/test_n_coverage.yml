@@ -27,6 +27,7 @@ jobs:
         key: pydeps-${{ hashFiles('**/poetry.lock') }}
     - run: poetry install --no-interaction --no-root
       if: steps.cache-deps.outputs.cache-hit != 'true'
+    - run: pip install pytest pytest-cov 
     - run: poetry run pytest --cov=./ --cov-report=xml
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v2
