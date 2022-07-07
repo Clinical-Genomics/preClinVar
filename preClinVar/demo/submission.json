@@ -1,0 +1,156 @@
+{
+  "clinvarSubmission": [
+    {
+      "assertionCriteria": {
+        "citation": {
+          "db": "PubMed",
+          "id": "25741868"
+        },
+        "method": "ACMG Guidelines, 2015"
+      },
+      "clinicalSignificance": {
+        "clinicalSignificanceDescription": "Pathogenic",
+        "dateLastEvaluated": "2021-03-12",
+        "modeOfInheritance": "Autosomal recessive inheritance"
+      },
+      "conditionSet": {
+        "condition": [
+          {
+            "db": "OMIM",
+            "id": "278300"
+          }
+        ]
+      },
+      "localID": "1d9ce6ebf2f82d913cfbe20c5085947b",
+      "localKey": "1d9ce6ebf2f82d913cfbe20c5085947b",
+      "recordStatus": "novel",
+      "releaseStatus": "public",
+      "variantSet": {
+        "variant": [
+          {
+            "hgvs": "c.2751del",
+            "gene": [
+              {
+                "symbol": "XDH"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "assertionCriteria": {
+        "citation": {
+          "db": "PubMed",
+          "id": "25741868"
+        },
+        "method": "ACMG Guidelines, 2015"
+      },
+      "clinicalSignificance": {
+        "clinicalSignificanceDescription": "Pathogenic",
+        "dateLastEvaluated": "2021-03-16",
+        "modeOfInheritance": "Autosomal recessive inheritance"
+      },
+      "conditionSet": {
+        "condition": [
+          {
+            "db": "OMIM",
+            "id": "606054"
+          }
+        ]
+      },
+      "localID": "69b138a4c5caf211d796a59a7b46e40d",
+      "localKey": "69b138a4c5caf211d796a59a7b46e40d",
+      "recordStatus": "novel",
+      "releaseStatus": "public",
+      "variantSet": {
+        "variant": [
+          {
+            "hgvs": "c.2040G>A",
+            "gene": [
+              {
+                "symbol": "PCCA"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "assertionCriteria": {
+        "citation": {
+          "db": "PubMed",
+          "id": "25741868"
+        },
+        "method": "ACMG Guidelines, 2015"
+      },
+      "clinicalSignificance": {
+        "clinicalSignificanceDescription": "Pathogenic",
+        "dateLastEvaluated": "2021-03-12",
+        "modeOfInheritance": "Autosomal recessive inheritance"
+      },
+      "conditionSet": {
+        "condition": [
+          {
+            "db": "OMIM",
+            "id": "250100"
+          }
+        ]
+      },
+      "localID": "e1bdbf66cd8df98d0d6874a9c4a0d7bc",
+      "localKey": "e1bdbf66cd8df98d0d6874a9c4a0d7bc",
+      "recordStatus": "novel",
+      "releaseStatus": "public",
+      "variantSet": {
+        "variant": [
+          {
+            "hgvs": "c.465+1G>A",
+            "gene": [
+              {
+                "symbol": "ARSA"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "assertionCriteria": {
+        "citation": {
+          "db": "PubMed",
+          "id": "25741868"
+        },
+        "method": "ACMG Guidelines, 2015"
+      },
+      "clinicalSignificance": {
+        "clinicalSignificanceDescription": "Pathogenic",
+        "dateLastEvaluated": "2021-03-12",
+        "modeOfInheritance": "Autosomal recessive inheritance"
+      },
+      "conditionSet": {
+        "condition": [
+          {
+            "db": "OMIM",
+            "id": "251000"
+          }
+        ]
+      },
+      "localID": "ace28c419a620040c49be5ec9cb7ba37",
+      "localKey": "ace28c419a620040c49be5ec9cb7ba37",
+      "recordStatus": "novel",
+      "releaseStatus": "public",
+      "variantSet": {
+        "variant": [
+          {
+            "hgvs": "c.278G>A",
+            "gene": [
+              {
+                "symbol": "MMUT"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

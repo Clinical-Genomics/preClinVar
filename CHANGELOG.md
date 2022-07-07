@@ -10,3 +10,4 @@
 - Add custom logging formatting
 - Tests and coverage GitHub workflow
 - Updated submission schema in resources following new release of schema by ClinVar (draft-07)
+- Proxy endpoint to interrogate the submission dry run endpoint of ClinVar API
