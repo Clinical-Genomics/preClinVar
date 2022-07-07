@@ -8,3 +8,4 @@
 - Basic howto on README.md
 - submission_from_csv endpoint and function to read csv files
 - Add custom logging formatting
+- Tests and coverage GitHub workflow
