@@ -15,6 +15,9 @@ lib
 lib64
 dist/
 
+# Poetry installation
+poetry.lock
+
 # Codecov
 .coverage
 
