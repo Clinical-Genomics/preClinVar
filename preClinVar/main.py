@@ -1,11 +1,16 @@
+import json
 import logging
 from typing import List
 
+import requests
 import uvicorn
-from fastapi import FastAPI, File, UploadFile
+from fastapi import FastAPI, File, Query, UploadFile
 from fastapi.responses import JSONResponse
+from preClinVar.build import build_header
+from preClinVar.constants import DRY_RUN_SUBMISSION_URL
 from preClinVar.parse import csv_fields_to_submission, csv_lines
 from preClinVar.validate import validate_submission
+from pydantic import BaseModel, Field
 
 LOG = logging.getLogger("uvicorn.access")
 
@@ -26,10 +31,20 @@ async def root():
     return {"message": "preClinVar is up and running!"}
 
 
-@app.get("/submission-test")
-async def submission_dryrun():
-    """Validate a ClinVar submission object by sending a dry run request to the ClinVar API"""
-    pass
+@app.post("/dry-run")
+async def dry_run(
+    api_key: str = Query(max_length=64, min_length=64), json_file: UploadFile = File(...)
+):
+    """Dry-run a ClinVar submission by sending a test to the ClinVar API"""
+    # Create a submission header
+    header = build_header(api_key)
+
+    # Get json file content as dict:
+    submission_obj = json.load(json_file.file)
+
+    # And use it in POST request to API
+    resp = requests.post(DRY_RUN_SUBMISSION_URL, json=submission_obj, headers=header)
+    return resp.json()
 
 
 @app.post("/csv_2_json")
