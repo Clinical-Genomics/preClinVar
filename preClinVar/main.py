@@ -7,7 +7,7 @@ import uvicorn
 from fastapi import FastAPI, File, Query, UploadFile
 from fastapi.responses import JSONResponse
 from preClinVar.build import build_header
-from preClinVar.constants import DRY_RUN_SUBMISSION_URL
+from preClinVar.constants import DRY_RUN_SUBMISSION_URL, VALIDATE_SUBMISSION_URL
 from preClinVar.parse import csv_fields_to_submission, csv_lines
 from preClinVar.validate import validate_submission
 from pydantic import BaseModel, Field
@@ -31,11 +31,11 @@ async def root():
     return {"message": "preClinVar is up and running!"}
 
 
-@app.post("/dry-run")
-async def dry_run(
+@app.post("/validate")
+async def validate(
     api_key: str = Query(max_length=64, min_length=64), json_file: UploadFile = File(...)
 ):
-    """Dry-run a ClinVar submission by sending a test to the ClinVar API"""
+    """A proxy to the validate submission ClinVar API endpoint"""
     # Create a submission header
     header = build_header(api_key)
 
@@ -43,7 +43,29 @@ async def dry_run(
     submission_obj = json.load(json_file.file)
 
     # And use it in POST request to API
-    resp = requests.post(DRY_RUN_SUBMISSION_URL, json=submission_obj, headers=header)
+    data = {
+        "actions": [{"type": "AddData", "targetDb": "clinvar", "data": {"content": submission_obj}}]
+    }
+    resp = requests.post(VALIDATE_SUBMISSION_URL, data=json.dumps(data), headers=header)
+    return resp.json()
+
+
+@app.post("/dry-run")
+async def dry_run(
+    api_key: str = Query(max_length=64, min_length=64), json_file: UploadFile = File(...)
+):
+    """A proxy to the dry run submission ClinVar API endpoint"""
+    # Create a submission header
+    header = build_header(api_key)
+
+    # Get json file content as dict:
+    submission_obj = json.load(json_file.file)
+
+    # And use it in POST request to API
+    data = {
+        "actions": [{"type": "AddData", "targetDb": "clinvar", "data": {"content": submission_obj}}]
+    }
+    resp = requests.post(DRY_RUN_SUBMISSION_URL, data=json.dumps(data), headers=header)
     return resp.json()
 
 
