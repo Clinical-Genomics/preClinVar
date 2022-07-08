@@ -1,5 +1,20 @@
 # PreClinVar
-A ClinVar API submission helper written in FastAPI
+A ClinVar API submission helper written in FastAPI.
+
+## Available endpoints:
+
+### csv_2_json
+
+Transforms csv submission files (Variant.csv and CaseData.csv) into a json submission object, ready to be used to submit via the ClinVar API. This document is validated against the ClinVar API [submission schema](https://www.ncbi.nlm.nih.gov/clinvar/docs/api_http/)
+
+### dry_run
+
+Proxy endpoint to the ClinVar submissions API (dry-run): https://submit.ncbi.nlm.nih.gov/api/v1/submissions/?dry-run=true. Requires a valid API key and a json file containing a submission object. If the request is valid (and the json submission object is validated) returns a submission ID which can be used for a real submission.
+
+### validate
+
+Proxy endpoint to the ClinVar validate API endpoint: "https://submit.ncbi.nlm.nih.gov/apitest/v1/submissions". Requires a valid API key and a json file containing a submission object. If the json submission document is valid returns a submission ID which can be used for a real submission. If the json submission document is not validated, the endpoint returns a list of errors which will help fixing the document.
+
 
 ## Installing the application on a local conda environment
 
@@ -24,7 +39,13 @@ poetry install
 You can run an instance of the server by typing:
 
 ```
-uvicorn preClinVar.main:app --reload --log-level debug 
+uvicorn preClinVar.main:app --reload --log-level debug
 ```
 
 The server will run on localhost and default port 8000 (http://127.0.0.1:8000)
+
+
+## Testing the endpoints
+
+The endpoints will be available under the docs: http://127.0.0.1:8000/docs
+They can be tested with files provided in this repository, in the demo folder: https://github.com/Clinical-Genomics/preClinVar/tree/main/preClinVar/demo
