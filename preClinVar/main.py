@@ -73,7 +73,7 @@ async def dry_run(
     # A successful response will be an empty response with code 204
     if resp.status_code == 204:
         return JSONResponse(
-            status_code=resp.status_code,
+            status_code=200,
             content={"message": "success"},
         )
     return JSONResponse(
