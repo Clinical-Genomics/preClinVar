@@ -75,7 +75,7 @@ async def dry_run(
         )
     return JSONResponse(
         status_code=resp.status_code,
-        content={"message": "submission failed"},
+        content=resp.json(),
     )
 
 
