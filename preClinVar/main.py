@@ -8,7 +8,7 @@ from fastapi import FastAPI, File, Query, UploadFile
 from fastapi.responses import JSONResponse
 from preClinVar.build import build_header
 from preClinVar.constants import DRY_RUN_SUBMISSION_URL, VALIDATE_SUBMISSION_URL
-from preClinVar.parse import csv_fields_to_submission, csv_lines
+from preClinVar.csv_parser import csv_fields_to_submission, csv_lines
 from preClinVar.validate import validate_submission
 from pydantic import BaseModel, Field
 
@@ -71,7 +71,10 @@ async def dry_run(
 
 @app.post("/csv_2_json")
 async def csv_2_json(files: List[UploadFile] = File(...)):
-    """Create and validate a json submission object using 2 CSV files (Variant.csv and CaseData.csv)"""
+    """Create a json submission object using 2 CSV files (Variant.csv and CaseData.csv).
+    Validate the submission objects agains the official schema:
+    https://www.ncbi.nlm.nih.gov/clinvar/docs/api_http/
+    """
 
     # Extract lines from Variants.csv and Casedata.csv files present in POST request
     casedata_lines = None

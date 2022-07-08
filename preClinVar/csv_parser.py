@@ -99,22 +99,33 @@ def set_item_local_key(item, variant_dict):
         item["localKey"] = local_key
 
 
-def set_item_observed_in(item, casedata_dict):
+def set_item_observed_in(item, casedata_lines):
     """Set the observedIn key/values for an API submission item
     Args:
         item(dict). An item in the clinvarSubmission.items list
-        casedata_dict(dict). Example: {'Linking ID': '69b138a4c5caf211d796a59a7b46e40d', 'Individual ID': '20210316-03', 'Collection method': 'clinical testing', 'Allele origin': 'germline', 'Affected status': 'yes', 'Sex': 'male', 'Family history': 'no', 'Proband': 'yes', ..}
+        casedata_lines(list of dicts). Example:
+            [{'Linking ID': '69b138a4c5caf211d796a59a7b46e40d', 'Individual ID': '20210316-03', 'Collection method': 'clinical testing', 'Allele origin': 'germline', 'Affected status': 'yes', 'Sex': 'male', 'Family history': 'no', 'Proband': 'yes', ..}, ..]
     """
-    # set first required params
-    obs_in = {
-        "affectedStatus": casedata_dict.get("Affected status"),
-        "alleleOrigin": casedata_dict.get("Allele origin"),
-        "collectionMethod": casedata_dict.get("Collection method"),
-    }
-    if casedata_dict.get("Clinical features"):
-        obs_in["clinicalFeatures"] = casedata_dict.get("Clinical features").split(";")
+    var_link_id = item["localKey"]  # ID of the variant
+    obs_in = []
 
-    item["observedIn"] = [obs_in]
+    # Loop over case data and collect individuals associated with the variant linking ID
+    for line_dict in casedata_lines:
+        if var_link_id != line_dict.get("Linking ID"):
+            continue
+
+        # set first required params
+        obs = {
+            "affectedStatus": line_dict.get("Affected status"),
+            "alleleOrigin": line_dict.get("Allele origin"),
+            "collectionMethod": line_dict.get("Collection method"),
+        }
+        if line_dict.get("Clinical features"):
+            obs["clinicalFeatures"] = line_dict.get("Clinical features").split(";")
+
+        obs_in.append(obs)
+
+    item["observedIn"] = obs_in
 
     # NOT parsing the following key/values for now:
     # clinicalFeaturesComment
@@ -173,7 +184,7 @@ def csv_fields_to_submission(variants_lines, casedata_lines):
 
     items = []
     # Loop over the variants to submit and create a
-    for linen, line_dict in enumerate(variants_lines):
+    for line_dict in variants_lines:
 
         item = {}  # For each variant in the csv file (one line), create a submission item
 
@@ -182,7 +193,7 @@ def csv_fields_to_submission(variants_lines, casedata_lines):
         set_item_condition_set(item, line_dict)
         set_item_local_id(item, line_dict)
         set_item_local_key(item, line_dict)
-        set_item_observed_in(item, casedata_lines[linen])
+        set_item_observed_in(item, casedata_lines)
         set_item_record_status(item)
         set_item_release_status(item)
         set_item_variant_set(item, line_dict)

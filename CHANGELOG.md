@@ -9,6 +9,9 @@
 - submission_from_csv endpoint and function to read csv files
 - Add custom logging formatting
 - Tests and coverage GitHub workflow
-- Updated submission schema in resources following new release of schema by ClinVar (draft-07)
 - Proxy endpoint to interrogate the submission dry run endpoint of ClinVar API
 - Proxy endpoint to interrogate the submission validate endpoint of ClinVar API
+### Changed
+- Updated submission schema in resources following new release of schema by ClinVar (draft-07)
+### Fixed
+- Parsing of CaseData csv with more than one individuals associated to the same variant
