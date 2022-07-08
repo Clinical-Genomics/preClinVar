@@ -13,5 +13,6 @@
 - Proxy endpoint to interrogate the submission validate endpoint of ClinVar API
 ### Changed
 - Updated submission schema in resources following new release of schema by ClinVar (draft-07)
+- Improved README files with description of endpoints and how to test it
 ### Fixed
 - Parsing of CaseData csv with more than one individuals associated to the same variant
