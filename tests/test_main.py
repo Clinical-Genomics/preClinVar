@@ -53,5 +53,5 @@ def test_validate_wrong_api_key():
     url = "?api_key=".join(["/validate", DEMO_API_KEY])
 
     response = client.post(url, files=json_file)
-    assert response.status_code == 200
+    assert response.status_code == 401  # Not authorized
     assert response.json()["message"] == "No valid API key provided"

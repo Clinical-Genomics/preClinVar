@@ -47,7 +47,10 @@ async def validate(
         "actions": [{"type": "AddData", "targetDb": "clinvar", "data": {"content": submission_obj}}]
     }
     resp = requests.post(VALIDATE_SUBMISSION_URL, data=json.dumps(data), headers=header)
-    return resp.json()
+    return JSONResponse(
+        status_code=resp.status_code,
+        content=resp.json(),
+    )
 
 
 @app.post("/dry-run")
@@ -70,7 +73,7 @@ async def dry_run(
     # A successful response will be an empty response with code 204
     if resp.status_code == 204:
         return JSONResponse(
-            status_code=200,
+            status_code=resp.status_code,
             content={"message": "success"},
         )
     return JSONResponse(
