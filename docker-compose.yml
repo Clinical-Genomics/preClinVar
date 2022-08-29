@@ -1,0 +1,16 @@
+version: '3'
+# usage:
+# sudo docker-compose up
+services:
+  web:
+    container_name: preClinVar
+    build: .
+    environment:
+      GUNICORN_WORKERS: 1
+      GUNICORN_TREADS: 1
+      GUNICORN_BIND: 0.0.0.0:7000
+      GUNICORN_TIMEOUT: 400
+    ports:
+      - '7000:7000'
+    expose:
+      - '7000'

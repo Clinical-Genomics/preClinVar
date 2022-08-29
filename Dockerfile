@@ -39,6 +39,7 @@ ENV GUNICORN_TIMEOUT=400
 
 CMD gunicorn \
     --workers=$GUNICORN_WORKERS \
+    --worker-class=uvicorn.workers.UvicornWorker \
     --bind=$GUNICORN_BIND  \
     --threads=$GUNICORN_THREADS \
     --timeout=$GUNICORN_TIMEOUT \

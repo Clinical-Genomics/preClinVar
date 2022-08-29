@@ -12,9 +12,11 @@
 - Proxy endpoint to interrogate the submission dry run endpoint of ClinVar API
 - Proxy endpoint to interrogate the submission validate endpoint of ClinVar API
 - Dockerfile
+- Docker-compose file
 ### Changed
 - Updated submission schema in resources following new release of schema by ClinVar (draft-07)
 - Improved README files with description of endpoints and how to test it
 ### Fixed
 - Parsing of CaseData csv with more than one individuals associated to the same variant
 - dry-run enpoint, to return success when ClinVar returns a 204 successful response
+- Dockerfile returning `__call__() missing 1 required positional argument: 'send' error`
