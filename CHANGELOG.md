@@ -11,6 +11,7 @@
 - Tests and coverage GitHub workflow
 - Proxy endpoint to interrogate the submission dry run endpoint of ClinVar API
 - Proxy endpoint to interrogate the submission validate endpoint of ClinVar API
+- Dockerfile
 ### Changed
 - Updated submission schema in resources following new release of schema by ClinVar (draft-07)
 - Improved README files with description of endpoints and how to test it
