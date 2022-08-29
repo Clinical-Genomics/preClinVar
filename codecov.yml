@@ -3,15 +3,13 @@ coverage:
     patch: false
     project:
       default:
-        # basic
-        target: auto
-        threshold: 0.5%
         base: auto
-        paths:
-          - "preClinVar"
-       # advanced settings
         branches:
-          - main
-        if_ci_failed: error #success, failure, error, ignore
+        - ^main$
+        if_ci_failed: error
         informational: false
         only_pulls: false
+        paths:
+        - ^preClinVar.*
+        target: auto
+        threshold: 0.5

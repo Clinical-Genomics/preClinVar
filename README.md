@@ -1,6 +1,8 @@
 # PreClinVar
 A ClinVar API submission helper written in FastAPI.
 
+[![codecov](https://codecov.io/gh/Clinical-Genomics/preClinVar/branch/main/graph/badge.svg?token=ZE8LP4R3ZJ)](https://codecov.io/gh/Clinical-Genomics/preClinVar)
+
 ## Available endpoints:
 
 ### csv_2_json
