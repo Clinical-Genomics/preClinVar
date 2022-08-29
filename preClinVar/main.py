@@ -104,7 +104,7 @@ async def csv_2_json(files: List[UploadFile] = File(...)):
     if not casedata_lines or not variants_lines:
         return JSONResponse(
             status_code=400,
-            content={"error": "Both 'Variant' and 'CaseData' csv files are required"},
+            content={"message": "Both 'Variant' and 'CaseData' csv files are required"},
         )
 
     # Convert lines extracted from csv files to a submission object (a dictionary)
@@ -118,5 +118,6 @@ async def csv_2_json(files: List[UploadFile] = File(...)):
             content=submission_dict,
         )
     return JSONResponse(
-        status_code=400, content={"Created json file contains validation errors": valid_results[1]}
+        status_code=400,
+        content={"message": f"Created json file contains validation errors: {valid_results[1]}"},
     )
