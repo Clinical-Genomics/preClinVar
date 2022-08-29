@@ -13,6 +13,7 @@
 - Proxy endpoint to interrogate the submission validate endpoint of ClinVar API
 - Dockerfile
 - Docker-compose file
+- GitHub actions to build Docker images (prod and stage) and push them to Docker Hub
 ### Changed
 - Updated submission schema in resources following new release of schema by ClinVar (draft-07)
 - Improved README files with description of endpoints and how to test it
