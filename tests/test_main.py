@@ -144,5 +144,5 @@ def test_dry_run():
     )
 
     response = client.post(url, files=json_file)
-    assert response.status_code == 200  # Created
+    assert response.status_code == 200  # Success
     assert response.json()["message"] == "success"
