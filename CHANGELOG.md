@@ -1,4 +1,4 @@
-## [unreleased]
+## [1.0]
 ### Added
 - Poetry install
 - main.py file with first functions
