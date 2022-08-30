@@ -15,6 +15,7 @@
 - Docker-compose file
 - GitHub actions to build Docker images (prod and stage) and push them to Docker Hub
 - Codecov coverage badge
+- Version number in CHANGELOG file and heartbeat endpoint
 ### Changed
 - Updated submission schema in resources following new release of schema by ClinVar (draft-07)
 - Improved README files with description of endpoints and how to test it
