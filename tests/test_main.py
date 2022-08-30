@@ -1,4 +1,6 @@
+import responses
 from fastapi.testclient import TestClient
+from preClinVar.constants import DRY_RUN_SUBMISSION_URL, VALIDATE_SUBMISSION_URL
 from preClinVar.demo import (
     casedata_csv,
     casedata_csv_path,
@@ -11,6 +13,7 @@ from preClinVar.main import app
 client = TestClient(app)
 
 DEMO_API_KEY = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789ab"
+DEMO_SUBMISSION_ID = "SUB99999999"
 
 
 def test_heartbeat():
@@ -73,21 +76,52 @@ def test_csv_2_json():
 
 def test_dry_run_wrong_api_key():
     """Test the dry run API proxy without a valid ClinVar API key"""
+
+    # GIVEN a json submission file
     json_file = {"json_file": open(subm_json_path, "rb")}
 
+    # AND a DEMO API key
     url = "?api_key=".join(["/dry-run", DEMO_API_KEY])
 
     response = client.post(url, files=json_file)
-    assert response.status_code == 401  # Not authorized
+
+    # THEN the ClinVar API should return "unathorized"
+    assert response.status_code == 401
     assert response.json()["message"] == "No valid API key provided"
 
 
 def test_validate_wrong_api_key():
     """Test the validate API proxy endpoint without a valid ClinVar API key"""
+
+    # GIVEN a json submission file
     json_file = {"json_file": open(subm_json_path, "rb")}
 
+    # AND a DEMO API key
     url = "?api_key=".join(["/validate", DEMO_API_KEY])
 
     response = client.post(url, files=json_file)
+
+    # THEN the ClinVar API should return "unathorized"
     assert response.status_code == 401  # Not authorized
     assert response.json()["message"] == "No valid API key provided"
+
+
+@responses.activate
+def test_validate():
+    """Test the validated API proxy endpoint (with a mocked ClinVar API response)"""
+
+    # GIVEN a json submission file
+    json_file = {"json_file": open(subm_json_path, "rb")}
+    url = "?api_key=".join(["/validate", DEMO_API_KEY])
+
+    # AND a mocked ClinVar API
+    responses.add(
+        responses.POST,
+        VALIDATE_SUBMISSION_URL,
+        json={"id": DEMO_SUBMISSION_ID},
+        status=201,  # The ClinVar API returs code 201 when request is successful (created)
+    )
+
+    response = client.post(url, files=json_file)
+    assert response.status_code == 201  # Created
+    assert response.json()["id"] == DEMO_SUBMISSION_ID
