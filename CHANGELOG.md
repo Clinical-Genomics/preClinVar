@@ -19,6 +19,7 @@
 - Updated submission schema in resources following new release of schema by ClinVar (draft-07)
 - Improved README files with description of endpoints and how to test it
 - Increased test coverage
+- Pass ClinVar API KEY as a form field and not a query argument
 ### Fixed
 - Parsing of CaseData csv with more than one individuals associated to the same variant
 - dry-run enpoint, to return success when ClinVar returns a 204 successful response

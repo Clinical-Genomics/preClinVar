@@ -4,13 +4,12 @@ from typing import List
 
 import requests
 import uvicorn
-from fastapi import FastAPI, File, Query, UploadFile
+from fastapi import FastAPI, File, Form, UploadFile
 from fastapi.responses import JSONResponse
 from preClinVar.build import build_header
 from preClinVar.constants import DRY_RUN_SUBMISSION_URL, VALIDATE_SUBMISSION_URL
 from preClinVar.csv_parser import csv_fields_to_submission, csv_lines
 from preClinVar.validate import validate_submission
-from pydantic import BaseModel, Field
 
 LOG = logging.getLogger("uvicorn.access")
 
@@ -32,9 +31,7 @@ async def root():
 
 
 @app.post("/validate")
-async def validate(
-    api_key: str = Query(max_length=64, min_length=64), json_file: UploadFile = File(...)
-):
+async def validate(api_key: str = Form(), json_file: UploadFile = File(...)):
     """A proxy to the validate submission ClinVar API endpoint"""
     # Create a submission header
     header = build_header(api_key)
@@ -54,9 +51,7 @@ async def validate(
 
 
 @app.post("/dry-run")
-async def dry_run(
-    api_key: str = Query(max_length=64, min_length=64), json_file: UploadFile = File(...)
-):
+async def dry_run(api_key: str = Form(), json_file: UploadFile = File(...)):
     """A proxy to the dry run submission ClinVar API endpoint"""
     # Create a submission header
     header = build_header(api_key)
