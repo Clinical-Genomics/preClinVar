@@ -70,7 +70,7 @@ async def dry_run(
     }
     resp = requests.post(DRY_RUN_SUBMISSION_URL, data=json.dumps(data), headers=header)
 
-    # A successful response will be an empty response with code 204
+    # A successful response will be an empty response with code 204 (A dry-run submission was successful and no submission was created)
     if resp.status_code == 204:
         return JSONResponse(
             status_code=200,

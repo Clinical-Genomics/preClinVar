@@ -125,3 +125,24 @@ def test_validate():
     response = client.post(url, files=json_file)
     assert response.status_code == 201  # Created
     assert response.json()["id"] == DEMO_SUBMISSION_ID
+
+
+@responses.activate
+def test_dry_run():
+    """Test the dry_run API proxy endpoint (with a mocked ClinVar API response)"""
+
+    # GIVEN a json submission file
+    json_file = {"json_file": open(subm_json_path, "rb")}
+    url = "?api_key=".join(["/dry-run", DEMO_API_KEY])
+
+    # AND a mocked ClinVar API
+    responses.add(
+        responses.POST,
+        DRY_RUN_SUBMISSION_URL,
+        json={},
+        status=204,  # The ClinVar API returns 204 (no content) when a dry-run submission was successful and no submission was created
+    )
+
+    response = client.post(url, files=json_file)
+    assert response.status_code == 200  # Created
+    assert response.json()["message"] == "success"
