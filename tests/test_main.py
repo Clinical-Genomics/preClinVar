@@ -80,14 +80,32 @@ def test_dry_run_wrong_api_key():
     # GIVEN a json submission file
     json_file = {"json_file": open(subm_json_path, "rb")}
 
-    # AND a DEMO API key
-    url = "?api_key=".join(["/dry-run", DEMO_API_KEY])
-
-    response = client.post(url, files=json_file)
+    response = client.post("/dry-run", data={"api_key": DEMO_API_KEY}, files=json_file)
 
     # THEN the ClinVar API should return "unathorized"
     assert response.status_code == 401
     assert response.json()["message"] == "No valid API key provided"
+
+
+@responses.activate
+def test_dry_run():
+    """Test the dry_run API proxy endpoint (with a mocked ClinVar API response)"""
+
+    # GIVEN a json submission file
+    json_file = {"json_file": open(subm_json_path, "rb")}
+
+    # AND a mocked ClinVar API
+    responses.add(
+        responses.POST,
+        DRY_RUN_SUBMISSION_URL,
+        json={},
+        status=204,  # The ClinVar API returns 204 (no content) when a dry-run submission was successful and no submission was created
+    )
+
+    response = client.post("/dry-run", data={"api_key": DEMO_API_KEY}, files=json_file)
+    # THEN the ClinVar API proxy should return "success"
+    assert response.status_code == 200  # Success
+    assert response.json()["message"] == "success"
 
 
 def test_validate_wrong_api_key():
@@ -96,10 +114,7 @@ def test_validate_wrong_api_key():
     # GIVEN a json submission file
     json_file = {"json_file": open(subm_json_path, "rb")}
 
-    # AND a DEMO API key
-    url = "?api_key=".join(["/validate", DEMO_API_KEY])
-
-    response = client.post(url, files=json_file)
+    response = client.post("/validate", data={"api_key": DEMO_API_KEY}, files=json_file)
 
     # THEN the ClinVar API should return "unathorized"
     assert response.status_code == 401  # Not authorized
@@ -112,7 +127,6 @@ def test_validate():
 
     # GIVEN a json submission file
     json_file = {"json_file": open(subm_json_path, "rb")}
-    url = "?api_key=".join(["/validate", DEMO_API_KEY])
 
     # AND a mocked ClinVar API
     responses.add(
@@ -122,27 +136,8 @@ def test_validate():
         status=201,  # The ClinVar API returs code 201 when request is successful (created)
     )
 
-    response = client.post(url, files=json_file)
+    response = client.post("/validate", data={"api_key": DEMO_API_KEY}, files=json_file)
+
+    # THEN the ClinVar API proxy should return "success"
     assert response.status_code == 201  # Created
     assert response.json()["id"] == DEMO_SUBMISSION_ID
-
-
-@responses.activate
-def test_dry_run():
-    """Test the dry_run API proxy endpoint (with a mocked ClinVar API response)"""
-
-    # GIVEN a json submission file
-    json_file = {"json_file": open(subm_json_path, "rb")}
-    url = "?api_key=".join(["/dry-run", DEMO_API_KEY])
-
-    # AND a mocked ClinVar API
-    responses.add(
-        responses.POST,
-        DRY_RUN_SUBMISSION_URL,
-        json={},
-        status=204,  # The ClinVar API returns 204 (no content) when a dry-run submission was successful and no submission was created
-    )
-
-    response = client.post(url, files=json_file)
-    assert response.status_code == 200  # Success
-    assert response.json()["message"] == "success"
