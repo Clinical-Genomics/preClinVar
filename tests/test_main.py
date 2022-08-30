@@ -1,5 +1,6 @@
 import responses
 from fastapi.testclient import TestClient
+from preClinVar.__version__ import VERSION
 from preClinVar.constants import DRY_RUN_SUBMISSION_URL, VALIDATE_SUBMISSION_URL
 from preClinVar.demo import (
     casedata_csv,
@@ -20,7 +21,7 @@ def test_heartbeat():
     """Test the function that returns a message if server is running"""
     response = client.get("/")
     assert response.status_code == 200
-    assert response.json() == {"message": "preClinVar is up and running!"}
+    assert response.json() == {"message": f"preClinVar v{VERSION} is up and running!"}
 
 
 def test_csv_2_json_missing_file():

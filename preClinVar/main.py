@@ -6,6 +6,7 @@ import requests
 import uvicorn
 from fastapi import FastAPI, File, Form, UploadFile
 from fastapi.responses import JSONResponse
+from preClinVar.__version__ import VERSION
 from preClinVar.build import build_header
 from preClinVar.constants import DRY_RUN_SUBMISSION_URL, VALIDATE_SUBMISSION_URL
 from preClinVar.csv_parser import csv_fields_to_submission, csv_lines
@@ -27,7 +28,7 @@ async def startup_event():
 
 @app.get("/")
 async def root():
-    return {"message": "preClinVar is up and running!"}
+    return {"message": f"preClinVar v{VERSION} is up and running!"}
 
 
 @app.post("/validate")
