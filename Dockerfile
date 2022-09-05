@@ -9,7 +9,7 @@ ENV PATH="/home/worker/venv/bin:$PATH"
 
 # install requirements
 RUN pip install poetry
-COPY poetry.lock pyproject.toml .
+COPY poetry.lock pyproject.toml ./
 RUN poetry config virtualenvs.create false
 RUN poetry install --no-interaction
 
