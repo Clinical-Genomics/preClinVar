@@ -1,5 +1,6 @@
-## [unreleased]
-- Fixed Dockerfile building error resulting in prod image release failed to be pushed to Docker Hub 
+## [1.0.1]
+### Fixed
+- Fixed Dockerfile building error resulting in prod image release failed to be pushed to Docker Hub
 
 ## [1.0]
 ### Added
