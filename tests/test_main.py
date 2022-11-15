@@ -38,7 +38,10 @@ def test_csv_2_json_missing_file():
     response = client.post("/csv_2_json", files=files)
     # THEN the endpoint should return error
     assert response.status_code == 400
-    assert response.json()["message"] == "Both 'Variant' and 'CaseData' csv files are required"
+    assert (
+        response.json()["message"]
+        == "Both 'Variant' and 'CaseData' csv files are required and should not be empty"
+    )
 
 
 def test_csv_2_json_malformed_file():

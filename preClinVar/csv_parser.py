@@ -221,9 +221,8 @@ async def csv_lines(csv_file):
         with file_copy as f:
             f.write(contents)
 
-        with open(file_copy.name, "r", encoding="utf-8") as csvf:
+        with open(file_copy.name) as csvf:
             csvreader = DictReader(csvf)
-            next(csvreader)  # skip header
             for row in csvreader:
                 lines.append(row)
 
@@ -231,4 +230,4 @@ async def csv_lines(csv_file):
         file_copy.close()  # Close temp file
         os.unlink(file_copy.name)  # Delete temp file
 
-    return lines
+    return lines[1:] if lines else lines  # skip the header
