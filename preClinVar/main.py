@@ -100,7 +100,9 @@ async def csv_2_json(files: List[UploadFile] = File(...)):
     if not casedata_lines or not variants_lines:
         return JSONResponse(
             status_code=400,
-            content={"message": "Both 'Variant' and 'CaseData' csv files are required"},
+            content={
+                "message": "Both 'Variant' and 'CaseData' csv files are required and should not be empty"
+            },
         )
 
     # Convert lines extracted from csv files to a submission object (a dictionary)
