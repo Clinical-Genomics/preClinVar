@@ -1,3 +1,7 @@
+## [unreleased]
+### Fixed
+- Prevent CSV file parsing StopIteration error when provided files are empty
+
 ## [1.0.1]
 ### Fixed
 - Fixed Dockerfile building error resulting in prod image release failed to be pushed to Docker Hub
