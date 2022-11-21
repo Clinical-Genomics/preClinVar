@@ -1,4 +1,4 @@
-## [unreleased]
+## [1.0.2]
 ### Fixed
 - Prevent CSV file parsing StopIteration error when provided files are empty
 
