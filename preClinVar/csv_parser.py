@@ -8,13 +8,14 @@ LOG = logging.getLogger("uvicorn.access")
 
 def set_item_assertion_criteria(item, variant_dict):
     """Set the assertionCriteria key/values for an API submission item
+       Assertion criteria were removed from Variant.csv file starting from
     Args:
         item(dict). An item in the clinvarSubmission.items list
         variants_dict(dict). Example: {'##Local ID': '1d9ce6ebf2f82d913cfbe20c5085947b', 'Linking ID': '1d9ce6ebf2f82d913cfbe20c5085947b', 'Gene symbol': 'XDH', 'Reference sequence': 'NM_000379.4', 'HGVS': 'c.2751del', ..}
     """
     # Add CITATION key/value (a dict)
     citation = {}
-    asc = variant_dict.get("Assertion method citation")
+    asc = variant_dict.get("Assertion method citation", "")
     if "PMID:" in asc:
         citation["db"] = "PubMed"
         citation["id"] = asc.split(":")[1]
@@ -106,7 +107,7 @@ def set_item_observed_in(item, casedata_lines):
         casedata_lines(list of dicts). Example:
             [{'Linking ID': '69b138a4c5caf211d796a59a7b46e40d', 'Individual ID': '20210316-03', 'Collection method': 'clinical testing', 'Allele origin': 'germline', 'Affected status': 'yes', 'Sex': 'male', 'Family history': 'no', 'Proband': 'yes', ..}, ..]
     """
-    var_link_id = item["localKey"]  # ID of the variant
+    var_link_id = item.get("localKey")  # ID of the variant
     obs_in = []
 
     # Loop over case data and collect individuals associated with the variant linking ID
@@ -185,7 +186,7 @@ def csv_fields_to_submission(variants_lines, casedata_lines):
     items = []
     # Loop over the variants to submit and create a
     for line_dict in variants_lines:
-
+        LOG.warning(line_dict)
         item = {}  # For each variant in the csv file (one line), create a submission item
 
         set_item_assertion_criteria(item, line_dict)
