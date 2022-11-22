@@ -8,7 +8,7 @@ LOG = logging.getLogger("uvicorn.access")
 
 def set_item_assertion_criteria(item, variant_dict):
     """Set the assertionCriteria key/values for an API submission item
-       Assertion criteria were removed from Variant.csv file starting from
+
     Args:
         item(dict). An item in the clinvarSubmission.items list
         variants_dict(dict). Example: {'##Local ID': '1d9ce6ebf2f82d913cfbe20c5085947b', 'Linking ID': '1d9ce6ebf2f82d913cfbe20c5085947b', 'Gene symbol': 'XDH', 'Reference sequence': 'NM_000379.4', 'HGVS': 'c.2751del', ..}
