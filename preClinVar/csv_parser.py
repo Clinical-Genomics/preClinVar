@@ -198,9 +198,9 @@ def csv_fields_to_submission(variants_lines, casedata_lines):
         set_item_release_status(item)
         set_item_variant_set(item, line_dict)
 
-        items.append(item)
+        filtered = {k: v for k, v in item.items() if v is not None}
 
-    # clinvar_submission["items"] = items
+        items.append(filtered)
 
     return {"clinvarSubmission": items}
 
