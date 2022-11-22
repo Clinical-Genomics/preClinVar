@@ -186,7 +186,6 @@ def csv_fields_to_submission(variants_lines, casedata_lines):
     items = []
     # Loop over the variants to submit and create a
     for line_dict in variants_lines:
-        LOG.warning(line_dict)
         item = {}  # For each variant in the csv file (one line), create a submission item
 
         set_item_assertion_criteria(item, line_dict)
