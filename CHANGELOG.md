@@ -1,4 +1,6 @@
 ## [unreleased]
+### Added
+- Support for tab-delimited (`\t`) csv files
 ### Fixed
 - Do not crash when parsing Variant CSV files with no assertion criteria
 
