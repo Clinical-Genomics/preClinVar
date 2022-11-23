@@ -1,3 +1,6 @@
+import csv
+from tempfile import NamedTemporaryFile
+
 import responses
 from fastapi.testclient import TestClient
 from preClinVar.__version__ import VERSION
@@ -61,6 +64,48 @@ def test_csv_2_json_malformed_file():
     # THEN the endpoint should return error
     assert response.status_code == 400
     assert "Created json file contains validation errors" in response.json()["message"]
+
+
+def test_csv_2_json_tab_separated():
+    """Test the function that sends a request to the app to convert 2 tab separated cvs files (CaseData.csv, Variant.csv)
+    into one json API submission object"""
+
+    # GIVEN Variant.csv and CaseData.csv temporary files based on the demo CSV files, but are tab-separated
+    with NamedTemporaryFile(
+        mode="a+", prefix="Variant", suffix=".csv"
+    ) as tab_sep_var_file, NamedTemporaryFile(
+        mode="a+", prefix="Casedata", suffix=".csv"
+    ) as tab_sep_cdata_file, open(
+        variants_csv_path, "r"
+    ) as comma_sep_var_file, open(
+        casedata_csv_path, "r"
+    ) as comma_sep_cdata_file:
+
+        # Convert Variant file to tsv
+        csvin = csv.reader(comma_sep_var_file)
+        tsvout = csv.writer(tab_sep_var_file, delimiter="\t")
+        for row in csvin:
+            tsvout.writerow(row)
+        tab_sep_var_file.flush()
+        tab_sep_var_file.seek(0)
+
+        # convert CaseData file to tsv
+        csvin = csv.reader(comma_sep_cdata_file)
+        tsvout = csv.writer(tab_sep_cdata_file, delimiter="\t")
+        for row in csvin:
+            tsvout.writerow(row)
+        tab_sep_cdata_file.flush()
+        tab_sep_cdata_file.seek(0)
+
+        # GIVEN a POST request to the endpoint with multipart-encoded files:
+        # (https://requests.readthedocs.io/en/latest/user/advanced/#post-multiple-multipart-encoded-files)
+        files = [
+            ("files", (variants_csv, open(tab_sep_var_file.name, "r"))),
+            ("files", (casedata_csv, open(tab_sep_cdata_file.name, "r"))),
+        ]
+
+        response = client.post("/csv_2_json", files=files)
+        assert response.status_code == 200
 
 
 def test_csv_2_json():

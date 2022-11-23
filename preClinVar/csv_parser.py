@@ -1,6 +1,6 @@
 import logging
 import os
-from csv import DictReader
+from csv import DictReader, Sniffer
 from tempfile import NamedTemporaryFile
 
 LOG = logging.getLogger("uvicorn.access")
@@ -215,6 +215,7 @@ async def csv_lines(csv_file):
     """
 
     contents = await csv_file.read()
+    dialect = Sniffer().sniff(contents.decode("utf-8"), [",", "\t"])
     file_copy = NamedTemporaryFile(delete=False)
     lines = []
     try:
@@ -222,7 +223,7 @@ async def csv_lines(csv_file):
             f.write(contents)
 
         with open(file_copy.name) as csvf:
-            csvreader = DictReader(csvf)
+            csvreader = DictReader(csvf, delimiter=dialect.delimiter)
             for row in csvreader:
                 lines.append(row)
 
