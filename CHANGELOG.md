@@ -1,4 +1,4 @@
-## [unreleased]
+## [1.1]
 ### Added
 - Support for tab-delimited (`\t`) files in csv_2_json endpoint
 ### Fixed
