@@ -1,6 +1,6 @@
 ## [unreleased]
 ### Added
-- Support for tab-delimited (`\t`) csv files
+- Support for tab-delimited (`\t`) files in csv_2_json endpoint
 ### Fixed
 - Do not crash when parsing Variant CSV files with no assertion criteria
 
