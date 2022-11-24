@@ -213,17 +213,17 @@ async def csv_lines(csv_file):
     Returns:
         lines(list of dictionaries). Example [{'##Local ID': '1d9ce6ebf2f82d913cfbe20c5085947b', 'Linking ID': '1d9ce6ebf2f82d913cfbe20c5085947b', 'Gene symbol': 'XDH'}, ..]
     """
-
-    contents = await csv_file.read()
-    dialect = Sniffer().sniff(contents.decode("utf-8"), [",", "\t"])
-    file_copy = NamedTemporaryFile(delete=False)
     lines = []
+    file_copy = NamedTemporaryFile(delete=False)
     try:
+        contents = await csv_file.read()
+        contents = contents.replace(b"\t", b",").replace(b"\r", b"")
+
         with file_copy as f:
             f.write(contents)
 
         with open(file_copy.name) as csvf:
-            csvreader = DictReader(csvf, delimiter=dialect.delimiter)
+            csvreader = DictReader(csvf, delimiter=",")
             for row in csvreader:
                 lines.append(row)
 
@@ -231,4 +231,4 @@ async def csv_lines(csv_file):
         file_copy.close()  # Close temp file
         os.unlink(file_copy.name)  # Delete temp file
 
-    return lines[1:] if lines else lines  # skip the header
+    return lines
