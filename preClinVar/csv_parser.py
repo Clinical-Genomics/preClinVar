@@ -1,6 +1,6 @@
 import logging
 import os
-from csv import DictReader, Sniffer
+from csv import DictReader
 from tempfile import NamedTemporaryFile
 
 LOG = logging.getLogger("uvicorn.access")
