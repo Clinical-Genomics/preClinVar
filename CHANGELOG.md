@@ -1,6 +1,6 @@
 ## [unreleased]
 ### Added
-- Support for tab-delimited (`\t`) files in csv_2_json endpoint
+- A new tsv_2_json endpoint to convert TSV files in json submission objects
 ### Changed
 - New API schema introduced on 2022-11-21
 - Modified file parsing code to create submission jsons compliant with the new API
