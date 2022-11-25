@@ -3,6 +3,7 @@
 - Support for tab-delimited (`\t`) files in csv_2_json endpoint
 ### Changed
 - New API schema introduced on 2022-11-21
+- Modified file parsing code to create submission jsons compliant with the new API
 ### Fixed
 - Do not crash when parsing Variant CSV files with no assertion criteria
 - Simplify and fix CSV and TSV files parsing
