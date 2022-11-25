@@ -66,8 +66,8 @@ def test_csv_2_json_malformed_file():
     assert "Created json file contains validation errors" in response.json()["message"]
 
 
-def test_csv_2_json_tab_separated():
-    """Test the function that sends a request to the app to convert 2 tab separated cvs files (CaseData.csv, Variant.csv)
+def test_tsv_2_json():
+    """Test the function that sends a request to the app to convert 2 tab separated cvs files (CaseData.tsv, Variant.tsv)
     into one json API submission object"""
 
     # GIVEN Variant.csv and CaseData.csv temporary files based on the demo CSV files, but are tab-separated
@@ -104,8 +104,7 @@ def test_csv_2_json_tab_separated():
             ("files", (casedata_csv, open(tab_sep_cdata_file.name, "r"))),
         ]
 
-        response = client.post("/csv_2_json", files=files)
-        # assert response.json() == "meh"
+        response = client.post("/tsv_2_json", files=files)
         assert response.status_code == 200
 
 

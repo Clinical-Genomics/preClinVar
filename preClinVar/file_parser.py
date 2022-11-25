@@ -172,7 +172,7 @@ def set_item_variant_set(item, variant_dict):
     item["variantSet"]["variant"] = [variant]
 
 
-def csv_fields_to_submission(variants_lines, casedata_lines):
+def file_fields_to_submission(variants_lines, casedata_lines):
     """Create a dictionary corresponding to a json submission file
        from the fields present in Variant and CaseData csv files
 
@@ -232,6 +232,7 @@ def _tsv_file_lines(contents):
                 lines.append(line)
     except Exception as ex:
         LOG.error("An error occurred while parsing TSV file")
+
     return lines
 
 
@@ -262,18 +263,28 @@ def _csv_file_lines(contents):
     return lines
 
 
+async def tsv_lines(tsv_file):
+    """Extracts lines from a csv file using a csv DictReader
+
+    Args:
+        tsv_file(starlette.datastructures.UploadFile)
+
+    Returns:
+        lines(list of dictionaries). Example [{'##Local ID': '1d9ce6ebf2f82d913cfbe20c5085947b', 'Linking ID': '1d9ce6ebf2f82d913cfbe20c5085947b', 'Gene symbol': 'XDH'}, ..]
+
+    """
+    contents = await tsv_file.read()
+    return _tsv_file_lines(contents)
+
+
 async def csv_lines(csv_file):
     """Extracts lines from a csv file using a csv DictReader
 
     Args:
         csv_file(starlette.datastructures.UploadFile)
+
     Returns:
         lines(list of dictionaries). Example [{'##Local ID': '1d9ce6ebf2f82d913cfbe20c5085947b', 'Linking ID': '1d9ce6ebf2f82d913cfbe20c5085947b', 'Gene symbol': 'XDH'}, ..]
     """
     contents = await csv_file.read()
-    if b"\t" in contents:
-        lines = _tsv_file_lines(contents)
-    else:
-        lines = _csv_file_lines(contents)
-
-    return lines
+    return _csv_file_lines(contents)
