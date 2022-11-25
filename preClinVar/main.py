@@ -1,5 +1,6 @@
 import json
 import logging
+import re
 from typing import List
 
 import requests
@@ -91,9 +92,15 @@ async def csv_2_json(files: List[UploadFile] = File(...)):
 
     for file in files:
         file_lines = await csv_lines(file)
-        if "CaseData" in file.filename:
+        if not file_lines:
+            return JSONResponse(
+                status_code=400,
+                content={"message": f"Malformed file {file.filename}"},
+            )
+
+        if re.search("CaseData", file.filename, re.IGNORECASE):
             casedata_lines = file_lines
-        elif "Variant" in file.filename:
+        elif re.search("Variant", file.filename, re.IGNORECASE):
             variants_lines = file_lines
 
     # Make sure both files were provided in request
