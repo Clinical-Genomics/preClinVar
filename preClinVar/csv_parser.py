@@ -224,7 +224,7 @@ def _tsv_file_lines(contents):
                 row_values = row.split("\t")
                 line = {}
                 for n, key in enumerate(header):
-                    line[key] = row_values[n]
+                    line[key.strip('"')] = row_values[n].strip('"')
                 lines.append(line)
     except Exception as ex:
         LOG.error("An error occurred while parsing TSV file")
@@ -272,4 +272,5 @@ async def csv_lines(csv_file):
     else:
         lines = _csv_file_lines(contents)
 
+    LOG.error(lines)
     return lines
