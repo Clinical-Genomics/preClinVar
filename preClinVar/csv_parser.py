@@ -272,5 +272,4 @@ async def csv_lines(csv_file):
     else:
         lines = _csv_file_lines(contents)
 
-    LOG.error(lines)
     return lines
