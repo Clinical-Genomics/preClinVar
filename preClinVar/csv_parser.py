@@ -1,3 +1,4 @@
+import csv
 import logging
 import os
 from csv import DictReader
@@ -205,6 +206,58 @@ def csv_fields_to_submission(variants_lines, casedata_lines):
     return {"clinvarSubmission": items}
 
 
+def _tsv_file_lines(contents):
+    """Retrieve contents of a tab-separated file
+
+    Args:
+        contents(bytes): contents of one of the files uploaded, as bytes
+
+    Returns:
+        line_dicts(list): a list of dictionaries, one for each line of the original file
+    """
+    lines = []
+    try:
+        line_contents = contents.decode("UTF-8").replace("\r", "").split("\n")
+        header = line_contents[0].split("\t")
+        for row in line_contents[1:]:
+            if row.rstrip():
+                row_values = row.split("\t")
+                line = {}
+                for n, key in enumerate(header):
+                    line[key] = row_values[n]
+                lines.append(line)
+    except Exception as ex:
+        LOG.error("An error occurred while parsing TSV file")
+    return lines
+
+
+def _csv_file_lines(contents):
+    """Retrieve contents of a tab-separated file
+
+    Args:
+        contents(bytes): contents of one of the files uploaded, as bytes
+
+    Returns:
+        lines(list): a list of rows from a DictReader object
+    """
+    lines = []
+    file_copy = NamedTemporaryFile(delete=False)
+    try:
+        with file_copy as f:
+            f.write(contents)
+
+        with open(file_copy.name) as csvf:
+            csvreader = DictReader(csvf)
+            for row in csvreader:
+                lines.append(row)
+
+    finally:
+        file_copy.close()  # Close temp file
+        os.unlink(file_copy.name)  # Delete temp file
+
+    return lines
+
+
 async def csv_lines(csv_file):
     """Extracts lines from a csv file using a csv DictReader
 
@@ -213,22 +266,11 @@ async def csv_lines(csv_file):
     Returns:
         lines(list of dictionaries). Example [{'##Local ID': '1d9ce6ebf2f82d913cfbe20c5085947b', 'Linking ID': '1d9ce6ebf2f82d913cfbe20c5085947b', 'Gene symbol': 'XDH'}, ..]
     """
-    lines = []
-    file_copy = NamedTemporaryFile(delete=False)
-    try:
-        contents = await csv_file.read()
-        contents = contents.replace(b"\t", b",").replace(b"\r", b"")
+    contents = await csv_file.read()
+    if b"\t" in contents:
+        lines = _tsv_file_lines(contents)
+    else:
+        lines = _csv_file_lines(contents)
 
-        with file_copy as f:
-            f.write(contents)
-
-        with open(file_copy.name) as csvf:
-            csvreader = DictReader(csvf, delimiter=",")
-            for row in csvreader:
-                lines.append(row)
-
-    finally:
-        file_copy.close()  # Close temp file
-        os.unlink(file_copy.name)  # Delete temp file
-
+    LOG.error(lines)
     return lines
