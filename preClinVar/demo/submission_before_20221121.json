@@ -1,47 +1,13 @@
 {
-  "assertionCriteria": {
-    "db": "PubMed",
-    "id": "25741868"
-  },
   "clinvarSubmission": [
     {
-      "clinicalSignificance": {
-        "clinicalSignificanceDescription": "Pathogenic",
-        "dateLastEvaluated": "2021-03-16",
-        "modeOfInheritance": "Autosomal recessive inheritance"
+      "assertionCriteria": {
+        "citation": {
+          "db": "PubMed",
+          "id": "25741868"
+        },
+        "method": "ACMG Guidelines, 2015"
       },
-      "conditionSet": {
-        "condition": [
-          {
-            "db": "OMIM",
-            "id": "248600"
-          }
-        ]
-      },
-      "localID": "7b7a372ea54e1c0de9ec6af4ebebd14a",
-      "localKey": "7b7a372ea54e1c0de9ec6af4ebebd14a",
-      "observedIn": [
-        {
-          "affectedStatus": "yes",
-          "alleleOrigin": "germline",
-          "collectionMethod": "clinical testing"
-        }
-      ],
-      "variantSet": {
-        "variant": [
-          {
-            "hgvs": "c.832G>A",
-            "gene": [
-              {
-                "symbol": "BCKDHB"
-              }
-            ]
-          }
-        ]
-      },
-      "recordStatus": "novel"
-    },
-    {
       "clinicalSignificance": {
         "clinicalSignificanceDescription": "Pathogenic",
         "dateLastEvaluated": "2021-03-12",
@@ -64,6 +30,8 @@
           "collectionMethod": "clinical testing"
         }
       ],
+      "recordStatus": "novel",
+      "releaseStatus": "public",
       "variantSet": {
         "variant": [
           {
@@ -75,10 +43,16 @@
             ]
           }
         ]
-      },
-      "recordStatus": "novel"
+      }
     },
     {
+      "assertionCriteria": {
+        "citation": {
+          "db": "PubMed",
+          "id": "25741868"
+        },
+        "method": "ACMG Guidelines, 2015"
+      },
       "clinicalSignificance": {
         "clinicalSignificanceDescription": "Pathogenic",
         "dateLastEvaluated": "2021-03-16",
@@ -101,6 +75,8 @@
           "collectionMethod": "clinical testing"
         }
       ],
+      "recordStatus": "novel",
+      "releaseStatus": "public",
       "variantSet": {
         "variant": [
           {
@@ -112,10 +88,16 @@
             ]
           }
         ]
-      },
-      "recordStatus": "novel"
+      }
     },
     {
+      "assertionCriteria": {
+        "citation": {
+          "db": "PubMed",
+          "id": "25741868"
+        },
+        "method": "ACMG Guidelines, 2015"
+      },
       "clinicalSignificance": {
         "clinicalSignificanceDescription": "Pathogenic",
         "dateLastEvaluated": "2021-03-12",
@@ -138,6 +120,8 @@
           "collectionMethod": "clinical testing"
         }
       ],
+      "recordStatus": "novel",
+      "releaseStatus": "public",
       "variantSet": {
         "variant": [
           {
@@ -149,10 +133,16 @@
             ]
           }
         ]
-      },
-      "recordStatus": "novel"
+      }
     },
     {
+      "assertionCriteria": {
+        "citation": {
+          "db": "PubMed",
+          "id": "25741868"
+        },
+        "method": "ACMG Guidelines, 2015"
+      },
       "clinicalSignificance": {
         "clinicalSignificanceDescription": "Pathogenic",
         "dateLastEvaluated": "2021-03-12",
@@ -180,6 +170,8 @@
           "collectionMethod": "clinical testing"
         }
       ],
+      "recordStatus": "novel",
+      "releaseStatus": "public",
       "variantSet": {
         "variant": [
           {
@@ -191,8 +183,7 @@
             ]
           }
         ]
-      },
-      "recordStatus": "novel"
+      }
     }
   ]
 }

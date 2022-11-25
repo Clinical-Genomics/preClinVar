@@ -7,27 +7,33 @@ from tempfile import NamedTemporaryFile
 LOG = logging.getLogger("uvicorn.access")
 
 
-def set_item_assertion_criteria(item, variant_dict):
+def set_assertion_criteria_from_csv(subm_obj, variants_lines):
     """Set the assertionCriteria key/values for an API submission item
 
     Args:
-        item(dict). An item in the clinvarSubmission.items list
-        variants_dict(dict). Example: {'##Local ID': '1d9ce6ebf2f82d913cfbe20c5085947b', 'Linking ID': '1d9ce6ebf2f82d913cfbe20c5085947b', 'Gene symbol': 'XDH', 'Reference sequence': 'NM_000379.4', 'HGVS': 'c.2751del', ..}
+        subm_obj(dict). An empty submission object
+        variants_dict(list) list of dicts. May contain or not the Assertion method citation fields
     """
-    # Add CITATION key/value (a dict)
-    citation = {}
-    asc = variant_dict.get("Assertion method citation", "")
-    if "PMID:" in asc:
-        citation["db"] = "PubMed"
-        citation["id"] = asc.split(":")[1]
+    assertion_criteria = {}
+    a_line = variants_lines[0]
+    # Look for Assertion method citation info on the first line of the CVS
+    if a_line.get("Assertion method citation"):
+        asc = a_line.get("Assertion method citation")
+        asc_db = asc.split(":")[0]
+        if asc_db in ["PMID", "DOI", "pmc"]:
+            if asc_db == "PMID":
+                assertion_criteria["db"] = "PubMed"
+            else:
+                assertion_criteria["db"] = asc_db
+            assertion_criteria["id"] = asc.split(":")[1]
 
-    # Add method key/value (a string)
-    method = ""
-    am = variant_dict.get("Assertion method")
-    if am:
-        method = am
+    if assertion_criteria:
+        subm_obj["assertionCriteria"] = assertion_criteria
 
-    item["assertionCriteria"] = {"citation": citation, "method": method}
+
+def set_record_status(item):
+    """Set status for an API submission item"""
+    item["recordStatus"] = "novel"
 
 
 def set_item_clin_sig(item, variant_dict):
@@ -140,11 +146,6 @@ def set_item_record_status(item):
     item["recordStatus"] = "novel"
 
 
-def set_item_release_status(item):
-    """Set release status for the item. Setting it to publc by default"""
-    item["releaseStatus"] = "public"
-
-
 def set_item_variant_set(item, variant_dict):
     """Set the variantSet keys/values for a variant item in the submission object
 
@@ -183,27 +184,30 @@ def csv_fields_to_submission(variants_lines, casedata_lines):
         clinvar_submission(dict): a json submission dictionary formatted according to this schema:
         https://www.ncbi.nlm.nih.gov/clinvar/docs/api_http/
     """
+    subm_object = {}
+
+    # try to parse assertion criteria from old format of CSV file
+    set_assertion_criteria_from_csv(subm_object, variants_lines)
 
     items = []
     # Loop over the variants to submit and create a
     for line_dict in variants_lines:
         item = {}  # For each variant in the csv file (one line), create a submission item
-
-        set_item_assertion_criteria(item, line_dict)
         set_item_clin_sig(item, line_dict)
         set_item_condition_set(item, line_dict)
         set_item_local_id(item, line_dict)
         set_item_local_key(item, line_dict)
         set_item_observed_in(item, casedata_lines)
-        set_item_record_status(item)
-        set_item_release_status(item)
         set_item_variant_set(item, line_dict)
+        set_item_record_status(item)
 
         filtered = {k: v for k, v in item.items() if v is not None}
 
         items.append(filtered)
 
-    return {"clinvarSubmission": items}
+    subm_object["clinvarSubmission"] = items
+
+    return subm_object
 
 
 def _tsv_file_lines(contents):
@@ -272,5 +276,4 @@ async def csv_lines(csv_file):
     else:
         lines = _csv_file_lines(contents)
 
-    LOG.error(lines)
     return lines
