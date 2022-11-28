@@ -1,6 +1,11 @@
 ## [unreleased]
 ### Added
 - A new tsv_2_json endpoint to convert TSV files in json submission objects
+- `Keep a Changelog` GitHub action
+- `Black` GitHub action
+- `Flake8 Lint` GitHub action
+- `Vulture` GitHub action
+- `Woke` GitHub action
 ### Changed
 - New API schema introduced on 2022-11-21
 - Modified file parsing code to create submission jsons compliant with the new API
