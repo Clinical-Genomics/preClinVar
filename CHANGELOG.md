@@ -6,6 +6,7 @@
 - `Flake8 Lint` GitHub action
 - `Vulture` GitHub action
 - `Woke` GitHub action
+- Badges showing the status of GitHub actions on README page
 ### Changed
 - New API schema introduced on 2022-11-21
 - Modified file parsing code to create submission jsons compliant with the new API
