@@ -42,7 +42,7 @@ def build_submission(subm_obj, request):
             subm_obj[subm_key] = query_params[q_key]
 
     # Add assertion criteria item to submission if user provides "db", "id" or "url"
-    if [key for key in list(OPTIONAL_ASSERTION_CRITERIA.keys()) if key in query_params]:
+    if query_params.get("assertionCriteriaDB") and query_params.get("assertionCriteriaID"):
         assertion_criteria = {}
         for q_key, subm_key in OPTIONAL_ASSERTION_CRITERIA.items():
             if query_params.get(q_key):
