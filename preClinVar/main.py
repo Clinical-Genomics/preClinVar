@@ -87,6 +87,7 @@ async def tsv_2_json(
     assertionCriteriaDB: str = Form(),
     assertionCriteriaID: str = Form(),
     assertionCriteriaURL: str = Form(),
+    behalfOrgID: int = Form(),
     recordStatus: str = Form(),
 ):
     """Create a json submission object using 2 TSV files (Variant.tsv and CaseData.tsv).
@@ -143,6 +144,7 @@ async def csv_2_json(
     assertionCriteriaDB: str = Form(),
     assertionCriteriaID: str = Form(),
     assertionCriteriaURL: str = Form(),
+    behalfOrgID: int = Form(),
     recordStatus: str = Form(),
 ):
     """Create a json submission object using 2 CSV files (Variant.csv and CaseData.csv).
