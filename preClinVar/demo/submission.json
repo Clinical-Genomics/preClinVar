@@ -194,5 +194,7 @@
       },
       "recordStatus": "novel"
     }
-  ]
+  ],
+  "submissionName": "SUB1234",
+  "clinvarSubmissionReleaseStatus": "public"
 }
