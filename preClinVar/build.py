@@ -4,12 +4,10 @@ LOG = logging.getLogger("uvicorn.access")
 OPTIONAL_SUBMISSION_PARAMS = {
     "submissionName": "submissionName",
     "releaseStatus": "clinvarSubmissionReleaseStatus",
-    "behalfOrgID": "behalfOrgID",
 }
 OPTIONAL_ASSERTION_CRITERIA = {
     "assertionCriteriaDB": "db",
     "assertionCriteriaID": "id",
-    "assertionCriteriaURL": "url",
 }
 
 

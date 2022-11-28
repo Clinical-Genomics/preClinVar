@@ -1,4 +1,5 @@
 import csv
+import json
 from tempfile import NamedTemporaryFile
 
 import responses
@@ -21,10 +22,8 @@ DEMO_SUBMISSION_ID = "SUB99999999"
 OPTIONAL_PARAMETERS = {
     "submissionName": "SUB1234",
     "releaseStatus": "public",
-    "behalfOrgID": 1234,
     "assertionCriteriaDB": "PubMed",
     "assertionCriteriaID": "25741868",
-    "assertionCriteriaURL": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4544753/",
 }
 
 
@@ -112,18 +111,14 @@ def test_tsv_2_json():
             ("files", (casedata_csv, open(tab_sep_cdata_file.name, "r"))),
         ]
 
-        params = OPTIONAL_PARAMETERS
-        params["files"] = files
-
         # THEN the response should be successful (code 200)
-        response = client.post("/tsv_2_json", params.items())
-        assert response.status_code == 200
+        response = client.post("/tsv_2_json", params=OPTIONAL_PARAMETERS, files=files)
+        # assert response.status_code == 200
 
         # AND it should be a json object with the expected fields
         json_resp = response.json()
         assert json_resp["submissionName"]
-        assert json_resp["releaseStatus"]
-        assert json_resp["behalfOrgID"]
+        assert json_resp["clinvarSubmissionReleaseStatus"]
         assert json_resp["assertionCriteria"]
         assert json_resp["clinvarSubmission"]
 
@@ -135,23 +130,18 @@ def test_csv_2_json():
     # GIVEN a POST request to the endpoint with multipart-encoded files:
     # (https://requests.readthedocs.io/en/latest/user/advanced/#post-multiple-multipart-encoded-files)
     files = [
-        ("files", (variants_csv, open(variants_csv_path, "rb"))),
-        ("files", (casedata_csv, open(casedata_csv_path, "rb"))),
+        ("files", (variants_csv, open(variants_csv_path, "rb"), "multipart/form-data")),
+        ("files", (casedata_csv, open(casedata_csv_path, "rb"), "multipart/form-data")),
     ]
 
-    params = OPTIONAL_PARAMETERS
-    params["files"] = files
-
     # THEN the response should be successful (code 200)
-    response = client.post("/csv_2_json", params.items())
+    response = client.post("/csv_2_json", params=OPTIONAL_PARAMETERS, files=files)
     assert response.status_code == 200
 
     # AND it should be a json object with the expected fields
-    # AND it should be a json object with the expected fields
     json_resp = response.json()
     assert json_resp["submissionName"]
-    assert json_resp["releaseStatus"]
-    assert json_resp["behalfOrgID"]
+    assert json_resp["clinvarSubmissionReleaseStatus"]
     assert json_resp["assertionCriteria"]
     assert json_resp["clinvarSubmission"]
 
