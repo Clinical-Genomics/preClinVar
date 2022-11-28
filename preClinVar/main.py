@@ -80,7 +80,15 @@ async def dry_run(api_key: str = Form(), json_file: UploadFile = File(...)):
 
 
 @app.post("/tsv_2_json")
-async def tsv_2_json(files: List[UploadFile] = File(...)):
+async def tsv_2_json(
+    files: List[UploadFile] = File(...),
+    submissionName: str = Form(),
+    releaseStatus: str = Form(),
+    assertionCriteriaDB: str = Form(),
+    assertionCriteriaID: str = Form(),
+    assertionCriteriaURL: str = Form(),
+    recordStatus: str = Form(),
+):
     """Create a json submission object using 2 TSV files (Variant.tsv and CaseData.tsv).
     Validate the submission objects agains the official schema:
     https://www.ncbi.nlm.nih.gov/clinvar/docs/api_http/
@@ -128,7 +136,15 @@ async def tsv_2_json(files: List[UploadFile] = File(...)):
 
 
 @app.post("/csv_2_json")
-async def csv_2_json(files: List[UploadFile] = File(...)):
+async def csv_2_json(
+    files: List[UploadFile] = File(...),
+    submissionName: str = Form(),
+    releaseStatus: str = Form(),
+    assertionCriteriaDB: str = Form(),
+    assertionCriteriaID: str = Form(),
+    assertionCriteriaURL: str = Form(),
+    recordStatus: str = Form(),
+):
     """Create a json submission object using 2 CSV files (Variant.csv and CaseData.csv).
     Validate the submission objects agains the official schema:
     https://www.ncbi.nlm.nih.gov/clinvar/docs/api_http/
