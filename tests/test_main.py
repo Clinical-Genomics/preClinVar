@@ -1,4 +1,5 @@
 import csv
+import json
 from tempfile import NamedTemporaryFile
 
 import responses
@@ -18,6 +19,12 @@ client = TestClient(app)
 
 DEMO_API_KEY = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789ab"
 DEMO_SUBMISSION_ID = "SUB99999999"
+OPTIONAL_PARAMETERS = {
+    "submissionName": "SUB1234",
+    "releaseStatus": "public",
+    "assertionCriteriaDB": "PubMed",
+    "assertionCriteriaID": "25741868",
+}
 
 
 def test_heartbeat():
@@ -104,8 +111,16 @@ def test_tsv_2_json():
             ("files", (casedata_csv, open(tab_sep_cdata_file.name, "r"))),
         ]
 
-        response = client.post("/tsv_2_json", files=files)
-        assert response.status_code == 200
+        # THEN the response should be successful (code 200)
+        response = client.post("/tsv_2_json", params=OPTIONAL_PARAMETERS, files=files)
+        # assert response.status_code == 200
+
+        # AND it should be a json object with the expected fields
+        json_resp = response.json()
+        assert json_resp["submissionName"]
+        assert json_resp["clinvarSubmissionReleaseStatus"]
+        assert json_resp["assertionCriteria"]
+        assert json_resp["clinvarSubmission"]
 
 
 def test_csv_2_json():
@@ -119,8 +134,16 @@ def test_csv_2_json():
         ("files", (casedata_csv, open(casedata_csv_path, "rb"))),
     ]
 
-    response = client.post("/csv_2_json", files=files)
+    # THEN the response should be successful (code 200)
+    response = client.post("/csv_2_json", params=OPTIONAL_PARAMETERS, files=files)
     assert response.status_code == 200
+
+    # AND it should be a json object with the expected fields
+    json_resp = response.json()
+    assert json_resp["submissionName"]
+    assert json_resp["clinvarSubmissionReleaseStatus"]
+    assert json_resp["assertionCriteria"]
+    assert json_resp["clinvarSubmission"]
 
 
 def test_dry_run_wrong_api_key():

@@ -1,14 +1,14 @@
 import json
 import logging
 import re
-from typing import List
+from typing import List, Union
 
 import requests
 import uvicorn
-from fastapi import FastAPI, File, Form, UploadFile
+from fastapi import FastAPI, File, Form, Request, UploadFile
 from fastapi.responses import JSONResponse
 from preClinVar.__version__ import VERSION
-from preClinVar.build import build_header
+from preClinVar.build import build_header, build_submission
 from preClinVar.constants import DRY_RUN_SUBMISSION_URL, VALIDATE_SUBMISSION_URL
 from preClinVar.file_parser import csv_lines, file_fields_to_submission, tsv_lines
 from preClinVar.validate import validate_submission
@@ -80,7 +80,14 @@ async def dry_run(api_key: str = Form(), json_file: UploadFile = File(...)):
 
 
 @app.post("/tsv_2_json")
-async def tsv_2_json(files: List[UploadFile] = File(...)):
+async def tsv_2_json(
+    request: Request,
+    files: List[UploadFile] = File(...),
+    submissionName: Union[str, None] = None,
+    releaseStatus: Union[str, None] = None,
+    assertionCriteriaDB: Union[str, None] = None,
+    assertionCriteriaID: Union[str, None] = None,
+):
     """Create a json submission object using 2 TSV files (Variant.tsv and CaseData.tsv).
     Validate the submission objects agains the official schema:
     https://www.ncbi.nlm.nih.gov/clinvar/docs/api_http/
@@ -113,6 +120,7 @@ async def tsv_2_json(files: List[UploadFile] = File(...)):
 
     # Convert lines extracted from csv files to a submission object (a dictionary)
     submission_dict = file_fields_to_submission(variants_lines, casedata_lines)
+    build_submission(submission_dict, request)
 
     # Validate submission object using official schema
     valid_results = validate_submission(submission_dict)
@@ -128,7 +136,14 @@ async def tsv_2_json(files: List[UploadFile] = File(...)):
 
 
 @app.post("/csv_2_json")
-async def csv_2_json(files: List[UploadFile] = File(...)):
+async def csv_2_json(
+    request: Request,
+    files: List[UploadFile] = File(...),
+    submissionName: Union[str, None] = None,
+    releaseStatus: Union[str, None] = None,
+    assertionCriteriaDB: Union[str, None] = None,
+    assertionCriteriaID: Union[str, None] = None,
+):
     """Create a json submission object using 2 CSV files (Variant.csv and CaseData.csv).
     Validate the submission objects agains the official schema:
     https://www.ncbi.nlm.nih.gov/clinvar/docs/api_http/
@@ -162,6 +177,7 @@ async def csv_2_json(files: List[UploadFile] = File(...)):
 
     # Convert lines extracted from csv files to a submission object (a dictionary)
     submission_dict = file_fields_to_submission(variants_lines, casedata_lines)
+    build_submission(submission_dict, request)
 
     # Validate submission object using official schema
     valid_results = validate_submission(submission_dict)
