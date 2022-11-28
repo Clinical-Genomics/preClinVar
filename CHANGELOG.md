@@ -1,4 +1,4 @@
-## [unreleased]
+## [2.0]
 ### Added
 - A new tsv_2_json endpoint to convert TSV files in json submission objects
 - `Keep a Changelog` GitHub action
