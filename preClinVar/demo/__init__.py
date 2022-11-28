@@ -1,8 +1,8 @@
 import pkg_resources
 
 ###### .csv files ######
-casedata_csv = "SUB9282350_2022-06-28.CaseData.csv"
-variants_csv = "SUB9282350_2022-06-28.Variant.csv"
+casedata_csv = "CaseData_before_221121.csv"
+variants_csv = "Variant_before_221121.csv"
 
 ###### Path to .csv files ######
 casedata_csv_path = pkg_resources.resource_filename("preClinVar", "/".join(["demo", casedata_csv]))

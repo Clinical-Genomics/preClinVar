@@ -10,7 +10,7 @@ from fastapi.responses import JSONResponse
 from preClinVar.__version__ import VERSION
 from preClinVar.build import build_header
 from preClinVar.constants import DRY_RUN_SUBMISSION_URL, VALIDATE_SUBMISSION_URL
-from preClinVar.csv_parser import csv_fields_to_submission, csv_lines
+from preClinVar.file_parser import csv_lines, file_fields_to_submission, tsv_lines
 from preClinVar.validate import validate_submission
 
 LOG = logging.getLogger("uvicorn.access")
@@ -79,6 +79,54 @@ async def dry_run(api_key: str = Form(), json_file: UploadFile = File(...)):
     )
 
 
+@app.post("/tsv_2_json")
+async def tsv_2_json(files: List[UploadFile] = File(...)):
+    """Create a json submission object using 2 TSV files (Variant.tsv and CaseData.tsv).
+    Validate the submission objects agains the official schema:
+    https://www.ncbi.nlm.nih.gov/clinvar/docs/api_http/
+    """
+    # Extract lines from Variants.tsv and Casedata.tsv files present in POST request
+    casedata_lines = None
+    variants_lines = None
+
+    for file in files:
+        file_lines = await tsv_lines(file)
+        if not file_lines:
+            return JSONResponse(
+                status_code=400,
+                content={"message": f"Malformed file {file.filename}"},
+            )
+
+        if re.search("CaseData", file.filename, re.IGNORECASE):
+            casedata_lines = file_lines
+        elif re.search("Variant", file.filename, re.IGNORECASE):
+            variants_lines = file_lines
+
+    # Make sure both files were provided in request
+    if not casedata_lines or not variants_lines:
+        return JSONResponse(
+            status_code=400,
+            content={
+                "message": "Both 'Variant' and 'CaseData' tsv files are required and should not be empty"
+            },
+        )
+
+    # Convert lines extracted from csv files to a submission object (a dictionary)
+    submission_dict = file_fields_to_submission(variants_lines, casedata_lines)
+
+    # Validate submission object using official schema
+    valid_results = validate_submission(submission_dict)
+    if valid_results[0]:
+        return JSONResponse(
+            status_code=200,
+            content=submission_dict,
+        )
+    return JSONResponse(
+        status_code=400,
+        content={"message": f"Created json file contains validation errors: {valid_results[1]}"},
+    )
+
+
 @app.post("/csv_2_json")
 async def csv_2_json(files: List[UploadFile] = File(...)):
     """Create a json submission object using 2 CSV files (Variant.csv and CaseData.csv).
@@ -113,7 +161,7 @@ async def csv_2_json(files: List[UploadFile] = File(...)):
         )
 
     # Convert lines extracted from csv files to a submission object (a dictionary)
-    submission_dict = csv_fields_to_submission(variants_lines, casedata_lines)
+    submission_dict = file_fields_to_submission(variants_lines, casedata_lines)
 
     # Validate submission object using official schema
     valid_results = validate_submission(submission_dict)
