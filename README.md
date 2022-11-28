@@ -1,7 +1,9 @@
 # PreClinVar
 A ClinVar API submission helper written in FastAPI.
 
-[![codecov](https://codecov.io/gh/Clinical-Genomics/preClinVar/branch/main/graph/badge.svg?token=ZE8LP4R3ZJ)](https://codecov.io/gh/Clinical-Genomics/preClinVar)
+[![Coverage Status][codecov-img]][codecov-url]
+![GitHub Release Date][github-release-date]
+[![Woke][woke-image]][woke-url]
 
 ## Available endpoints:
 
@@ -62,3 +64,10 @@ The server will run on localhost and default port 8000 (http://127.0.0.1:8000)
 
 The endpoints will be available under the docs: http://127.0.0.1:8000/docs (http://127.0.0.1:7000/docs if you are running the dockerized version of the app).
 They can be tested with files provided in this repository, in the demo folder: https://github.com/Clinical-Genomics/preClinVar/tree/main/preClinVar/demo
+
+
+[codecov-img]: https://codecov.io/gh/Clinical-Genomics/preClinVar/branch/main/graph/badge.svg?token=ZE8LP4R3ZJ
+[codecov-url]: https://codecov.io/gh/Clinical-Genomics/preClinVar
+[github-release-date]: https://img.shields.io/github/release-date/Clinical-Genomics/preClinVar
+[woke-image]: https://github.com/Clinical-Genomics/preClinVar/actions/workflows/woke.yml/badge.svg
+[woke-url]: https://github.com/Clinical-Genomics/preClinVar/actions/workflows/woke.yml
