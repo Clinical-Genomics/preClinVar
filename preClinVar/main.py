@@ -1,7 +1,7 @@
 import json
 import logging
 import re
-from typing import List
+from typing import List, Union
 
 import requests
 import uvicorn
@@ -82,13 +82,13 @@ async def dry_run(api_key: str = Form(), json_file: UploadFile = File(...)):
 @app.post("/tsv_2_json")
 async def tsv_2_json(
     files: List[UploadFile] = File(...),
-    submissionName: str = Form(),
-    releaseStatus: str = Form(),
-    assertionCriteriaDB: str = Form(),
-    assertionCriteriaID: str = Form(),
-    assertionCriteriaURL: str = Form(),
-    behalfOrgID: int = Form(),
-    recordStatus: str = Form(),
+    submissionName: Union[str, None] = None,
+    releaseStatus: Union[str, None] = None,
+    assertionCriteriaDB: Union[str, None] = None,
+    assertionCriteriaID: Union[str, None] = None,
+    assertionCriteriaURL: Union[str, None] = None,
+    behalfOrgID: Union[int, None] = None,
+    recordStatus: Union[str, None] = None,
 ):
     """Create a json submission object using 2 TSV files (Variant.tsv and CaseData.tsv).
     Validate the submission objects agains the official schema:
@@ -139,13 +139,13 @@ async def tsv_2_json(
 @app.post("/csv_2_json")
 async def csv_2_json(
     files: List[UploadFile] = File(...),
-    submissionName: str = Form(),
-    releaseStatus: str = Form(),
-    assertionCriteriaDB: str = Form(),
-    assertionCriteriaID: str = Form(),
-    assertionCriteriaURL: str = Form(),
-    behalfOrgID: int = Form(),
-    recordStatus: str = Form(),
+    submissionName: Union[str, None] = None,
+    releaseStatus: Union[str, None] = None,
+    assertionCriteriaDB: Union[str, None] = None,
+    assertionCriteriaID: Union[str, None] = None,
+    assertionCriteriaURL: Union[str, None] = None,
+    behalfOrgID: Union[int, None] = None,
+    recordStatus: Union[str, None] = None,
 ):
     """Create a json submission object using 2 CSV files (Variant.csv and CaseData.csv).
     Validate the submission objects agains the official schema:
