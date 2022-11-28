@@ -130,8 +130,8 @@ def test_csv_2_json():
     # GIVEN a POST request to the endpoint with multipart-encoded files:
     # (https://requests.readthedocs.io/en/latest/user/advanced/#post-multiple-multipart-encoded-files)
     files = [
-        ("files", (variants_csv, open(variants_csv_path, "rb"), "multipart/form-data")),
-        ("files", (casedata_csv, open(casedata_csv_path, "rb"), "multipart/form-data")),
+        ("files", (variants_csv, open(variants_csv_path, "rb"))),
+        ("files", (casedata_csv, open(casedata_csv_path, "rb"))),
     ]
 
     # THEN the response should be successful (code 200)
