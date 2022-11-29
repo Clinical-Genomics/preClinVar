@@ -1,4 +1,4 @@
-## [unreleased]
+## [2.0.1]
 ### Fixed
 - Parsing of `Condition ID type`
 - Do not include HGVS field in submission if it is null
