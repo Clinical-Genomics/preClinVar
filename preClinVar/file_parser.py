@@ -4,6 +4,8 @@ import os
 from csv import DictReader
 from tempfile import NamedTemporaryFile
 
+from preClinVar.constants import CONDITIONS_MAP
+
 LOG = logging.getLogger("uvicorn.access")
 
 
@@ -70,7 +72,7 @@ def set_item_condition_set(item, variant_dict):
     conditions = []
 
     # Check if phenotype was specified in Variant file
-    cond_dbs = variant_dict.get("Condition ID type")
+    cond_dbs = CONDITIONS_MAP.get(variant_dict.get("Condition ID type"))
     cond_values = variant_dict.get("Condition ID value")
 
     if cond_dbs and cond_values:
