@@ -1,4 +1,3 @@
-import csv
 import logging
 import os
 from csv import DictReader
