@@ -159,7 +159,9 @@ def set_item_variant_set(item, variant_dict):
     # According the schema: The interpreted variant must be described either by HGVS or by chromosome coordinates, but not both.
     # Our cvs files contain HGVS so we parse only these at the moment
     item["variantSet"] = {}
-    variant = {"hgvs": variant_dict.get("HGVS")}
+    variant = {}
+    if variant_dict.get("HGVS"):
+        variant["hgvs"] = variant_dict["HGVS"]
 
     genes = variant_dict.get("Gene symbol")
     if genes:
