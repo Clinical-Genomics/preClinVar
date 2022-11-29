@@ -1,8 +1,9 @@
-import csv
 import logging
 import os
 from csv import DictReader
 from tempfile import NamedTemporaryFile
+
+from preClinVar.constants import CONDITIONS_MAP
 
 LOG = logging.getLogger("uvicorn.access")
 
@@ -70,7 +71,7 @@ def set_item_condition_set(item, variant_dict):
     conditions = []
 
     # Check if phenotype was specified in Variant file
-    cond_dbs = variant_dict.get("Condition ID type")
+    cond_dbs = CONDITIONS_MAP.get(variant_dict.get("Condition ID type"))
     cond_values = variant_dict.get("Condition ID value")
 
     if cond_dbs and cond_values:
@@ -157,7 +158,9 @@ def set_item_variant_set(item, variant_dict):
     # According the schema: The interpreted variant must be described either by HGVS or by chromosome coordinates, but not both.
     # Our cvs files contain HGVS so we parse only these at the moment
     item["variantSet"] = {}
-    variant = {"hgvs": variant_dict.get("HGVS")}
+    variant = {}
+    if variant_dict.get("HGVS"):
+        variant["hgvs"] = variant_dict["HGVS"]
 
     genes = variant_dict.get("Gene symbol")
     if genes:

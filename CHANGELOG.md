@@ -1,3 +1,8 @@
+## [unreleased]
+### Fixed
+- Parsing of `Condition ID type`
+- Do not include HGVS field in submission if it is null
+
 ## [2.0]
 ### Added
 - A new tsv_2_json endpoint to convert TSV files in json submission objects
