@@ -147,6 +147,23 @@ def set_item_record_status(item):
     item["recordStatus"] = "novel"
 
 
+def _set_chrom_coordinates(variant_dict):
+    """Set the chromosomeCoordinates dictionary for a variant.
+    chromosomeCoordinates can be described by an accession or chromosome coordinates
+
+    Args:
+        variant_dict(dict). Example: {'##Local ID': '1d9ce6ebf2f82d913cfbe20c5085947b', 'Linking ID': '1d9ce6ebf2f82d913cfbe20c5085947b', 'Gene symbol': 'XDH', 'Reference sequence': 'NM_000379.4', 'HGVS': 'c.2751del', ..}
+
+    """
+    coords = {}
+    accession = variant_dict.get("Variation identifiers")
+    variant = item
+    if accession:
+        coords["accession"] = accession
+
+    return coords
+
+
 def set_item_variant_set(item, variant_dict):
     """Set the variantSet keys/values for a variant item in the submission object
 
@@ -159,18 +176,14 @@ def set_item_variant_set(item, variant_dict):
     # Our cvs files contain HGVS so we parse only these at the moment
     item["variantSet"] = {}
     variant = {}
-    if variant_dict.get("HGVS"):
-        variant["hgvs"] = variant_dict["HGVS"]
-
     genes = variant_dict.get("Gene symbol")
     if genes:
         variant["gene"] = [{"symbol": symbol} for symbol in genes.split(";")]
-
-    # NOT parsing the following key/values for now:
-    # variant.chromosomeCoordinates
-    # variant.copyNumber
-    # variant.gene.id
-    # variant.referenceCopyNumber
+    hgvs = variant_dict.get("HGVS")
+    if hgvs:  # A Variant should have wither HGVS (hgvs in schema)
+        variant["hgvs"] = hgvs
+    else:  # OR chromosome coordinates (chromosomeCoordinates in schema)
+        variant["chromosomeCoordinates"] = _set_chrom_coordinates(item, variant_dict)
 
     item["variantSet"]["variant"] = [variant]
 

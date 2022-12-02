@@ -1,0 +1,107 @@
+{
+  "clinvarSubmission": [
+    {
+      "clinicalSignificance": {
+        "clinicalSignificanceDescription": "affects",
+        "dateLastEvaluated": "2022-11-29",
+        "modeOfInheritance": "Codominant"
+      },
+      "conditionSet": {
+        "condition": [
+          {
+            "db": "HP",
+            "id": "HP:0001298"
+          }
+        ]
+      },
+      "localID": "4c7d5c70d955875504db72ef8e1abe77",
+      "localKey": "4c7d5c70d955875504db72ef8e1abe77",
+      "observedIn": [
+        {
+          "affectedStatus": "yes",
+          "alleleOrigin": "germline",
+          "collectionMethod": "clinical testing"
+        }
+      ],
+      "variantSet": {
+        "variant": [
+          {
+            "gene": [
+              {
+                "symbol": "POT1"
+              }
+            ]
+          }
+        ]
+      },
+      "recordStatus": "novel"
+    },
+    {
+      "clinicalSignificance": {
+        "clinicalSignificanceDescription": "Established risk allele",
+        "dateLastEvaluated": "2022-12-02",
+        "modeOfInheritance": "Autosomal recessive inheritance"
+      },
+      "conditionSet": {
+        "condition": [
+          {
+            "db": "HP",
+            "id": "HP:0001298"
+          }
+        ]
+      },
+      "localID": "84af935d282baeb23862b3c28670f9f9",
+      "localKey": "84af935d282baeb23862b3c28670f9f9",
+      "observedIn": [
+        {
+          "affectedStatus": "yes",
+          "alleleOrigin": "germline",
+          "collectionMethod": "clinical testing"
+        }
+      ],
+      "variantSet": {
+        "variant": [
+          {}
+        ]
+      },
+      "recordStatus": "novel"
+    },
+    {
+      "clinicalSignificance": {
+        "clinicalSignificanceDescription": "Established risk allele",
+        "dateLastEvaluated": "2022-12-02",
+        "modeOfInheritance": "Genetic anticipation"
+      },
+      "conditionSet": {
+        "condition": [
+          {
+            "db": "HP",
+            "id": "HP:0001298"
+          }
+        ]
+      },
+      "localID": "e24b65bf27feacec6a81c8e9e19bd5f1",
+      "localKey": "e24b65bf27feacec6a81c8e9e19bd5f1",
+      "observedIn": [
+        {
+          "affectedStatus": "yes",
+          "alleleOrigin": "germline",
+          "collectionMethod": "clinical testing"
+        }
+      ],
+      "variantSet": {
+        "variant": [
+          {
+            "hgvs": "c.1010-204A>T",
+            "gene": [
+              {
+                "symbol": "TBX1"
+              }
+            ]
+          }
+        ]
+      },
+      "recordStatus": "novel"
+    }
+  ]
+}
