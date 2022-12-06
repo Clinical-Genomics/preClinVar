@@ -160,7 +160,7 @@ def _parse_cooords(coords, variant_dict, coords_items):
         if csv_key not in variant_dict:
             continue
         try:
-            coords[item["key"]] = item["format"](item["key"])
+            coords[item["key"]] = item["format"](variant_dict[csv_key])
         except Exception as ex:
             LOG.warning(ex)
 
@@ -230,6 +230,7 @@ def set_item_variant_set(item, variant_dict):
         variant["hgvs"] = hgvs
     else:  # OR chromosome coordinates (chromosomeCoordinates in schema)
         variant["chromosomeCoordinates"] = _set_chrom_coordinates(variant_dict)
+        LOG.error(variant["chromosomeCoordinates"])
 
     item["variantSet"]["variant"] = [variant]
 

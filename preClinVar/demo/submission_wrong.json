@@ -1,16 +1,16 @@
-{
+
   "clinvarSubmission": [
     {
       "clinicalSignificance": {
-        "clinicalSignificanceDescription": "association",
-        "dateLastEvaluated": "2022-12-02",
-        "modeOfInheritance": "Autosomal recessive inheritance"
+        "clinicalSignificanceDescription": "Uncertain significance",
+        "dateLastEvaluated": "2022-12-06",
+        "modeOfInheritance": "Autosomal unknown"
       },
       "conditionSet": {
         "condition": [
           {
-            "db": "HP",
-            "id": "HP:0001298"
+            "db": "OMIM",
+            "id": "604187"
           }
         ]
       },
@@ -26,12 +26,18 @@
       "variantSet": {
         "variant": [
           {
-            "hgvs": "c.903G>T",
             "gene": [
               {
                 "symbol": "POT1"
               }
-            ]
+            ],
+            "chromosomeCoordinates": {
+              "chromosome": "7",
+              "start": 124491972,
+              "stop": 124491972,
+              "referenceAllele": "C",
+              "alternateAllele": "A"
+            }
           }
         ]
       },
@@ -39,14 +45,51 @@
     },
     {
       "clinicalSignificance": {
-        "clinicalSignificanceDescription": "Benign",
-        "dateLastEvaluated": "2022-12-02"
+        "clinicalSignificanceDescription": "Uncertain significance",
+        "dateLastEvaluated": "2022-12-06",
+        "modeOfInheritance": "Autosomal dominant inheritance"
       },
       "conditionSet": {
         "condition": [
           {
-            "db": "HP",
-            "id": "HP:0001298"
+            "db": "OMIM",
+            "id": "604187"
+          }
+        ]
+      },
+      "localID": "77d69d4d78a8e272365bdabe4f607327",
+      "localKey": "77d69d4d78a8e272365bdabe4f607327",
+      "observedIn": [
+        {
+          "affectedStatus": "yes",
+          "alleleOrigin": "germline",
+          "collectionMethod": "clinical testing"
+        }
+      ],
+      "variantSet": {
+        "variant": [
+          {
+            "chromosomeCoordinates": {
+              "chromosome": "15",
+              "start": 66633812,
+              "stop": 66634133
+            }
+          }
+        ]
+      },
+      "recordStatus": "novel"
+    },
+    {
+      "clinicalSignificance": {
+        "clinicalSignificanceDescription": "Uncertain significance",
+        "dateLastEvaluated": "2022-12-06",
+        "modeOfInheritance": "Autosomal recessive inheritance"
+      },
+      "conditionSet": {
+        "condition": [
+          {
+            "db": "OMIM",
+            "id": "604187"
           }
         ]
       },
@@ -61,42 +104,14 @@
       ],
       "variantSet": {
         "variant": [
-          {}
-        ]
-      },
-      "recordStatus": "novel"
-    },
-    {
-      "clinicalSignificance": {
-        "clinicalSignificanceDescription": "Uncertain significance",
-        "dateLastEvaluated": "2022-12-05",
-        "modeOfInheritance": "Autosomal unknown"
-      },
-      "conditionSet": {
-        "condition": [
           {
-            "db": "HP",
-            "id": "HP:0001298"
-          }
-        ]
-      },
-      "localID": "e24b65bf27feacec6a81c8e9e19bd5f1",
-      "localKey": "e24b65bf27feacec6a81c8e9e19bd5f1",
-      "observedIn": [
-        {
-          "affectedStatus": "yes",
-          "alleleOrigin": "germline",
-          "collectionMethod": "clinical testing"
-        }
-      ],
-      "variantSet": {
-        "variant": [
-          {
-            "gene": [
-              {
-                "symbol": "TBX1"
-              }
-            ]
+            "chromosomeCoordinates": {
+              "chromosome": "8",
+              "outerStart": 141468100,
+              "innerStart": 141468120,
+              "innerStop": 141468170,
+              "outerStop": 141468190
+            }
           }
         ]
       },
