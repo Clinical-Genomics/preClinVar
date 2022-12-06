@@ -240,7 +240,9 @@ def set_item_variant_set(item, variant_dict):
         try:
             variant["referenceCopyNumber"] = int(variant_dict["Copy number"])
         except Exception as ex:
-            LOG.error(ex)
+            LOG.error(
+                "Error while converting referenceCopyNumber {variant_dict['Copy number']} to int"
+            )
 
     # Check if file contains type of variant (SV variants)
     if variant_dict.get("Variant type"):
