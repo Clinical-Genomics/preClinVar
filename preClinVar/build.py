@@ -1,5 +1,3 @@
-import logging
-
 OPTIONAL_SUBMISSION_PARAMS = {
     "submissionName": "submissionName",
     "releaseStatus": "clinvarSubmissionReleaseStatus",
@@ -8,8 +6,6 @@ OPTIONAL_ASSERTION_CRITERIA = {
     "assertionCriteriaDB": "db",
     "assertionCriteriaID": "id",
 }
-
-LOG = logging.getLogger("uvicorn.access")
 
 
 def build_header(api_key):
