@@ -156,11 +156,11 @@ def _parse_cooords(coords, variant_dict, coords_items):
         coords_items(dict): either SNV_COORDS, or SV_COORDS
 
     """
-    for csv_key, item in coords_items:
+    for csv_key, item in coords_items.items():
         if csv_key not in variant_dict:
             continue
         try:
-            coords[json_key] = item["format"](item["key"])
+            coords[item["key"]] = item["format"](item["key"])
         except Exception as ex:
             LOG.warning(ex)
 
@@ -197,7 +197,6 @@ def _set_chrom_coordinates(variant_dict):
     """
     coords = {}
     accession = variant_dict.get("Variation identifiers")
-    variant = item
     if accession:  # example: rs116916706
         coords["accession"] = accession
         return coordinates
