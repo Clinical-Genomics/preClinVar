@@ -1,3 +1,9 @@
+## [unreleased]
+### Added
+- Parsing of `variantType`, `referenceCopyNumber`, `copyNumber` and `chromosomeCoordinates` fields from CSV/TSV files
+
+
+
 ## [2.0.1]
 ### Fixed
 - Parsing of `Condition ID type`

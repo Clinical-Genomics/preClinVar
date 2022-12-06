@@ -1,3 +1,5 @@
+import logging
+
 OPTIONAL_SUBMISSION_PARAMS = {
     "submissionName": "submissionName",
     "releaseStatus": "clinvarSubmissionReleaseStatus",
@@ -6,6 +8,8 @@ OPTIONAL_ASSERTION_CRITERIA = {
     "assertionCriteriaDB": "db",
     "assertionCriteriaID": "id",
 }
+
+LOG = logging.getLogger("uvicorn.access")
 
 
 def build_header(api_key):
@@ -47,3 +51,8 @@ def build_submission(subm_obj, request):
 
         # This will override whatever is parsed from the CSV/TSV files
         subm_obj["assertionCriteria"] = assertion_criteria
+
+    if query_params.get(
+        "assembly"
+    ):  # Set genome assembly for all variants containing a chromosomeCoordinates field
+        LOG.warning(subm_obj)

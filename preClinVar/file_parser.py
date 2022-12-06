@@ -157,12 +157,14 @@ def _parse_cooords(coords, variant_dict, coords_items):
 
     """
     for csv_key, item in coords_items.items():
-        if csv_key not in variant_dict:
+        if csv_key not in variant_dict or variant_dict[csv_key] == "":
             continue
         try:
             coords[item["key"]] = item["format"](variant_dict[csv_key])
         except Exception as ex:
-            LOG.warning(ex)
+            LOG.error(
+                f"Exception when converting {csv_key} value->{variant_dict[csv_key]} to {item['format']}"
+            )
 
 
 def _set_snv_coordinates(coords, variant_dict):
