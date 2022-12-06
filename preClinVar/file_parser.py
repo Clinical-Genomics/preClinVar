@@ -230,7 +230,19 @@ def set_item_variant_set(item, variant_dict):
         variant["hgvs"] = hgvs
     else:  # OR chromosome coordinates (chromosomeCoordinates in schema)
         variant["chromosomeCoordinates"] = _set_chrom_coordinates(variant_dict)
-        LOG.error(variant["chromosomeCoordinates"])
+
+    # Check if file contains copy number info
+    if variant_dict.get("Copy number"):
+        variant["copyNumber"] = variant_dict["Copy number"]
+    if variant_dict.get("Reference copy number"):
+        try:
+            variant["referenceCopyNumber"] = int(variant_dict["Copy number"])
+        except Exception as ex:
+            LOG.error(ex)
+
+    # Check if file contains type of variant (SV variants)
+    if variant_dict.get("Variant type"):
+        variant["variantType"] = variant_dict["Variant type"]
 
     item["variantSet"]["variant"] = [variant]
 
