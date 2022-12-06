@@ -2,9 +2,9 @@
   "clinvarSubmission": [
     {
       "clinicalSignificance": {
-        "clinicalSignificanceDescription": "affects",
-        "dateLastEvaluated": "2022-11-29",
-        "modeOfInheritance": "Codominant"
+        "clinicalSignificanceDescription": "association",
+        "dateLastEvaluated": "2022-12-02",
+        "modeOfInheritance": "Autosomal recessive inheritance"
       },
       "conditionSet": {
         "condition": [
@@ -26,6 +26,7 @@
       "variantSet": {
         "variant": [
           {
+            "hgvs": "c.903G>T",
             "gene": [
               {
                 "symbol": "POT1"
@@ -38,9 +39,8 @@
     },
     {
       "clinicalSignificance": {
-        "clinicalSignificanceDescription": "Established risk allele",
-        "dateLastEvaluated": "2022-12-02",
-        "modeOfInheritance": "Autosomal recessive inheritance"
+        "clinicalSignificanceDescription": "Benign",
+        "dateLastEvaluated": "2022-12-02"
       },
       "conditionSet": {
         "condition": [
@@ -68,9 +68,9 @@
     },
     {
       "clinicalSignificance": {
-        "clinicalSignificanceDescription": "Established risk allele",
-        "dateLastEvaluated": "2022-12-02",
-        "modeOfInheritance": "Genetic anticipation"
+        "clinicalSignificanceDescription": "Uncertain significance",
+        "dateLastEvaluated": "2022-12-05",
+        "modeOfInheritance": "Autosomal unknown"
       },
       "conditionSet": {
         "condition": [
@@ -92,7 +92,6 @@
       "variantSet": {
         "variant": [
           {
-            "hgvs": "c.1010-204A>T",
             "gene": [
               {
                 "symbol": "TBX1"

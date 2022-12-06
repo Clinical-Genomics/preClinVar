@@ -9,3 +9,20 @@ CONDITIONS_MAP = {
     "OMIM": "OMIM",
     "Orphanet": "Orphanet",
 }
+
+SNV_COORDS = {  # assembly is missing, passed as a request param
+    "Chromosome": "chromosome",
+    "Start": "start",
+    "Stop": "stop",
+    "Reference allele": "referenceAllele",
+    "Alternate allele": "alternateAllele",
+}
+SV_COORDS = {  # assembly is missing, passed as a request param
+    "Chromosome": "chromosome",
+    "Breakpoint 1": "start",
+    "Breakpoint 2": "stop",
+    "Outer start": "outerStart",
+    "Inner start": "innerStart",
+    "Inner stop": "innerStop",
+    "Outer stop": "outerStop",
+}

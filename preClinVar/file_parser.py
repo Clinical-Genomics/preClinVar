@@ -3,7 +3,7 @@ import os
 from csv import DictReader
 from tempfile import NamedTemporaryFile
 
-from preClinVar.constants import CONDITIONS_MAP
+from preClinVar.constants import CONDITIONS_MAP, SNV_COORDS, SV_COORDS
 
 LOG = logging.getLogger("uvicorn.access")
 
@@ -147,6 +147,32 @@ def set_item_record_status(item):
     item["recordStatus"] = "novel"
 
 
+def _set_snv_coordinates(coords, variant_dict):
+    """Set coordinates for a SNV variant
+
+    Args:
+        coords(dict): an empty dictionary
+        variant_dict(dict): Example: {'##Local ID': '1d9ce6ebf2f82d913cfbe20c5085947b', 'Linking ID': '1d9ce6ebf2f82d913cfbe20c5085947b', 'Gene symbol': 'XDH', 'Reference sequence': 'NM_000379.4', 'HGVS': 'c.2751del', ..}
+    """
+    for csv_key, json_key in SNV_COORDS:
+        if csv_key not in variant_dict:
+            continue
+        coords[json_key] = variant_dict[csv_key]
+
+
+def _set_sv_coordinates(coords, variant_dict):
+    """Set coordinates for a SV variant
+
+    Args:
+        coords(dict): an empty dictionary
+        variant_dict(dict): Example: {'##Local ID': '1d9ce6ebf2f82d913cfbe20c5085947b', 'Linking ID': '1d9ce6ebf2f82d913cfbe20c5085947b', 'Gene symbol': 'XDH', 'Reference sequence': 'NM_000379.4', 'HGVS': 'c.2751del', ..}
+    """
+    for csv_key, json_key in SV_COORDS:
+        if csv_key not in variant_dict:
+            continue
+        coords[json_key] = variant_dict[csv_key]
+
+
 def _set_chrom_coordinates(variant_dict):
     """Set the chromosomeCoordinates dictionary for a variant.
     chromosomeCoordinates can be described by an accession or chromosome coordinates
@@ -154,12 +180,21 @@ def _set_chrom_coordinates(variant_dict):
     Args:
         variant_dict(dict). Example: {'##Local ID': '1d9ce6ebf2f82d913cfbe20c5085947b', 'Linking ID': '1d9ce6ebf2f82d913cfbe20c5085947b', 'Gene symbol': 'XDH', 'Reference sequence': 'NM_000379.4', 'HGVS': 'c.2751del', ..}
 
+    Returns:
+        coords(dict)
     """
     coords = {}
     accession = variant_dict.get("Variation identifiers")
     variant = item
-    if accession:
+    if accession:  # example: rs116916706
         coords["accession"] = accession
+        return coordinates
+
+    # Parse coordinates from file instead
+    if variant_dict.get("Variant type"):  # SV variant
+        _set_sv_coordinates(coords, variant_dict)
+    else:
+        _set_snv_coordinates(coords, variant_dict)
 
     return coords
 
@@ -183,7 +218,7 @@ def set_item_variant_set(item, variant_dict):
     if hgvs:  # A Variant should have wither HGVS (hgvs in schema)
         variant["hgvs"] = hgvs
     else:  # OR chromosome coordinates (chromosomeCoordinates in schema)
-        variant["chromosomeCoordinates"] = _set_chrom_coordinates(item, variant_dict)
+        variant["chromosomeCoordinates"] = _set_chrom_coordinates(variant_dict)
 
     item["variantSet"]["variant"] = [variant]
 
