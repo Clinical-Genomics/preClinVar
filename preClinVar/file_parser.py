@@ -147,6 +147,24 @@ def set_item_record_status(item):
     item["recordStatus"] = "novel"
 
 
+def _parse_cooords(coords, variant_dict, coords_items):
+    """Parse coordinates for SNVs or SVs
+
+    Args:
+        coords(dict): an empty dictionary
+        variant_dict(dict): Example: {'##Local ID': '1d9ce6ebf2f82d913cfbe20c5085947b', 'Linking ID': '1d9ce6ebf2f82d913cfbe20c5085947b', 'Gene symbol': 'XDH', 'Reference sequence': 'NM_000379.4', 'HGVS': 'c.2751del', ..}
+        coords_items(dict): either SNV_COORDS, or SV_COORDS
+
+    """
+    for csv_key, item in coords_items:
+        if csv_key not in variant_dict:
+            continue
+        try:
+            coords[json_key] = item["format"](item["key"])
+        except Exception as ex:
+            LOG.warning(ex)
+
+
 def _set_snv_coordinates(coords, variant_dict):
     """Set coordinates for a SNV variant
 
@@ -154,10 +172,7 @@ def _set_snv_coordinates(coords, variant_dict):
         coords(dict): an empty dictionary
         variant_dict(dict): Example: {'##Local ID': '1d9ce6ebf2f82d913cfbe20c5085947b', 'Linking ID': '1d9ce6ebf2f82d913cfbe20c5085947b', 'Gene symbol': 'XDH', 'Reference sequence': 'NM_000379.4', 'HGVS': 'c.2751del', ..}
     """
-    for csv_key, json_key in SNV_COORDS:
-        if csv_key not in variant_dict:
-            continue
-        coords[json_key] = variant_dict[csv_key]
+    _parse_cooords(coords, variant_dict, SNV_COORDS)
 
 
 def _set_sv_coordinates(coords, variant_dict):
@@ -167,10 +182,7 @@ def _set_sv_coordinates(coords, variant_dict):
         coords(dict): an empty dictionary
         variant_dict(dict): Example: {'##Local ID': '1d9ce6ebf2f82d913cfbe20c5085947b', 'Linking ID': '1d9ce6ebf2f82d913cfbe20c5085947b', 'Gene symbol': 'XDH', 'Reference sequence': 'NM_000379.4', 'HGVS': 'c.2751del', ..}
     """
-    for csv_key, json_key in SV_COORDS:
-        if csv_key not in variant_dict:
-            continue
-        coords[json_key] = variant_dict[csv_key]
+    _parse_cooords(coords, variant_dict, SV_COORDS)
 
 
 def _set_chrom_coordinates(variant_dict):

@@ -11,18 +11,18 @@ CONDITIONS_MAP = {
 }
 
 SNV_COORDS = {  # assembly is missing, passed as a request param
-    "Chromosome": "chromosome",
-    "Start": "start",
-    "Stop": "stop",
-    "Reference allele": "referenceAllele",
-    "Alternate allele": "alternateAllele",
+    "Chromosome": {"key": "chromosome", "format": str},
+    "Start": {"key": "start", "format": int},
+    "Stop": {"key": "stop", "format": int},
+    "Reference allele": {"key": "referenceAllele", "format": str},
+    "Alternate allele": {"key": "alternateAllele", "format": str},
 }
 SV_COORDS = {  # assembly is missing, passed as a request param
-    "Chromosome": "chromosome",
-    "Breakpoint 1": "start",
-    "Breakpoint 2": "stop",
-    "Outer start": "outerStart",
-    "Inner start": "innerStart",
-    "Inner stop": "innerStop",
-    "Outer stop": "outerStop",
+    "Chromosome": {"key": "chromosome", "format": str},
+    "Breakpoint 1": {"key": "start", "format": int},
+    "Breakpoint 2": {"key": "stop", "format": int},
+    "Outer start": {"key": "outerStart", "format": int},
+    "Inner start": {"key": "innerStart", "format": int},
+    "Inner stop": {"key": "innerStop", "format": int},
+    "Outer stop": {"key": "outerStop", "format": int},
 }
