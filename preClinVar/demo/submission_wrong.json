@@ -36,7 +36,8 @@
               "start": 124491972,
               "stop": 124491972,
               "referenceAllele": "C",
-              "alternateAllele": "A"
+              "alternateAllele": "A",
+              "assembly": "GRCh37"
             }
           }
         ]
@@ -72,8 +73,12 @@
             "chromosomeCoordinates": {
               "chromosome": "15",
               "start": 66633812,
-              "stop": 66634133
-            }
+              "stop": 66634133,
+              "assembly": "GRCh37"
+            },
+            "copyNumber": "1",
+            "referenceCopyNumber": 1,
+            "variantType": "Deletion"
           }
         ]
       },
@@ -110,8 +115,12 @@
               "outerStart": 141468100,
               "innerStart": 141468120,
               "innerStop": 141468170,
-              "outerStop": 141468190
-            }
+              "outerStop": 141468190,
+              "assembly": "GRCh37"
+            },
+            "copyNumber": "1",
+            "referenceCopyNumber": 1,
+            "variantType": "Deletion"
           }
         ]
       },
