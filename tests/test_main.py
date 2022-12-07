@@ -9,10 +9,19 @@ from preClinVar.constants import DRY_RUN_SUBMISSION_URL, VALIDATE_SUBMISSION_URL
 from preClinVar.demo import (
     casedata_old_csv,
     casedata_old_csv_path,
+    casedata_snv_csv,
+    casedata_snv_csv_path,
+    casedata_sv_csv,
+    casedata_sv_csv_path,
     subm_json_path,
+    variants_accession_csv,
+    variants_accession_csv_path,
     variants_hgvs_csv,
+    variants_hgvs_csv_path,
     variants_old_csv,
     variants_old_csv_path,
+    variants_sv_breakpoints_csv,
+    variants_sv_breakpoints_csv_path,
 )
 from preClinVar.main import app
 
@@ -151,12 +160,11 @@ def test_tsv_2_json_old_format():
 def test_csv_2_json_hgvs():
     """Test csv_2_json endpoint with a Variant file containing a SNV described by reference sequence and HGVS"""
 
-    """
     # GIVEN a POST request to the endpoint with multipart-encoded files:
     # (https://requests.readthedocs.io/en/latest/user/advanced/#post-multiple-multipart-encoded-files)
     files = [
-        ("files", (variants_csv, open(variants_csv_path, "rb"))),
-        ("files", (casedata_csv, open(casedata_csv_path, "rb"))),
+        ("files", (variants_hgvs_csv, open(variants_hgvs_csv_path, "rb"))),
+        ("files", (casedata_snv_csv, open(casedata_snv_csv_path, "rb"))),
     ]
 
     # THEN the response should be successful (code 200)
@@ -165,11 +173,56 @@ def test_csv_2_json_hgvs():
 
     # AND it should be a json object with the expected fields
     json_resp = response.json()
-    assert json_resp["submissionName"]
-    assert json_resp["clinvarSubmissionReleaseStatus"]
-    assert json_resp["assertionCriteria"]
-    assert json_resp["clinvarSubmission"]
-    """
+    assert json_resp["clinvarSubmission"][0]["variantSet"]["variant"][0]["gene"]
+    assert json_resp["clinvarSubmission"][0]["variantSet"]["variant"][0]["hgvs"]
+
+
+def test_csv_2_json_accession():
+    """Test csv_2_json endpoint with a Variant file containing a SNV described by accession ID (example: rs116916706)"""
+
+    # GIVEN a POST request to the endpoint with multipart-encoded files:
+    # (https://requests.readthedocs.io/en/latest/user/advanced/#post-multiple-multipart-encoded-files)
+    files = [
+        ("files", (variants_accession_csv, open(variants_accession_csv_path, "rb"))),
+        ("files", (casedata_snv_csv, open(casedata_snv_csv_path, "rb"))),
+    ]
+
+    # THEN the response should be successful (code 200)
+    response = client.post("/csv_2_json", params=OPTIONAL_PARAMETERS, files=files)
+    assert response.status_code == 200
+
+    # AND it should be a json object with the expected fields
+    json_resp = response.json()
+    assert json_resp["clinvarSubmission"][0]["variantSet"]["variant"][0]["gene"]
+    assert json_resp["clinvarSubmission"][0]["variantSet"]["variant"][0]["chromosomeCoordinates"][
+        "accession"
+    ]
+
+
+def test_csv_2_json_SV_breakpoints():
+    """Test csv_2_json endpoint with a Variant file containing a SV described by exact coordinates (breakpoints)"""
+
+    # GIVEN a POST request to the endpoint with multipart-encoded files:
+    # (https://requests.readthedocs.io/en/latest/user/advanced/#post-multiple-multipart-encoded-files)
+    files = [
+        ("files", (variants_sv_breakpoints_csv, open(variants_sv_breakpoints_csv_path, "rb"))),
+        ("files", (casedata_sv_csv, open(casedata_sv_csv_path, "rb"))),
+    ]
+
+    # THEN the response should be successful (code 200)
+    response = client.post("/csv_2_json", params=OPTIONAL_PARAMETERS, files=files)
+    assert response.status_code == 200
+
+    # AND it should be a json object with the expected fields
+    json_resp = response.json()
+    subm_coords = json_resp["clinvarSubmission"][0]["variantSet"]["variant"][0][
+        "chromosomeCoordinates"
+    ]
+    for item in ["chromsome", "start", "stop"]:
+        assert item in subm_coords
+    assert json_resp["clinvarSubmission"][0]["variantSet"]["variant"][0]["variantType"]
+    assert json_resp["clinvarSubmission"][0]["variantSet"]["variant"][0]["referenceCopyNumber"]
+    assert json_resp["clinvarSubmission"][0]["variantSet"]["variant"][0]["copyNumber"]
 
 
 def test_dry_run_wrong_api_key():

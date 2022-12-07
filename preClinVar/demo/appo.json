@@ -1,0 +1,43 @@
+{
+  "clinvarSubmission": [
+    {
+      "clinicalSignificance": {
+        "clinicalSignificanceDescription": "Likely pathogenic",
+        "dateLastEvaluated": "2022-12-07",
+        "modeOfInheritance": "Autosomal recessive inheritance"
+      },
+      "conditionSet": {
+        "condition": [
+          {
+            "db": "OMIM",
+            "id": "604187"
+          }
+        ]
+      },
+      "localID": "4c7d5c70d955875504db72ef8e1abe77",
+      "localKey": "4c7d5c70d955875504db72ef8e1abe77",
+      "observedIn": [
+        {
+          "affectedStatus": "yes",
+          "alleleOrigin": "germline",
+          "collectionMethod": "clinical testing"
+        }
+      ],
+      "variantSet": {
+        "variant": [
+          {
+            "gene": [
+              {
+                "symbol": "POT1"
+              }
+            ],
+            "chromosomeCoordinates": {
+              "accession": "rs116916706"
+            }
+          }
+        ]
+      },
+      "recordStatus": "novel"
+    }
+  ]
+}
