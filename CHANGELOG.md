@@ -1,4 +1,4 @@
-## [unreleased]
+## [2.1]
 ### Added
 - Parsing of `variantType`, `referenceCopyNumber`, `copyNumber` and `chromosomeCoordinates` fields from CSV/TSV files
 - Genome assembly can be passed as an optional param to tsv_2_json and csv_to_json to create submission containing chromosome coordinates
