@@ -71,14 +71,13 @@ def set_item_condition_set(item, variant_dict):
     conditions = []
 
     # Check if phenotype was specified in Variant file
-    cond_dbs = CONDITIONS_MAP.get(variant_dict.get("Condition ID type"))
+    cond_db = CONDITIONS_MAP.get(variant_dict.get("Condition ID type"))
     cond_values = variant_dict.get("Condition ID value")
 
-    if cond_dbs and cond_values:
-        cond_dbs = cond_dbs.split(";")
+    if cond_db and cond_values:
         cond_values = cond_values.split(";")
-        for cond_n, cond_db in enumerate(cond_dbs):
-            conditions.append({"db": cond_db, "id": cond_values[cond_n]})
+        for cond_id in cond_values:
+            conditions.append({"db": cond_db, "id": cond_id})
     if conditions:
         item["conditionSet"] = {"condition": conditions}
 
