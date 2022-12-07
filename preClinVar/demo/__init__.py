@@ -7,6 +7,7 @@ variants_old_csv = "Variant_before_221121.csv"
 variants_hgvs_csv = "Variant_snv_hgvs.csv"
 variants_accession_csv = "Variant_accession.csv"
 variants_sv_breakpoints_csv = "Variant_sv_breakpoints.csv"
+variants_sv_range_coords_csv = "Variant_sv_range_coords.csv"
 casedata_snv_csv = "CaseData_snv.csv"
 casedata_sv_csv = "CaseData_sv.csv"
 
@@ -32,6 +33,9 @@ variants_accession_csv_path = pkg_resources.resource_filename(
 )
 variants_sv_breakpoints_csv_path = pkg_resources.resource_filename(
     "preClinVar", "/".join(["demo", variants_sv_breakpoints_csv])
+)
+variants_sv_range_coords_csv_path = pkg_resources.resource_filename(
+    "preClinVar", "/".join(["demo", variants_sv_range_coords_csv])
 )
 ###### Example of a json file submission ######
 subm_json = "submission.json"

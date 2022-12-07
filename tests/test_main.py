@@ -1,3 +1,4 @@
+import copy
 import csv
 import json
 from tempfile import NamedTemporaryFile
@@ -22,6 +23,8 @@ from preClinVar.demo import (
     variants_old_csv_path,
     variants_sv_breakpoints_csv,
     variants_sv_breakpoints_csv_path,
+    variants_sv_range_coords_csv,
+    variants_sv_range_coords_csv_path,
 )
 from preClinVar.main import app
 
@@ -209,8 +212,12 @@ def test_csv_2_json_SV_breakpoints():
         ("files", (casedata_sv_csv, open(casedata_sv_csv_path, "rb"))),
     ]
 
+    # GIVEN a request that contains genome assembly as param
+    req_params = copy.deepcopy(OPTIONAL_PARAMETERS)
+    req_params["assembly"] = "GRCh37"
+
     # THEN the response should be successful (code 200)
-    response = client.post("/csv_2_json", params=OPTIONAL_PARAMETERS, files=files)
+    response = client.post("/csv_2_json", params=req_params, files=files)
     assert response.status_code == 200
 
     # AND it should be a json object with the expected fields
@@ -218,7 +225,37 @@ def test_csv_2_json_SV_breakpoints():
     subm_coords = json_resp["clinvarSubmission"][0]["variantSet"]["variant"][0][
         "chromosomeCoordinates"
     ]
-    for item in ["chromosome", "start", "stop"]:
+    for item in ["assembly", "chromosome", "start", "stop"]:
+        assert item in subm_coords
+    assert json_resp["clinvarSubmission"][0]["variantSet"]["variant"][0]["variantType"]
+    assert json_resp["clinvarSubmission"][0]["variantSet"]["variant"][0]["referenceCopyNumber"]
+    assert json_resp["clinvarSubmission"][0]["variantSet"]["variant"][0]["copyNumber"]
+
+
+def test_csv_2_json_SV_range_coords():
+    """Test csv_2_json endpoint with a Variant file containing a SV described by range coordinates (outer start, inner start, inner stop, outer stop)"""
+
+    # GIVEN a POST request to the endpoint with multipart-encoded files:
+    # (https://requests.readthedocs.io/en/latest/user/advanced/#post-multiple-multipart-encoded-files)
+    files = [
+        ("files", (variants_sv_range_coords_csv, open(variants_sv_range_coords_csv_path, "rb"))),
+        ("files", (casedata_sv_csv, open(casedata_sv_csv_path, "rb"))),
+    ]
+
+    # GIVEN a request that contains genome assembly as param
+    req_params = copy.deepcopy(OPTIONAL_PARAMETERS)
+    req_params["assembly"] = "GRCh37"
+
+    # THEN the response should be successful (code 200)
+    response = client.post("/csv_2_json", params=req_params, files=files)
+    assert response.status_code == 200
+
+    # AND it should be a json object with the expected fields
+    json_resp = response.json()
+    subm_coords = json_resp["clinvarSubmission"][0]["variantSet"]["variant"][0][
+        "chromosomeCoordinates"
+    ]
+    for item in ["assembly", "chromosome", "innerStart", "innerStop", "outerStart", "outerStop"]:
         assert item in subm_coords
     assert json_resp["clinvarSubmission"][0]["variantSet"]["variant"][0]["variantType"]
     assert json_resp["clinvarSubmission"][0]["variantSet"]["variant"][0]["referenceCopyNumber"]
