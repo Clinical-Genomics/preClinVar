@@ -87,6 +87,7 @@ async def tsv_2_json(
     releaseStatus: Union[str, None] = None,
     assertionCriteriaDB: Union[str, None] = None,
     assertionCriteriaID: Union[str, None] = None,
+    assembly: Union[str, None] = None,
 ):
     """Create a json submission object using 2 TSV files (Variant.tsv and CaseData.tsv).
     Validate the submission objects agains the official schema:
@@ -143,6 +144,7 @@ async def csv_2_json(
     releaseStatus: Union[str, None] = None,
     assertionCriteriaDB: Union[str, None] = None,
     assertionCriteriaID: Union[str, None] = None,
+    assembly: Union[str, None] = None,
 ):
     """Create a json submission object using 2 CSV files (Variant.csv and CaseData.csv).
     Validate the submission objects agains the official schema:

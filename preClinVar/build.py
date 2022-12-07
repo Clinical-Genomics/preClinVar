@@ -47,3 +47,13 @@ def build_submission(subm_obj, request):
 
         # This will override whatever is parsed from the CSV/TSV files
         subm_obj["assertionCriteria"] = assertion_criteria
+
+    assembly = query_params.get("assembly")
+    if assembly:  # Set genome assembly for all variants containing a chromosomeCoordinates field
+        for subm_item in subm_obj.get("clinvarSubmission", []):
+            if not "variantSet" in subm_item:
+                continue
+            for var in subm_item["variantSet"].get("variant", []):
+                coords = var.get("chromosomeCoordinates")
+                if coords:
+                    coords["assembly"] = assembly

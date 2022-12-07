@@ -3,7 +3,7 @@ import os
 from csv import DictReader
 from tempfile import NamedTemporaryFile
 
-from preClinVar.constants import CONDITIONS_MAP
+from preClinVar.constants import CONDITIONS_MAP, SNV_COORDS, SV_COORDS
 
 LOG = logging.getLogger("uvicorn.access")
 
@@ -147,6 +147,71 @@ def set_item_record_status(item):
     item["recordStatus"] = "novel"
 
 
+def _parse_cooords(coords, variant_dict, coords_items):
+    """Parse coordinates for SNVs or SVs
+
+    Args:
+        coords(dict): an empty dictionary
+        variant_dict(dict): Example: {'##Local ID': '1d9ce6ebf2f82d913cfbe20c5085947b', 'Linking ID': '1d9ce6ebf2f82d913cfbe20c5085947b', 'Gene symbol': 'XDH', 'Reference sequence': 'NM_000379.4', 'HGVS': 'c.2751del', ..}
+        coords_items(dict): either SNV_COORDS, or SV_COORDS
+
+    """
+    for csv_key, item in coords_items.items():
+        if csv_key not in variant_dict or variant_dict[csv_key] == "":
+            continue
+        try:
+            coords[item["key"]] = item["format"](variant_dict[csv_key])
+        except Exception as ex:
+            LOG.error(
+                f"Exception when converting {csv_key} value->{variant_dict[csv_key]} to {item['format']}"
+            )
+
+
+def _set_snv_coordinates(coords, variant_dict):
+    """Set coordinates for a SNV variant
+
+    Args:
+        coords(dict): an empty dictionary
+        variant_dict(dict): Example: {'##Local ID': '1d9ce6ebf2f82d913cfbe20c5085947b', 'Linking ID': '1d9ce6ebf2f82d913cfbe20c5085947b', 'Gene symbol': 'XDH', 'Reference sequence': 'NM_000379.4', 'HGVS': 'c.2751del', ..}
+    """
+    _parse_cooords(coords, variant_dict, SNV_COORDS)
+
+
+def _set_sv_coordinates(coords, variant_dict):
+    """Set coordinates for a SV variant
+
+    Args:
+        coords(dict): an empty dictionary
+        variant_dict(dict): Example: {'##Local ID': '1d9ce6ebf2f82d913cfbe20c5085947b', 'Linking ID': '1d9ce6ebf2f82d913cfbe20c5085947b', 'Gene symbol': 'XDH', 'Reference sequence': 'NM_000379.4', 'HGVS': 'c.2751del', ..}
+    """
+    _parse_cooords(coords, variant_dict, SV_COORDS)
+
+
+def _set_chrom_coordinates(variant_dict):
+    """Set the chromosomeCoordinates dictionary for a variant.
+    chromosomeCoordinates can be described by an accession or chromosome coordinates
+
+    Args:
+        variant_dict(dict). Example: {'##Local ID': '1d9ce6ebf2f82d913cfbe20c5085947b', 'Linking ID': '1d9ce6ebf2f82d913cfbe20c5085947b', 'Gene symbol': 'XDH', 'Reference sequence': 'NM_000379.4', 'HGVS': 'c.2751del', ..}
+
+    Returns:
+        coords(dict)
+    """
+    coords = {}
+    accession = variant_dict.get("Variation identifiers")
+    if accession:  # example: rs116916706
+        coords["accession"] = accession
+        return coords
+
+    # Parse coordinates from file instead
+    if variant_dict.get("Variant type"):  # SV variant
+        _set_sv_coordinates(coords, variant_dict)
+    else:
+        _set_snv_coordinates(coords, variant_dict)
+
+    return coords
+
+
 def set_item_variant_set(item, variant_dict):
     """Set the variantSet keys/values for a variant item in the submission object
 
@@ -159,18 +224,29 @@ def set_item_variant_set(item, variant_dict):
     # Our cvs files contain HGVS so we parse only these at the moment
     item["variantSet"] = {}
     variant = {}
-    if variant_dict.get("HGVS"):
-        variant["hgvs"] = variant_dict["HGVS"]
-
     genes = variant_dict.get("Gene symbol")
     if genes:
         variant["gene"] = [{"symbol": symbol} for symbol in genes.split(";")]
+    hgvs = variant_dict.get("HGVS")
+    if hgvs:  # A Variant should have wither HGVS (hgvs in schema)
+        variant["hgvs"] = hgvs
+    else:  # OR chromosome coordinates (chromosomeCoordinates in schema)
+        variant["chromosomeCoordinates"] = _set_chrom_coordinates(variant_dict)
 
-    # NOT parsing the following key/values for now:
-    # variant.chromosomeCoordinates
-    # variant.copyNumber
-    # variant.gene.id
-    # variant.referenceCopyNumber
+    # Check if file contains copy number info
+    if variant_dict.get("Copy number"):
+        variant["copyNumber"] = variant_dict["Copy number"]
+    if variant_dict.get("Reference copy number"):
+        try:
+            variant["referenceCopyNumber"] = int(variant_dict["Copy number"])
+        except Exception as ex:
+            LOG.error(
+                "Error while converting referenceCopyNumber {variant_dict['Copy number']} to int"
+            )
+
+    # Check if file contains type of variant (SV variants)
+    if variant_dict.get("Variant type"):
+        variant["variantType"] = variant_dict["Variant type"]
 
     item["variantSet"]["variant"] = [variant]
 
