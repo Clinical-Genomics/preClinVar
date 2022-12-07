@@ -7,11 +7,12 @@ from fastapi.testclient import TestClient
 from preClinVar.__version__ import VERSION
 from preClinVar.constants import DRY_RUN_SUBMISSION_URL, VALIDATE_SUBMISSION_URL
 from preClinVar.demo import (
-    casedata_csv,
-    casedata_csv_path,
+    casedata_old_csv,
+    casedata_old_csv_path,
     subm_json_path,
-    variants_csv,
-    variants_csv_path,
+    variants_hgvs_csv,
+    variants_old_csv,
+    variants_old_csv_path,
 )
 from preClinVar.main import app
 
@@ -42,7 +43,7 @@ def test_csv_2_json_missing_file():
     # (https://requests.readthedocs.io/en/latest/user/advanced/#post-multiple-multipart-encoded-files)
     # GIVEN that only one of the 2 required files is provided:
     files = [
-        ("files", (variants_csv, open(variants_csv_path, "rb"))),
+        ("files", (variants_hgvs_csv, open(variants_old_csv_path, "rb"))),
     ]
 
     response = client.post("/csv_2_json", files=files)
@@ -61,10 +62,10 @@ def test_csv_2_json_malformed_file():
     # GIVEN a POST request to the endpoint with multipart-encoded files:
     # (https://requests.readthedocs.io/en/latest/user/advanced/#post-multiple-multipart-encoded-files)
     files = [
-        ("files", (variants_csv, open(variants_csv_path, "rb"))),
+        ("files", (variants_hgvs_csv, open(variants_old_csv_path, "rb"))),
         (
             "files",
-            (casedata_csv, open(variants_csv_path, "rb")),
+            (casedata_old_csv, open(variants_old_csv_path, "rb")),
         ),  # GIVEN that file is wrong (should be casedata_csv_path)
     ]
     response = client.post("/csv_2_json", files=files)
@@ -73,9 +74,33 @@ def test_csv_2_json_malformed_file():
     assert "Created json file contains validation errors" in response.json()["message"]
 
 
-def test_tsv_2_json():
+def test_csv_2_json_old_format():
+    """Test the function that sends a request to the app to convert 2 cvs files (CaseData.csv, Variant.csv)
+    into one json API submission object. Variant files contain 4 SNV with HGVS descriptors.
+    Variant.csv file in old format contains assertion criteria fields"""
+
+    # GIVEN a POST request to the endpoint with multipart-encoded files:
+    # (https://requests.readthedocs.io/en/latest/user/advanced/#post-multiple-multipart-encoded-files)
+    files = [
+        ("files", (variants_old_csv, open(variants_old_csv_path, "rb"))),
+        ("files", (casedata_old_csv, open(casedata_old_csv_path, "rb"))),
+    ]
+
+    # THEN the response should be successful (code 200)
+    response = client.post("/csv_2_json", params=OPTIONAL_PARAMETERS, files=files)
+    assert response.status_code == 200
+
+    # AND it should be a json object with the expected fields
+    json_resp = response.json()
+    assert json_resp["submissionName"]
+    assert json_resp["clinvarSubmissionReleaseStatus"]
+    assert json_resp["assertionCriteria"]
+    assert json_resp["clinvarSubmission"]
+
+
+def test_tsv_2_json_old_format():
     """Test the function that sends a request to the app to convert 2 tab separated cvs files (CaseData.tsv, Variant.tsv)
-    into one json API submission object"""
+    into one json API submission object. Variant.tsv file in old format contains assertion criteria fields"""
 
     # GIVEN Variant.csv and CaseData.csv temporary files based on the demo CSV files, but are tab-separated
     with NamedTemporaryFile(
@@ -83,9 +108,9 @@ def test_tsv_2_json():
     ) as tab_sep_var_file, NamedTemporaryFile(
         mode="a+", prefix="Casedata", suffix=".csv"
     ) as tab_sep_cdata_file, open(
-        variants_csv_path, "r"
+        variants_old_csv_path, "r"
     ) as comma_sep_var_file, open(
-        casedata_csv_path, "r"
+        casedata_old_csv_path, "r"
     ) as comma_sep_cdata_file:
 
         # Convert Variant file to tsv
@@ -107,8 +132,8 @@ def test_tsv_2_json():
         # GIVEN a POST request to the endpoint with multipart-encoded files:
         # (https://requests.readthedocs.io/en/latest/user/advanced/#post-multiple-multipart-encoded-files)
         files = [
-            ("files", (variants_csv, open(tab_sep_var_file.name, "r"))),
-            ("files", (casedata_csv, open(tab_sep_cdata_file.name, "r"))),
+            ("files", (variants_old_csv, open(tab_sep_var_file.name, "r"))),
+            ("files", (casedata_old_csv, open(tab_sep_cdata_file.name, "r"))),
         ]
 
         # THEN the response should be successful (code 200)
@@ -123,10 +148,10 @@ def test_tsv_2_json():
         assert json_resp["clinvarSubmission"]
 
 
-def test_csv_2_json():
-    """Test the function that sends a request to the app to convert 2 cvs files (CaseData.csv, Variant.csv)
-    into one json API submission object"""
+def test_csv_2_json_hgvs():
+    """Test csv_2_json endpoint with a Variant file containing a SNV described by reference sequence and HGVS"""
 
+    """
     # GIVEN a POST request to the endpoint with multipart-encoded files:
     # (https://requests.readthedocs.io/en/latest/user/advanced/#post-multiple-multipart-encoded-files)
     files = [
@@ -144,6 +169,7 @@ def test_csv_2_json():
     assert json_resp["clinvarSubmissionReleaseStatus"]
     assert json_resp["assertionCriteria"]
     assert json_resp["clinvarSubmission"]
+    """
 
 
 def test_dry_run_wrong_api_key():
