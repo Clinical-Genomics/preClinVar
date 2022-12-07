@@ -5,6 +5,10 @@ A ClinVar API submission helper written in FastAPI.
 ![GitHub Release Date][github-release-date]
 [![Woke][woke-image]][woke-url]
 
+## Availability:
+
+A running demo instance of the service is available at https://preclinvar-stage.scilifelab.se/docs
+
 ## Available endpoints:
 
 ### tsv_2_json
