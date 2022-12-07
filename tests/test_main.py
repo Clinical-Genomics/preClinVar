@@ -218,7 +218,7 @@ def test_csv_2_json_SV_breakpoints():
     subm_coords = json_resp["clinvarSubmission"][0]["variantSet"]["variant"][0][
         "chromosomeCoordinates"
     ]
-    for item in ["chromsome", "start", "stop"]:
+    for item in ["chromosome", "start", "stop"]:
         assert item in subm_coords
     assert json_resp["clinvarSubmission"][0]["variantSet"]["variant"][0]["variantType"]
     assert json_resp["clinvarSubmission"][0]["variantSet"]["variant"][0]["referenceCopyNumber"]
