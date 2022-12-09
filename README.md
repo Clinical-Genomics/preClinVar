@@ -7,7 +7,7 @@ A ClinVar API submission helper written in FastAPI.
 
 ## Availability:
 
-A running demo instance of the service is available at https://preclinvar-stage.scilifelab.se/docs
+A running instance of the service is available at https://preclinvar.scilifelab.se/docs
 
 ## Available endpoints:
 
