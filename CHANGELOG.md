@@ -1,3 +1,7 @@
+## [unreleased]
+### Changed
+- Provide the URL to the prod service running on the Clinical Genomics server instead of the stage one on README page
+
 ## [2.1]
 ### Added
 - Parsing of `variantType`, `referenceCopyNumber`, `copyNumber` and `chromosomeCoordinates` fields from CSV/TSV files
