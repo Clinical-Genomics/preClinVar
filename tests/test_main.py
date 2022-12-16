@@ -15,8 +15,6 @@ from preClinVar.demo import (
     casedata_sv_csv,
     casedata_sv_csv_path,
     subm_json_path,
-    variants_accession_csv,
-    variants_accession_csv_path,
     variants_hgvs_csv,
     variants_hgvs_csv_path,
     variants_old_csv,
@@ -178,28 +176,6 @@ def test_csv_2_json_hgvs():
     json_resp = response.json()
     assert json_resp["clinvarSubmission"][0]["variantSet"]["variant"][0]["gene"]
     assert json_resp["clinvarSubmission"][0]["variantSet"]["variant"][0]["hgvs"]
-
-
-def test_csv_2_json_accession():
-    """Test csv_2_json endpoint with a Variant file containing a SNV described by accession ID (example: rs116916706)"""
-
-    # GIVEN a POST request to the endpoint with multipart-encoded files:
-    # (https://requests.readthedocs.io/en/latest/user/advanced/#post-multiple-multipart-encoded-files)
-    files = [
-        ("files", (variants_accession_csv, open(variants_accession_csv_path, "rb"))),
-        ("files", (casedata_snv_csv, open(casedata_snv_csv_path, "rb"))),
-    ]
-
-    # THEN the response should be successful (code 200)
-    response = client.post("/csv_2_json", params=OPTIONAL_PARAMETERS, files=files)
-    assert response.status_code == 200
-
-    # AND it should be a json object with the expected fields
-    json_resp = response.json()
-    assert json_resp["clinvarSubmission"][0]["variantSet"]["variant"][0]["gene"]
-    assert json_resp["clinvarSubmission"][0]["variantSet"]["variant"][0]["chromosomeCoordinates"][
-        "accession"
-    ]
 
 
 def test_csv_2_json_SV_breakpoints():

@@ -197,10 +197,6 @@ def _set_chrom_coordinates(variant_dict):
         coords(dict)
     """
     coords = {}
-    accession = variant_dict.get("Variation identifiers")
-    if accession:  # example: rs116916706
-        coords["accession"] = accession
-        return coords
 
     # Parse coordinates from file instead
     if variant_dict.get("Variant type"):  # SV variant
