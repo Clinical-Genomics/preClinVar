@@ -11,5 +11,5 @@ def test_set_item_clin_sig_fix_case():
     # WHEN clisig is collected from variant_dict
     set_item_clin_sig(item, variant_dict)
 
-    # THEN it's converted into a compiant term
+    # THEN it's converted into a compliant term
     assert item["clinicalSignificance"]["clinicalSignificanceDescription"] in CLNSIG_TERMS
