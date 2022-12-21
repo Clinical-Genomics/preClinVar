@@ -45,7 +45,7 @@ def set_item_clin_sig(item, variant_dict):
     """
     # set first required params
     clinsig = variant_dict.get("Clinical significance")
-    # Make sure clinsig term is compliant with API standard:
+    # Make sure clinsig term is compliant with API standards:
     for term in CLNSIG_TERMS:
         if clinsig.lower() == term.lower():
             clinsig = term
