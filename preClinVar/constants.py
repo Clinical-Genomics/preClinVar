@@ -1,6 +1,26 @@
 DRY_RUN_SUBMISSION_URL = "https://submit.ncbi.nlm.nih.gov/api/v1/submissions/?dry-run=true"
 VALIDATE_SUBMISSION_URL = "https://submit.ncbi.nlm.nih.gov/apitest/v1/submissions"
 
+CLNSIG_TERMS = [
+    "Pathogenic",
+    "Likely pathogenic",
+    "Uncertain significance",
+    "Likely benign",
+    "Benign",
+    "Pathogenic, low penetrance",
+    "Uncertain risk allele",
+    "Likely pathogenic, low penetrance",
+    "Established risk allele",
+    "Likely risk allele",
+    "affects",
+    "association",
+    "drug response",
+    "confers sensitivity",
+    "protective",
+    "other",
+    "not provided",
+]
+
 CONDITIONS_MAP = {
     "HPO": "HP",
     "MedGen": "MedGen",

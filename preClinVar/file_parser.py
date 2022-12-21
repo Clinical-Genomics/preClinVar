@@ -3,7 +3,7 @@ import os
 from csv import DictReader
 from tempfile import NamedTemporaryFile
 
-from preClinVar.constants import CONDITIONS_MAP, SNV_COORDS, SV_COORDS
+from preClinVar.constants import CLNSIG_TERMS, CONDITIONS_MAP, SNV_COORDS, SV_COORDS
 
 LOG = logging.getLogger("uvicorn.access")
 
@@ -45,6 +45,12 @@ def set_item_clin_sig(item, variant_dict):
     """
     # set first required params
     clinsig = variant_dict.get("Clinical significance")
+    # Make sure clinsig term is compliant with API standards:
+    for term in CLNSIG_TERMS:
+        if clinsig.lower() == term.lower():
+            clinsig = term
+            break
+
     clinsig_comment = variant_dict.get("Comment on clinical significance")
     last_eval = variant_dict.get("Date last evaluated")
     inherit_mode = variant_dict.get("Mode of inheritance")
