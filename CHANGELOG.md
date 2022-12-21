@@ -1,4 +1,4 @@
-## [unreleased]
+## [2.3]
 ### Changed
 - Fix uppercase/lowercase letters when parsing clinsig terms from files
 
