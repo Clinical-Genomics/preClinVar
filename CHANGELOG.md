@@ -1,3 +1,7 @@
+## [unreleased]
+### Changed
+- Fix uppercase/lowercase letters when parsing clinsig terms from files
+
 ## [2.2]
 ### Changed
 - Provide the URL to the prod service running on the Clinical Genomics server instead of the stage one on README page
