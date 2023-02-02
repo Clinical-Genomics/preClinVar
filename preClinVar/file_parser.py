@@ -228,9 +228,10 @@ def set_item_variant_set(item, variant_dict):
     genes = variant_dict.get("Gene symbol")
     if genes:
         variant["gene"] = [{"symbol": symbol} for symbol in genes.split(";")]
+    refseq = variant_dict.get("Reference sequence")
     hgvs = variant_dict.get("HGVS")
-    if hgvs:  # A Variant should have wither HGVS (hgvs in schema)
-        variant["hgvs"] = hgvs
+    if hgvs and refseq:  # A Variant should have wither HGVS (hgvs in schema)
+        variant["hgvs"] = ":".join([refseq, hgvs])
     else:  # OR chromosome coordinates (chromosomeCoordinates in schema)
         variant["chromosomeCoordinates"] = _set_chrom_coordinates(variant_dict)
 

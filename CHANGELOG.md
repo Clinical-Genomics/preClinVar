@@ -1,3 +1,7 @@
+## [unreleased]
+### Fixed
+- Combine `Reference sequence` and `HGVS` fields from Variant file to create the hgvs field in json submission object 
+
 ## [2.3]
 ### Changed
 - Fix uppercase/lowercase letters when parsing clinsig terms from files
