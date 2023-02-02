@@ -1,5 +1,5 @@
 from preClinVar.constants import CLNSIG_TERMS
-from preClinVar.file_parser import set_item_clin_sig
+from preClinVar.file_parser import set_item_clin_sig, set_item_variant_set
 
 
 def test_set_item_clin_sig_fix_case():
@@ -13,3 +13,16 @@ def test_set_item_clin_sig_fix_case():
 
     # THEN it's converted into a compliant term
     assert item["clinicalSignificance"]["clinicalSignificanceDescription"] in CLNSIG_TERMS
+
+
+def test_set_item_variant_set_hgvs():
+    """Test the function that sets variantSet keys/values for a variant item in the submission object"""
+    item = {}
+    REFSEQ = "NM_015450.3"
+    HGVS = "c.903G>T"
+    variant_dict = {"Reference sequence": REFSEQ, "HGVS": HGVS}
+
+    # WHEN variant set is created from variant_dict
+    set_item_variant_set(item, variant_dict)
+    # THEN hgvs field should contain both Reference sequence and HGVS
+    assert item["variantSet"]["variant"][0]["hgvs"] == ":".join([REFSEQ, HGVS])
