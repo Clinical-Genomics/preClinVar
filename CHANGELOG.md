@@ -1,3 +1,7 @@
+## [unreleased]
+### Fixed
+- Bump certifi from 2022.12.7 to 2023.7.22
+
 ## [2.3.1]
 ### Fixed
 - Combine `Reference sequence` and `HGVS` fields from Variant file to create the hgvs field in json submission object
