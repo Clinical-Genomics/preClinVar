@@ -23,6 +23,7 @@ poetry.lock
 
 # Mac OSX
 .DS_Store
+.idea/
 
 # Emacs (Just so I don't have to see them green in Atom ;-)
 *~
