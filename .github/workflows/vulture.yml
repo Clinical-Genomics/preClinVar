@@ -18,7 +18,7 @@ jobs:
           filter: "*.py"
 
       - name: Scavenge
-        uses: anaynayak/python-vulture-action@v1
+        uses: anaynayak/python-vulture-action@v1.0
         id: vulture
         with:
           vulture-args: --min-confidence 80 ${{steps.files.outputs.all}}
