@@ -1,3 +1,7 @@
+## [unreleased]
+### Changed
+- Updated version of external images in GitHub actions
+
 ## [2.3.1]
 ### Fixed
 - Combine `Reference sequence` and `HGVS` fields from Variant file to create the hgvs field in json submission object
