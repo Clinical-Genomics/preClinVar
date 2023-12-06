@@ -1,4 +1,6 @@
 ## [unreleased]
+### Changed
+- Updated version of external images in GitHub actions
 ### Fixed
 - Bump certifi from 2022.12.7 to 2023.7.22
 
