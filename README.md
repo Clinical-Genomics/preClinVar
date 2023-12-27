@@ -21,7 +21,7 @@ Transforms csv submission files (Variant.csv and CaseData.csv) into a json submi
 
 ### dry_run
 
-Proxy endpoint to the ClinVar submissions API (dry-run): https://submit.ncbi.nlm.nih.gov/api/v1/submissions/?dry-run=true. Requires a valid API key and a json file containing a submission object. If the request is valid (and the json submission object is validated) returns a submission ID which can be used for a real submission.
+Proxy endpoint to the ClinVar submissions API (dry-run): https://submit.ncbi.nlm.nih.gov/api/v1/submissions/?dry-run=true. Requires a valid API key and a json file containing a submission object. If the request is valid (and the json submission object is validated) returns a response with code 200 and json body with the message value "success".
 
 ### validate
 
