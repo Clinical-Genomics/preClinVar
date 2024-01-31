@@ -1,6 +1,7 @@
 ## [unreleased]
 ### Changed
 - Updated version of external images in GitHub actions
+- Updated API submission schema to the latest
 ### Fixed
 - Bump certifi from 2022.12.7 to 2023.7.22
 - Description of the response returned by dry run endpoint in README file 
