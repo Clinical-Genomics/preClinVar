@@ -84,12 +84,14 @@ def set_item_condition_set(item: dict, variant_dict: dict):
     if cond_db and cond_values:
         cond_values = cond_values.split(";")
         for cond_id in cond_values:
-            conditions.append({"db": cond_db, "id": cond_id})
+            condition = {"db": cond_db, "id": cond_id}
+            conditions.append(condition)
     if conditions:
         item["conditionSet"] = {"condition": conditions}
-
-        if len(conditions) > 1 and multi_condition_explanation:
-            item["conditionSet"]["MultipleConditionExplanation"] = multi_condition_explanation
+        if multi_condition_explanation:
+            item["conditionSet"][
+                "MultipleConditionExplanation"
+            ] = multi_condition_explanation.capitalize()
 
 
 def set_item_local_id(item, variant_dict):
