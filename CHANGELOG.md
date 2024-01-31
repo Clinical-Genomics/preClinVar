@@ -4,6 +4,7 @@
 ### Fixed
 - Bump certifi from 2022.12.7 to 2023.7.22
 - Description of the response returned by dry run endpoint in README file 
+- Updated libs to fix launching server using python 3.8 
 
 ## [2.3.1]
 ### Fixed
