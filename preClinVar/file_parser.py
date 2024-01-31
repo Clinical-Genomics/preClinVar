@@ -68,17 +68,18 @@ def set_item_clin_sig(item, variant_dict):
     # customAssertionScore
 
 
-def set_item_condition_set(item, variant_dict):
+def set_item_condition_set(item: dict, variant_dict: dict):
     """Set the conditionSet key/values for an API submission item
     Args:
         item(dict). An item in the clinvarSubmission.items list
         variant_dict(dict). Example: {'##Local ID': '1d9ce6ebf2f82d913cfbe20c5085947b', 'Linking ID': '1d9ce6ebf2f82d913cfbe20c5085947b', 'Gene symbol': 'XDH', 'Reference sequence': 'NM_000379.4', 'HGVS': 'c.2751del', ..}
     """
-    conditions = []
+    conditions: list = []
 
-    # Check if phenotype was specified in Variant file
-    cond_db = CONDITIONS_MAP.get(variant_dict.get("Condition ID type"))
-    cond_values = variant_dict.get("Condition ID value")
+    # Check if condition ID is specified in Variant file
+    cond_db: str = CONDITIONS_MAP.get(variant_dict.get("Condition ID type"))
+    cond_values: str = variant_dict.get("Condition ID value")
+    multi_condition_explanation: str = variant_dict.get("Explanation for multiple conditions")
 
     if cond_db and cond_values:
         cond_values = cond_values.split(";")
@@ -87,8 +88,8 @@ def set_item_condition_set(item, variant_dict):
     if conditions:
         item["conditionSet"] = {"condition": conditions}
 
-    # NOT parsing the following key/values for now:
-    # condition.db.name
+        if len(conditions) > 1 and multi_condition_explanation:
+            item["conditionSet"]["MultipleConditionExplanation"] = multi_condition_explanation
 
 
 def set_item_local_id(item, variant_dict):
