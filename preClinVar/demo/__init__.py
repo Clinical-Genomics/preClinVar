@@ -1,4 +1,6 @@
-import pkg_resources
+from importlib_resources import files
+
+BASE_PATH = "preClinVar.demo"
 
 ###### .csv files ######
 casedata_old_csv = "CaseData_before_221121.csv"
@@ -11,27 +13,14 @@ casedata_snv_csv = "CaseData_snv.csv"
 casedata_sv_csv = "CaseData_sv.csv"
 
 ###### Path to .csv files ######
-casedata_old_csv_path = pkg_resources.resource_filename(
-    "preClinVar", "/".join(["demo", casedata_old_csv])
-)
-variants_old_csv_path = pkg_resources.resource_filename(
-    "preClinVar", "/".join(["demo", variants_old_csv])
-)
-casedata_snv_csv_path = pkg_resources.resource_filename(
-    "preClinVar", "/".join(["demo", casedata_snv_csv])
-)
-casedata_sv_csv_path = pkg_resources.resource_filename(
-    "preClinVar", "/".join(["demo", casedata_sv_csv])
-)
-variants_hgvs_csv_path = pkg_resources.resource_filename(
-    "preClinVar", "/".join(["demo", variants_hgvs_csv])
-)
-variants_sv_breakpoints_csv_path = pkg_resources.resource_filename(
-    "preClinVar", "/".join(["demo", variants_sv_breakpoints_csv])
-)
-variants_sv_range_coords_csv_path = pkg_resources.resource_filename(
-    "preClinVar", "/".join(["demo", variants_sv_range_coords_csv])
-)
+casedata_old_csv_path = str(files(BASE_PATH).joinpath(casedata_old_csv))
+variants_old_csv_path = str(files(BASE_PATH).joinpath(variants_old_csv))
+casedata_snv_csv_path = str(files(BASE_PATH).joinpath(casedata_snv_csv))
+casedata_sv_csv_path = str(files(BASE_PATH).joinpath(casedata_sv_csv))
+variants_hgvs_csv_path = str(files(BASE_PATH).joinpath(variants_hgvs_csv))
+variants_sv_breakpoints_csv_path = str(files(BASE_PATH).joinpath(variants_sv_breakpoints_csv))
+variants_sv_range_coords_csv_path = str(files(BASE_PATH).joinpath(variants_sv_range_coords_csv))
+
 ###### Example of a json file submission ######
 subm_json = "submission.json"
-subm_json_path = pkg_resources.resource_filename("preClinVar", "/".join(["demo", subm_json]))
+subm_json_path = str(files(BASE_PATH).joinpath(subm_json))
