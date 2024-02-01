@@ -3,7 +3,8 @@
 - Updated version of external images in GitHub actions
 ### Fixed
 - Bump certifi from 2022.12.7 to 2023.7.22
-- Description of the response returned by dry run endpoint in README file 
+- Description of the response returned by dry run endpoint in README file
+- Migrate from deprecated `pkg_resources` lib to `importlib_resources`
 
 ## [2.3.1]
 ### Fixed
