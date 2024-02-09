@@ -68,7 +68,7 @@ def set_item_clin_sig(item, variant_dict):
         item["clinicalSignificance"]["modeOfInheritance"] = inherit_mode
 
     # NOT parsing the following key/values for now:
-    # “Clinical significance citations” to “Classification citations”
+    # “Clinical significance citations” or “Classification citations”
     # customAssertionScore
 
 
