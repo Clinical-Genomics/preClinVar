@@ -44,14 +44,18 @@ def set_item_clin_sig(item, variant_dict):
         variant_dict(dict). Example: {'##Local ID': '1d9ce6ebf2f82d913cfbe20c5085947b', 'Linking ID': '1d9ce6ebf2f82d913cfbe20c5085947b', 'Gene symbol': 'XDH', 'Reference sequence': 'NM_000379.4', 'HGVS': 'c.2751del', ..}
     """
     # set first required params
-    clinsig = variant_dict.get("Clinical significance")
+    clinsig = variant_dict.get("Clinical significance") or variant_dict.get(
+        "Germline classification"
+    )
     # Make sure clinsig term is compliant with API standards:
     for term in CLNSIG_TERMS:
         if clinsig.lower() == term.lower():
             clinsig = term
             break
 
-    clinsig_comment = variant_dict.get("Comment on clinical significance")
+    clinsig_comment = variant_dict.get("Comment on clinical significance") or variant_dict.get(
+        "Comment on classification"
+    )
     last_eval = variant_dict.get("Date last evaluated")
     inherit_mode = variant_dict.get("Mode of inheritance")
 
@@ -64,7 +68,7 @@ def set_item_clin_sig(item, variant_dict):
         item["clinicalSignificance"]["modeOfInheritance"] = inherit_mode
 
     # NOT parsing the following key/values for now:
-    # citation
+    # “Clinical significance citations” or “Classification citations”
     # customAssertionScore
 
 
