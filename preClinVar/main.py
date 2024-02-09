@@ -181,8 +181,6 @@ async def csv_2_json(
     submission_dict = file_fields_to_submission(variants_lines, casedata_lines)
     build_submission(submission_dict, request)
 
-    LOG.warning(submission_dict)
-
     # Validate submission object using official schema
     valid_results = validate_submission(submission_dict)
     if valid_results[0]:
