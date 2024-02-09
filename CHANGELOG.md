@@ -2,7 +2,9 @@
 ### Changed
 - Updated version of external images in GitHub actions
 - Updated API submission schema to the latest
-- Dmo variant to take care of "Somatic mutation" no longer available among Mode of inheritance choices
+- Demo variant to take care of "Somatic mutation" no longer available among Mode of inheritance choices
+- `clinicalSignificance.clinicalSignificanceDescription` value extracted from `Clinical significance` or `Germline classification` column
+- `clinicalSignificance.comment` values extracted from `Comment on clinical significance` or `Comment on classification` column
 - Parse `conditionSet.MultipleConditionExplanation` value from `Explanation for multiple conditions` column of variants file
 ### Fixed
 - Bump certifi from 2022.12.7 to 2023.7.22
