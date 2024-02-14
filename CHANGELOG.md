@@ -1,4 +1,4 @@
-## [unreleased]
+## [2.4]
 ### Changed
 - Updated version of external images in GitHub actions
 - Updated API submission schema to the latest
@@ -10,6 +10,7 @@
 - Bump certifi from 2022.12.7 to 2023.7.22
 - Description of the response returned by dry run endpoint in README file
 - Migrate from deprecated `pkg_resources` lib to `importlib_resources`
+- Updated python-multipart from 0.0.5 to 0.0.7 to address security alert by dependabot
 
 ## [2.3.1]
 ### Fixed
