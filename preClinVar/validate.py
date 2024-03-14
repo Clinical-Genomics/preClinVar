@@ -2,7 +2,6 @@ import json
 import logging
 from typing import List, Tuple
 
-from _io import TextIOWrapper
 from jsonschema import Draft3Validator, validate
 
 from preClinVar.resources import subm_schema_path
@@ -10,7 +9,7 @@ from preClinVar.resources import subm_schema_path
 LOG = logging.getLogger("uvicorn.access")
 
 
-def validate_submission(submission_dict: TextIOWrapper) -> Tuple[bool, List[str]]:
+def validate_submission(submission_dict: dict) -> Tuple[bool, List[str]]:
     """Validate a submission dictionary against the ClinVar submission schema."""
     errors = []
     with open(subm_schema_path) as schema_file:
