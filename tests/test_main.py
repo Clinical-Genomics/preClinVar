@@ -86,7 +86,6 @@ def test_csv_2_json_malformed_file():
     assert "Created json file contains validation errors" in response.json()["message"]
 
 
-@pytest.mark.skip(reason="This test is not passing for some reason I have to fix")
 def test_csv_2_json_old_format():
     """Test the function that sends a request to the app to convert 2 cvs files (CaseData.csv, Variant.csv)
     into one json API submission object. Variant files contain 4 SNV with HGVS descriptors.
@@ -111,7 +110,6 @@ def test_csv_2_json_old_format():
     assert json_resp["clinvarSubmission"]
 
 
-@pytest.mark.skip(reason="This test is not passing for some reason I have to fix")
 def test_tsv_2_json_old_format():
     """Test the function that sends a request to the app to convert 2 tab separated cvs files (CaseData.tsv, Variant.tsv)
     into one json API submission object. Variant.tsv file in old format contains assertion criteria fields
@@ -163,7 +161,6 @@ def test_tsv_2_json_old_format():
         assert json_resp["clinvarSubmission"]
 
 
-@pytest.mark.skip(reason="This test is not passing for some reason I have to fix")
 def test_csv_2_json_hgvs():
     """Test csv_2_json endpoint with a Variant file containing a SNV described by reference sequence and HGVS"""
 
@@ -184,7 +181,6 @@ def test_csv_2_json_hgvs():
     assert json_resp["clinvarSubmission"][0]["variantSet"]["variant"][0]["hgvs"]
 
 
-@pytest.mark.skip(reason="This test is not passing for some reason I have to fix")
 def test_csv_2_json_SV_breakpoints():
     """Test csv_2_json endpoint with a Variant file containing a SV described by exact coordinates (breakpoints)"""
 
@@ -218,7 +214,6 @@ def test_csv_2_json_SV_breakpoints():
     assert json_resp["clinvarSubmission"][0]["variantSet"]["variant"][0]["copyNumber"]
 
 
-@pytest.mark.skip(reason="This test is not passing for some reason I have to fix")
 def test_csv_2_json_SV_range_coords():
     """Test csv_2_json endpoint with a Variant file containing a SV described by range coordinates (outer start, inner start, inner stop, outer stop)"""
 
