@@ -3,7 +3,6 @@ import csv
 import json
 from tempfile import NamedTemporaryFile
 
-import pytest
 import responses
 from fastapi.testclient import TestClient
 
@@ -145,8 +144,8 @@ def test_tsv_2_json_old_format():
         # GIVEN a POST request to the endpoint with multipart-encoded files:
         # (https://requests.readthedocs.io/en/latest/user/advanced/#post-multiple-multipart-encoded-files)
         files = [
-            ("files", (variants_old_csv, open(tab_sep_var_file.name, "r"))),
-            ("files", (casedata_old_csv, open(tab_sep_cdata_file.name, "r"))),
+            ("files", (variants_old_csv, open(tab_sep_var_file.name, "rb"))),
+            ("files", (casedata_old_csv, open(tab_sep_cdata_file.name, "rb"))),
         ]
 
         # THEN the response should be successful (code 200)
@@ -281,7 +280,6 @@ def test_dry_run():
     responses.add(
         responses.POST,
         DRY_RUN_SUBMISSION_URL,
-        json={},
         status=204,  # The ClinVar API returns 204 (no content) when a dry-run submission was successful and no submission was created
     )
 
@@ -291,15 +289,24 @@ def test_dry_run():
     assert response.json()["message"] == "success"
 
 
+@responses.activate
 def test_validate_wrong_api_key():
     """Test the validate API proxy endpoint without a valid ClinVar API key"""
 
     # GIVEN a json submission file
     json_file = {"json_file": open(subm_json_path, "rb")}
 
+    # AND a mocked ClinVar API
+    responses.add(
+        responses.POST,
+        VALIDATE_SUBMISSION_URL,
+        json={"message": "No valid API key provided"},
+        status=401,  # The ClinVar API returs code 201 when request is successful (created)
+    )
+
     response = client.post("/validate", data={"api_key": DEMO_API_KEY}, files=json_file)
 
-    # THEN the ClinVar API should return "unathorized"
+    # THEN the ClinVar API should return "unauthorized"
     assert response.status_code == 401  # Not authorized
     assert response.json()["message"] == "No valid API key provided"
 
