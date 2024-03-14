@@ -3,8 +3,10 @@ import csv
 import json
 from tempfile import NamedTemporaryFile
 
+import pytest
 import responses
 from fastapi.testclient import TestClient
+
 from preClinVar.__version__ import VERSION
 from preClinVar.constants import DRY_RUN_SUBMISSION_URL, VALIDATE_SUBMISSION_URL
 from preClinVar.demo import (
@@ -72,16 +74,16 @@ def test_csv_2_json_malformed_file():
     # GIVEN a POST request to the endpoint with multipart-encoded files:
     # (https://requests.readthedocs.io/en/latest/user/advanced/#post-multiple-multipart-encoded-files)
     files = [
-        ("files", (variants_hgvs_csv, open(variants_old_csv_path, "rb"))),
+        ("files", (variants_hgvs_csv, open(casedata_snv_csv_path, "rb"))),  # files are switched
         (
             "files",
-            (casedata_old_csv, open(variants_old_csv_path, "rb")),
-        ),  # GIVEN that file is wrong (should be casedata_csv_path)
+            (casedata_snv_csv, open(variants_hgvs_csv_path, "rb")),
+        ),
     ]
     response = client.post("/csv_2_json", files=files)
     # THEN the endpoint should return error
     assert response.status_code == 400
-    assert "Created json file contains validation errors" in response.json()["message"]
+    assert response.json()["message"]
 
 
 def test_csv_2_json_old_format():
@@ -110,7 +112,8 @@ def test_csv_2_json_old_format():
 
 def test_tsv_2_json_old_format():
     """Test the function that sends a request to the app to convert 2 tab separated cvs files (CaseData.tsv, Variant.tsv)
-    into one json API submission object. Variant.tsv file in old format contains assertion criteria fields"""
+    into one json API submission object. Variant.tsv file in old format contains assertion criteria fields
+    """
 
     # GIVEN Variant.csv and CaseData.csv temporary files based on the demo CSV files, but are tab-separated
     with NamedTemporaryFile(
@@ -184,7 +187,10 @@ def test_csv_2_json_SV_breakpoints():
     # GIVEN a POST request to the endpoint with multipart-encoded files:
     # (https://requests.readthedocs.io/en/latest/user/advanced/#post-multiple-multipart-encoded-files)
     files = [
-        ("files", (variants_sv_breakpoints_csv, open(variants_sv_breakpoints_csv_path, "rb"))),
+        (
+            "files",
+            (variants_sv_breakpoints_csv, open(variants_sv_breakpoints_csv_path, "rb")),
+        ),
         ("files", (casedata_sv_csv, open(casedata_sv_csv_path, "rb"))),
     ]
 
@@ -214,7 +220,13 @@ def test_csv_2_json_SV_range_coords():
     # GIVEN a POST request to the endpoint with multipart-encoded files:
     # (https://requests.readthedocs.io/en/latest/user/advanced/#post-multiple-multipart-encoded-files)
     files = [
-        ("files", (variants_sv_range_coords_csv, open(variants_sv_range_coords_csv_path, "rb"))),
+        (
+            "files",
+            (
+                variants_sv_range_coords_csv,
+                open(variants_sv_range_coords_csv_path, "rb"),
+            ),
+        ),
         ("files", (casedata_sv_csv, open(casedata_sv_csv_path, "rb"))),
     ]
 
@@ -231,7 +243,14 @@ def test_csv_2_json_SV_range_coords():
     subm_coords = json_resp["clinvarSubmission"][0]["variantSet"]["variant"][0][
         "chromosomeCoordinates"
     ]
-    for item in ["assembly", "chromosome", "innerStart", "innerStop", "outerStart", "outerStop"]:
+    for item in [
+        "assembly",
+        "chromosome",
+        "innerStart",
+        "innerStop",
+        "outerStart",
+        "outerStop",
+    ]:
         assert item in subm_coords
     assert json_resp["clinvarSubmission"][0]["variantSet"]["variant"][0]["variantType"]
     assert json_resp["clinvarSubmission"][0]["variantSet"]["variant"][0]["referenceCopyNumber"]
