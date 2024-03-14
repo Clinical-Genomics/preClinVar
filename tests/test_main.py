@@ -214,9 +214,7 @@ def test_csv_2_json_SV_breakpoints():
     for item in ["assembly", "chromosome", "start", "stop"]:
         assert item in subm_coords
     assert json_resp["clinvarSubmission"][0]["variantSet"]["variant"][0]["variantType"]
-    assert json_resp["clinvarSubmission"][0]["variantSet"]["variant"][0][
-        "referenceCopyNumber"
-    ]
+    assert json_resp["clinvarSubmission"][0]["variantSet"]["variant"][0]["referenceCopyNumber"]
     assert json_resp["clinvarSubmission"][0]["variantSet"]["variant"][0]["copyNumber"]
 
 
@@ -260,9 +258,7 @@ def test_csv_2_json_SV_range_coords():
     ]:
         assert item in subm_coords
     assert json_resp["clinvarSubmission"][0]["variantSet"]["variant"][0]["variantType"]
-    assert json_resp["clinvarSubmission"][0]["variantSet"]["variant"][0][
-        "referenceCopyNumber"
-    ]
+    assert json_resp["clinvarSubmission"][0]["variantSet"]["variant"][0]["referenceCopyNumber"]
     assert json_resp["clinvarSubmission"][0]["variantSet"]["variant"][0]["copyNumber"]
 
 

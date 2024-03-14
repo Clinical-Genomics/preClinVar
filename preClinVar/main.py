@@ -139,9 +139,7 @@ async def tsv_2_json(
         )
     return JSONResponse(
         status_code=400,
-        content={
-            "message": f"Created json file contains validation errors: {valid_results[1]}"
-        },
+        content={"message": f"Created json file contains validation errors: {valid_results[1]}"},
     )
 
 
@@ -194,7 +192,5 @@ async def csv_2_json(
         )
     return JSONResponse(
         status_code=400,
-        content={
-            "message": f"Created json file contains validation errors: {valid_results[1]}"
-        },
+        content={"message": f"Created json file contains validation errors: {valid_results[1]}"},
     )
