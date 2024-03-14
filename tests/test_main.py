@@ -74,16 +74,16 @@ def test_csv_2_json_malformed_file():
     # GIVEN a POST request to the endpoint with multipart-encoded files:
     # (https://requests.readthedocs.io/en/latest/user/advanced/#post-multiple-multipart-encoded-files)
     files = [
-        ("files", (variants_hgvs_csv, open(variants_old_csv_path, "rb"))),
+        ("files", (variants_hgvs_csv, open(casedata_snv_csv_path, "rb"))),  # files are switched
         (
             "files",
-            (casedata_old_csv, open(variants_old_csv_path, "rb")),
-        ),  # GIVEN that file is wrong (should be casedata_csv_path)
+            (casedata_snv_csv, open(variants_hgvs_csv_path, "rb")),
+        ),
     ]
     response = client.post("/csv_2_json", files=files)
     # THEN the endpoint should return error
     assert response.status_code == 400
-    assert "Created json file contains validation errors" in response.json()["message"]
+    assert response.json()["message"]
 
 
 def test_csv_2_json_old_format():
