@@ -3,6 +3,7 @@
 - Updated submission schema to the latest API schema (01-03-2024)
 - Switched from Draft3Validator to Draft7Validator in validate.py
 - Updated fastapi lib to fix security vulnerability
+- Parse `conditionSet.MultipleConditionExplanation` value from `Explanation for multiple conditions` column of variants file
 
 ## [2.4]
 ### Changed
@@ -11,7 +12,6 @@
 - Demo variant to take care of "Somatic mutation" no longer available among Mode of inheritance choices
 - `clinicalSignificance.clinicalSignificanceDescription` value extracted from `Clinical significance` or `Germline classification` column
 - `clinicalSignificance.comment` values extracted from `Comment on clinical significance` or `Comment on classification` column
-- Parse `conditionSet.MultipleConditionExplanation` value from `Explanation for multiple conditions` column of variants file
 ### Fixed
 - Bump certifi from 2022.12.7 to 2023.7.22
 - Description of the response returned by dry run endpoint in README file
