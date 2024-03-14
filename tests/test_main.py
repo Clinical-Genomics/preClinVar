@@ -145,8 +145,8 @@ def test_tsv_2_json_old_format():
         # GIVEN a POST request to the endpoint with multipart-encoded files:
         # (https://requests.readthedocs.io/en/latest/user/advanced/#post-multiple-multipart-encoded-files)
         files = [
-            ("files", (variants_old_csv, open(tab_sep_var_file.name, "r"))),
-            ("files", (casedata_old_csv, open(tab_sep_cdata_file.name, "r"))),
+            ("files", (variants_old_csv, open(tab_sep_var_file.name, "rb"))),
+            ("files", (casedata_old_csv, open(tab_sep_cdata_file.name, "rb"))),
         ]
 
         # THEN the response should be successful (code 200)
