@@ -7,6 +7,7 @@ import requests
 import uvicorn
 from fastapi import FastAPI, File, Form, Request, UploadFile
 from fastapi.responses import JSONResponse
+
 from preClinVar.__version__ import VERSION
 from preClinVar.build import build_header, build_submission
 from preClinVar.constants import DRY_RUN_SUBMISSION_URL, VALIDATE_SUBMISSION_URL
@@ -43,7 +44,13 @@ async def validate(api_key: str = Form(), json_file: UploadFile = File(...)):
 
     # And use it in POST request to API
     data = {
-        "actions": [{"type": "AddData", "targetDb": "clinvar", "data": {"content": submission_obj}}]
+        "actions": [
+            {
+                "type": "AddData",
+                "targetDb": "clinvar",
+                "data": {"content": submission_obj},
+            }
+        ]
     }
     resp = requests.post(VALIDATE_SUBMISSION_URL, data=json.dumps(data), headers=header)
     return JSONResponse(
@@ -63,7 +70,13 @@ async def dry_run(api_key: str = Form(), json_file: UploadFile = File(...)):
 
     # And use it in POST request to API
     data = {
-        "actions": [{"type": "AddData", "targetDb": "clinvar", "data": {"content": submission_obj}}]
+        "actions": [
+            {
+                "type": "AddData",
+                "targetDb": "clinvar",
+                "data": {"content": submission_obj},
+            }
+        ]
     }
     resp = requests.post(DRY_RUN_SUBMISSION_URL, data=json.dumps(data), headers=header)
 
@@ -83,11 +96,6 @@ async def dry_run(api_key: str = Form(), json_file: UploadFile = File(...)):
 async def tsv_2_json(
     request: Request,
     files: List[UploadFile] = File(...),
-    submissionName: Union[str, None] = None,
-    releaseStatus: Union[str, None] = None,
-    assertionCriteriaDB: Union[str, None] = None,
-    assertionCriteriaID: Union[str, None] = None,
-    assembly: Union[str, None] = None,
 ):
     """Create a json submission object using 2 TSV files (Variant.tsv and CaseData.tsv).
     Validate the submission objects agains the official schema:
@@ -140,11 +148,6 @@ async def tsv_2_json(
 async def csv_2_json(
     request: Request,
     files: List[UploadFile] = File(...),
-    submissionName: Union[str, None] = None,
-    releaseStatus: Union[str, None] = None,
-    assertionCriteriaDB: Union[str, None] = None,
-    assertionCriteriaID: Union[str, None] = None,
-    assembly: Union[str, None] = None,
 ):
     """Create a json submission object using 2 CSV files (Variant.csv and CaseData.csv).
     Validate the submission objects agains the official schema:
