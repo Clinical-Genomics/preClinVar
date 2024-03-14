@@ -2,7 +2,7 @@ import json
 import logging
 from typing import List, Tuple
 
-from jsonschema import Draft3Validator, validate
+from jsonschema import Draft7Validator, validate
 
 from preClinVar.resources import subm_schema_path
 
@@ -14,7 +14,8 @@ def validate_submission(submission_dict: dict) -> Tuple[bool, List[str]]:
     errors = []
     with open(subm_schema_path) as schema_file:
         schema = json.load(schema_file)
-        v = Draft3Validator(schema)
+
+        v = Draft7Validator(schema)
         for error in sorted(v.iter_errors(submission_dict), key=str):
             errors.append(error.message)
 
