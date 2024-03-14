@@ -7,6 +7,7 @@ import requests
 import uvicorn
 from fastapi import FastAPI, File, Form, Request, UploadFile
 from fastapi.responses import JSONResponse
+
 from preClinVar.__version__ import VERSION
 from preClinVar.build import build_header, build_submission
 from preClinVar.constants import DRY_RUN_SUBMISSION_URL, VALIDATE_SUBMISSION_URL
@@ -180,8 +181,14 @@ async def csv_2_json(
         )
 
     # Convert lines extracted from csv files to a submission object (a dictionary)
-    submission_dict = file_fields_to_submission(variants_lines, casedata_lines)
-    build_submission(submission_dict, request)
+    try:
+        submission_dict = file_fields_to_submission(variants_lines, casedata_lines)
+        build_submission(submission_dict, request)
+    except Exception as ex:
+        return JSONResponse(
+            status_code=400,
+            content={"message": str(ex)},
+        )
 
     # Validate submission object using official schema
     valid_results = validate_submission(submission_dict)
