@@ -43,7 +43,13 @@ async def validate(api_key: str = Form(), json_file: UploadFile = File(...)):
 
     # And use it in POST request to API
     data = {
-        "actions": [{"type": "AddData", "targetDb": "clinvar", "data": {"content": submission_obj}}]
+        "actions": [
+            {
+                "type": "AddData",
+                "targetDb": "clinvar",
+                "data": {"content": submission_obj},
+            }
+        ]
     }
     resp = requests.post(VALIDATE_SUBMISSION_URL, data=json.dumps(data), headers=header)
     return JSONResponse(
@@ -63,7 +69,13 @@ async def dry_run(api_key: str = Form(), json_file: UploadFile = File(...)):
 
     # And use it in POST request to API
     data = {
-        "actions": [{"type": "AddData", "targetDb": "clinvar", "data": {"content": submission_obj}}]
+        "actions": [
+            {
+                "type": "AddData",
+                "targetDb": "clinvar",
+                "data": {"content": submission_obj},
+            }
+        ]
     }
     resp = requests.post(DRY_RUN_SUBMISSION_URL, data=json.dumps(data), headers=header)
 
@@ -127,7 +139,9 @@ async def tsv_2_json(
         )
     return JSONResponse(
         status_code=400,
-        content={"message": f"Created json file contains validation errors: {valid_results[1]}"},
+        content={
+            "message": f"Created json file contains validation errors: {valid_results[1]}"
+        },
     )
 
 
@@ -180,5 +194,7 @@ async def csv_2_json(
         )
     return JSONResponse(
         status_code=400,
-        content={"message": f"Created json file contains validation errors: {valid_results[1]}"},
+        content={
+            "message": f"Created json file contains validation errors: {valid_results[1]}"
+        },
     )
