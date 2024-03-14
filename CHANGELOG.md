@@ -1,6 +1,7 @@
 ## [unreleased]
 ### Changed
 - Updated submission schema to the latest API schema (01-03-2024)
+- Switched from Draft3Validator to Draft7Validator in validate.py
 
 ## [2.4]
 ### Changed
