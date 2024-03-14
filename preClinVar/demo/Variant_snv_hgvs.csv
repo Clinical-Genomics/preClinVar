@@ -1,2 +1,2 @@
-"##Local ID","Linking ID","Gene symbol","Reference sequence","HGVS","Variation identifiers","Condition ID type","Condition ID value","Clinical significance","Date last evaluated","Mode of inheritance"
-"4c7d5c70d955875504db72ef8e1abe77","4c7d5c70d955875504db72ef8e1abe77","POT1","NM_015450.3","c.903G>T","rs116916706","OMIM","604187;606798","Likely pathogenic","2022-12-07","Autosomal recessive inheritance"
+"##Local ID","Linking ID","Gene symbol","Reference sequence","HGVS","Variation identifiers","Condition ID type","Condition ID value","Explanation for multiple conditions","Clinical significance","Date last evaluated","Mode of inheritance"
+"4c7d5c70d955875504db72ef8e1abe77","4c7d5c70d955875504db72ef8e1abe77","POT1","NM_015450.3","c.903G>T","rs116916706","OMIM","604187;606798","Novel disease","Likely pathogenic","2022-12-07","Autosomal recessive inheritance"
