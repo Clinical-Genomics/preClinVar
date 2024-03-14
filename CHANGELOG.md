@@ -1,3 +1,7 @@
+## [unreleased]
+### Changed
+- Updated submission schema to the latest API schema (01-03-2024)
+
 ## [2.4]
 ### Changed
 - Updated version of external images in GitHub actions
