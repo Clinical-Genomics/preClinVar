@@ -13,7 +13,7 @@ gunicorn = "^20.1.0"
 isort = "^5.10.1"
 black = "^22.6.0"
 python-multipart = "^0.0.7"
-jsonschema = "^4.6.1"
+jsonschema = "^4.21.1"
 responses = "^0.21.0"
 
 [tool.poetry.dev-dependencies]
