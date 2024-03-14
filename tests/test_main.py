@@ -3,7 +3,6 @@ import csv
 import json
 from tempfile import NamedTemporaryFile
 
-import pytest
 import responses
 from fastapi.testclient import TestClient
 
