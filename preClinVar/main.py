@@ -1,7 +1,7 @@
 import json
 import logging
 import re
-from typing import List, Union
+from typing import List
 
 import requests
 import uvicorn
@@ -98,7 +98,7 @@ async def tsv_2_json(
     files: List[UploadFile] = File(...),
 ):
     """Create a json submission object using 2 TSV files (Variant.tsv and CaseData.tsv).
-    Validate the submission objects agains the official schema:
+    Validate the submission objects against the official schema:
     https://www.ncbi.nlm.nih.gov/clinvar/docs/api_http/
     """
     # Extract lines from Variants.tsv and Casedata.tsv files present in POST request

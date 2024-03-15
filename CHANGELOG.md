@@ -3,6 +3,7 @@
 - Updated submission schema to the latest API schema (01-03-2024)
 - Switched from Draft3Validator to Draft7Validator in validate.py
 - Updated fastapi lib to fix security vulnerability
+- Parse `conditionSet.MultipleConditionExplanation` value from `Explanation for multiple conditions` column of variants file
 
 ## [2.4]
 ### Changed

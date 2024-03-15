@@ -1,5 +1,10 @@
 from preClinVar.constants import CLNSIG_TERMS
-from preClinVar.file_parser import set_item_clin_sig, set_item_variant_set
+from preClinVar.file_parser import (
+    csv_lines,
+    set_item_clin_sig,
+    set_item_condition_set,
+    set_item_variant_set,
+)
 
 
 def test_set_item_clin_sig_fix_case():
@@ -26,3 +31,26 @@ def test_set_item_variant_set_hgvs():
     set_item_variant_set(item, variant_dict)
     # THEN hgvs field should contain both Reference sequence and HGVS
     assert item["variantSet"]["variant"][0]["hgvs"] == ":".join([REFSEQ, HGVS])
+
+
+def test_set_item_condition_set():
+    """Test the function that sets condition conditionSet values."""
+
+    item = {}
+    CONDITION_DB = "OMIM"
+    OMIM_NUMBERS = "604187,604187"
+    MULTIPLE_COND_EXPLANATION = "Novel disease"
+    variant_dict = {
+        "Condition ID type": CONDITION_DB,
+        "Condition ID value": OMIM_NUMBERS,
+        "Explanation for multiple conditions": MULTIPLE_COND_EXPLANATION,
+    }
+
+    # WHEN variant set is created from variant_dict containing condition info
+    set_item_condition_set(item=item, variant_dict=variant_dict)
+
+    # THEN it should contain the expected key/values
+    assert item["conditionSet"]["MultipleConditionExplanation"] == MULTIPLE_COND_EXPLANATION
+    for condition in item["conditionSet"]["condition"]:
+        assert condition["db"] == CONDITION_DB
+        assert condition["id"] in OMIM_NUMBERS
