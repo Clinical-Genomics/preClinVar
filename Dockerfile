@@ -8,7 +8,7 @@ RUN python3 -m venv /home/worker/venv
 ENV PATH="/home/worker/venv/bin:$PATH"
 
 # install requirements
-RUN pip install poetry
+RUN pip install "poetry<1.8"
 COPY poetry.lock pyproject.toml ./
 RUN poetry config virtualenvs.create false
 RUN poetry install --no-interaction

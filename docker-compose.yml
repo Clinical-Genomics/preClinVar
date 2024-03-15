@@ -5,6 +5,7 @@ services:
   web:
     container_name: preClinVar
     build: .
+    platform: linux/amd64
     environment:
       GUNICORN_WORKERS: 1
       GUNICORN_TREADS: 1
