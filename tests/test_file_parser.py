@@ -1,5 +1,4 @@
 from preClinVar.constants import CLNSIG_TERMS
-from preClinVar.demo import variants_hgvs_csv_path
 from preClinVar.file_parser import (
     csv_lines,
     set_item_clin_sig,
