@@ -1,3 +1,7 @@
+## [unreleased]
+### Fixed
+- Upload to Codecov step in `tests_n_coverage.yml` action
+
 ## [2.5.1]
 ### Fixed
 - Avoid "/bin/sh: 1: gunicorn: not found" error by using poetry <1.8 in Dockerfile
