@@ -1,3 +1,7 @@
+## [unreleased]
+### Fixed
+- Fix `multipleConditionExplanation` to be lowercase
+
 ## [2.5.1]
 ### Fixed
 - Avoid "/bin/sh: 1: gunicorn: not found" error by using poetry <1.8 in Dockerfile
