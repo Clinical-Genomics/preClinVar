@@ -1,4 +1,4 @@
-## [unreleased]
+## [2.5.2]
 ### Fixed
 - Upload to Codecov step in `tests_n_coverage.yml` action
 - Fix `multipleConditionExplanation` to be lowercase
