@@ -1,6 +1,5 @@
 from preClinVar.constants import CLNSIG_TERMS
 from preClinVar.file_parser import (
-    csv_lines,
     set_item_clin_sig,
     set_item_condition_set,
     set_item_variant_set,
@@ -50,7 +49,7 @@ def test_set_item_condition_set():
     set_item_condition_set(item=item, variant_dict=variant_dict)
 
     # THEN it should contain the expected key/values
-    assert item["conditionSet"]["MultipleConditionExplanation"] == MULTIPLE_COND_EXPLANATION
+    assert item["conditionSet"]["multipleConditionExplanation"] == MULTIPLE_COND_EXPLANATION
     for condition in item["conditionSet"]["condition"]:
         assert condition["db"] == CONDITION_DB
         assert condition["id"] in OMIM_NUMBERS

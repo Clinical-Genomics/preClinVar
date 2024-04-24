@@ -94,7 +94,7 @@ def set_item_condition_set(item: dict, variant_dict: dict):
         item["conditionSet"] = {"condition": conditions}
         if multi_condition_explanation:
             item["conditionSet"][
-                "MultipleConditionExplanation"
+                "multipleConditionExplanation"
             ] = multi_condition_explanation.capitalize()
 
 
