@@ -1,6 +1,5 @@
 from preClinVar.constants import CLNSIG_TERMS
 from preClinVar.file_parser import (
-    csv_lines,
     set_item_clin_sig,
     set_item_condition_set,
     set_item_variant_set,
