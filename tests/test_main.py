@@ -408,6 +408,6 @@ def test_status_submitted():
         "/status", data={"api_key": DEMO_API_KEY, "submission_id": DEMO_SUBMISSION_ID}
     )
 
-    # THEN the response should contain the provided actions
+    # THEN the response should contain the provided status
     assert response.status_code == 200
     assert response.json()["actions"][0]["status"] == "submitted"
