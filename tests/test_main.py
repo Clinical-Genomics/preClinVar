@@ -312,7 +312,7 @@ def test_validate_wrong_api_key():
 
 
 @responses.activate
-def test_validate():
+def test_validate_error():
     """Test the validated API proxy endpoint (with a mocked ClinVar API response)"""
 
     # GIVEN a mocked POST response from CLinVar apitest endpoint
