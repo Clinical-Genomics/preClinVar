@@ -7,7 +7,7 @@ import responses
 from fastapi.testclient import TestClient
 
 from preClinVar.__version__ import VERSION
-from preClinVar.constants import DRY_RUN_SUBMISSION_URL, VALIDATE_SUBMISSION_URL
+from preClinVar.constants import DRY_RUN_SUBMISSION_URL, SUBMISSION_URL, VALIDATE_SUBMISSION_URL
 from preClinVar.demo import (
     casedata_old_csv,
     casedata_old_csv_path,
@@ -290,8 +290,8 @@ def test_dry_run():
 
 
 @responses.activate
-def test_validate_wrong_api_key():
-    """Test the validate API proxy endpoint without a valid ClinVar API key"""
+def test_apitest_wrong_api_key():
+    """Test the apitest API proxy endpoint without a valid ClinVar API key"""
 
     # GIVEN a json submission file
     json_file = {"json_file": open(subm_json_path, "rb")}
@@ -304,7 +304,7 @@ def test_validate_wrong_api_key():
         status=401,  # The ClinVar API returs code 201 when request is successful (created)
     )
 
-    response = client.post("/validate", data={"api_key": DEMO_API_KEY}, files=json_file)
+    response = client.post("/apitest", data={"api_key": DEMO_API_KEY}, files=json_file)
 
     # THEN the ClinVar API should return "unauthorized"
     assert response.status_code == 401  # Not authorized
@@ -312,16 +312,30 @@ def test_validate_wrong_api_key():
 
 
 @responses.activate
-def test_validate_error():
-    """Test the validated API proxy endpoint (with a mocked ClinVar API response)"""
+def test_apitest():
+    """Tests the endpoint apitest, a proxy to ClinVar apitest, with a mocked ClinVar API response."""
 
-    # GIVEN a mocked POST response from CLinVar apitest endpoint
+    # GIVEN a json submission file
+    json_file = {"json_file": open(subm_json_path, "rb")}
+
+    # AND a mocked ClinVar API
     responses.add(
         responses.POST,
         VALIDATE_SUBMISSION_URL,
         json={"id": DEMO_SUBMISSION_ID},
-        status=201,  # The ClinVar API returns code 201 when request is successful (created)
+        status=201,  # The ClinVar API returs code 201 when request is successful (created)
     )
+
+    response = client.post("/apitest", data={"api_key": DEMO_API_KEY}, files=json_file)
+
+    # THEN the ClinVar API proxy should return "success"
+    assert response.status_code == 201  # Created
+    assert response.json()["id"] == DEMO_SUBMISSION_ID
+
+
+@responses.activate
+def test_apitest_status():
+    """Test the endpoint that sends GET requests to the apitest actions ClinVar endpoint."""
 
     # GIVEN a mocked error response from apitest actions endpoint
     actions: list[dict] = [
@@ -353,15 +367,47 @@ def test_validate_error():
         responses.GET,
         f"{VALIDATE_SUBMISSION_URL}/{DEMO_SUBMISSION_ID}/actions/",
         json={"actions": actions},
-        status=200,  # The ClinVar API returns code 201 when request is successful (created)
+        status=200,
     )
 
-    # GIVEN a json submission file
-    json_file = {"json_file": open(subm_json_path, "rb")}
+    # GIVEN a call to the apitest_status endpoint
+    response = client.post(
+        "/apitest-status", data={"api_key": DEMO_API_KEY, "submission_id": DEMO_SUBMISSION_ID}
+    )
 
-    response = client.post("/validate", data={"api_key": DEMO_API_KEY}, files=json_file)
-
-    # THEN the ClinVar API proxy should return the expected data
+    # THEN the response should contain the provided actions
     assert response.status_code == 200
     assert response.json()["actions"][0]["id"]
     assert response.json()["actions"][0]["responses"][0]["files"]
+
+
+@responses.activate
+def test_status_submitted():
+    """Test the status endpoint, proxy to the https://submit.ncbi.nlm.nih.gov/api/v1/submissions/SUBnnnnnn/actions ClinVar endpoint."""
+
+    # GIVEN a mocked submitted response from ClinVar:
+    actions: list[dict] = [
+        {
+            "id": f"{DEMO_SUBMISSION_ID}-1",
+            "responses": [],
+            "status": "submitted",
+            "targetDb": "clinvar",
+            "updated": "2024-04-26T13:39:24.384085Z",
+        }
+    ]
+
+    responses.add(
+        responses.GET,
+        f"{SUBMISSION_URL}/{DEMO_SUBMISSION_ID}/actions/",
+        json={"actions": actions},
+        status=200,
+    )
+
+    # GIVEN a call to the status endpoint
+    response = client.post(
+        "/status", data={"api_key": DEMO_API_KEY, "submission_id": DEMO_SUBMISSION_ID}
+    )
+
+    # THEN the response should contain the provided status
+    assert response.status_code == 200
+    assert response.json()["actions"][0]["status"] == "submitted"

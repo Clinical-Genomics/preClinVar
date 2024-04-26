@@ -10,7 +10,7 @@ from fastapi.responses import JSONResponse
 
 from preClinVar.__version__ import VERSION
 from preClinVar.build import build_header, build_submission
-from preClinVar.constants import DRY_RUN_SUBMISSION_URL, VALIDATE_SUBMISSION_URL
+from preClinVar.constants import DRY_RUN_SUBMISSION_URL, SUBMISSION_URL, VALIDATE_SUBMISSION_URL
 from preClinVar.file_parser import csv_lines, file_fields_to_submission, tsv_lines
 from preClinVar.validate import validate_submission
 
@@ -33,16 +33,32 @@ async def root():
     return {"message": f"preClinVar v{VERSION} is up and running!"}
 
 
-@app.post("/validate")
-async def validate(api_key: str = Form(), json_file: UploadFile = File(...)) -> JSONResponse:
-    """A proxy to the apitest submission ClinVar API endpoint. Returns the ID of the submission and the data summary report with eventual errors."""
+@app.post("/apitest-status")
+async def apitest_status(api_key: str = Form(), submission_id: str = Form()) -> JSONResponse:
+    """Returns the status (validation) of a test submission to the apitest endpoint."""
+
+    # Create a submission header
+    header = build_header(api_key)
+
+    apitest_actions_url = f"{VALIDATE_SUBMISSION_URL}/{submission_id}/actions/"
+    apitest_actions_resp = requests.get(apitest_actions_url, headers=header)
+
+    return JSONResponse(
+        status_code=apitest_actions_resp.status_code,
+        content=apitest_actions_resp.json(),
+    )
+
+
+@app.post("/apitest")
+async def apitest(api_key: str = Form(), json_file: UploadFile = File(...)):
+    """A proxy to the apitest ClinVar API endpoint"""
     # Create a submission header
     header = build_header(api_key)
 
     # Get json file content as dict:
     submission_obj = json.load(json_file.file)
 
-    # And use it as data in a POST request to API
+    # And use it in POST request to API
     data = {
         "actions": [
             {
@@ -52,23 +68,10 @@ async def validate(api_key: str = Form(), json_file: UploadFile = File(...)) -> 
             }
         ]
     }
-    apitest_resp = requests.post(VALIDATE_SUBMISSION_URL, data=json.dumps(data), headers=header)
-    apitest_json: dict = apitest_resp.json()
-
-    # If submission was created, return eventual link for downloading json file with data-specific errors
-    if apitest_resp.status_code == 201:
-
-        apitest_actions_url = f"{VALIDATE_SUBMISSION_URL}/{apitest_json.get('id')}/actions/"
-        apitest_actions_resp = requests.get(apitest_actions_url, headers=header)
-
-        return JSONResponse(
-            status_code=apitest_actions_resp.status_code,
-            content=apitest_actions_resp.json(),
-        )
-
+    resp = requests.post(VALIDATE_SUBMISSION_URL, data=json.dumps(data), headers=header)
     return JSONResponse(
-        status_code=apitest_resp.status_code,
-        content=apitest_json,
+        status_code=resp.status_code,
+        content=resp.json(),
     )
 
 
@@ -213,4 +216,20 @@ async def csv_2_json(
     return JSONResponse(
         status_code=400,
         content={"message": f"Created json file contains validation errors: {valid_results[1]}"},
+    )
+
+
+@app.post("/status")
+async def status(api_key: str = Form(), submission_id: str = Form()) -> JSONResponse:
+    """Returns the status (validation) of a submission."""
+
+    # Create a submission header
+    header = build_header(api_key)
+
+    actions_url = f"{SUBMISSION_URL}/{submission_id}/actions/"
+    actions_resp = requests.get(actions_url, headers=header)
+
+    return JSONResponse(
+        status_code=actions_resp.status_code,
+        content=actions_resp.json(),
     )
