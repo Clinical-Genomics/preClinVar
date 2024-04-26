@@ -332,49 +332,50 @@ def test_validate():
     assert response.status_code == 201  # Created
     assert response.json()["id"] == DEMO_SUBMISSION_ID
 
-    @responses.activate
-    def test_apitest_status():
-        """Test the endpoint that sends GET requests to the apitest actions ClinVar endpoint."""
 
-        # GIVEN a mocked error response from apitest actions endpoint
-        actions: list[dict] = [
-            {
-                "id": "SUB14404390-1",
-                "targetDb": "clinvar-test",
-                "status": "error",
-                "updated": "2024-04-26T06:41:04.533900Z",
-                "responses": [
-                    {
-                        "status": "error",
-                        "message": {
-                            "severity": "error",
-                            "errorCode": "2",
-                            "text": 'Your ClinVar submission processing status is "Error". Please find the details in the file referenced by actions[0].responses[0].files[0].url.',
-                        },
-                        "files": [
-                            {
-                                "url": "https://submit.ncbi.nlm.nih.gov/api/2.0/files/vxgc6vtt/sub14404390-summary-report.json/?format=attachment"
-                            }
-                        ],
-                        "objects": [],
-                    }
-                ],
-            }
-        ]
+@responses.activate
+def test_apitest_status():
+    """Test the endpoint that sends GET requests to the apitest actions ClinVar endpoint."""
 
-        responses.add(
-            responses.GET,
-            f"{VALIDATE_SUBMISSION_URL}/{DEMO_SUBMISSION_ID}/actions/",
-            json={"actions": actions},
-            status=200,  # The ClinVar API returns code 201 when request is successful (created)
-        )
+    # GIVEN a mocked error response from apitest actions endpoint
+    actions: list[dict] = [
+        {
+            "id": "SUB14404390-1",
+            "targetDb": "clinvar-test",
+            "status": "error",
+            "updated": "2024-04-26T06:41:04.533900Z",
+            "responses": [
+                {
+                    "status": "error",
+                    "message": {
+                        "severity": "error",
+                        "errorCode": "2",
+                        "text": 'Your ClinVar submission processing status is "Error". Please find the details in the file referenced by actions[0].responses[0].files[0].url.',
+                    },
+                    "files": [
+                        {
+                            "url": "https://submit.ncbi.nlm.nih.gov/api/2.0/files/vxgc6vtt/sub14404390-summary-report.json/?format=attachment"
+                        }
+                    ],
+                    "objects": [],
+                }
+            ],
+        }
+    ]
 
-        # GIVEN a call to the apitest_status endpoint
-        response = client.post(
-            "/validate", data={"api_key": DEMO_API_KEY, "submission_id": DEMO_SUBMISSION_ID}
-        )
+    responses.add(
+        responses.GET,
+        f"{VALIDATE_SUBMISSION_URL}/{DEMO_SUBMISSION_ID}/actions/",
+        json={"actions": actions},
+        status=200,  # The ClinVar API returns code 201 when request is successful (created)
+    )
 
-        # THEN the response should contain the provided actions
-        assert response.status_code == 200
-        assert response.json()["actions"][0]["id"]
-        assert response.json()["actions"][0]["responses"][0]["files"]
+    # GIVEN a call to the apitest_status endpoint
+    response = client.post(
+        "/apitest-status", data={"api_key": DEMO_API_KEY, "submission_id": DEMO_SUBMISSION_ID}
+    )
+
+    # THEN the response should contain the provided actions
+    assert response.status_code == 200
+    assert response.json()["actions"][0]["id"]
+    assert response.json()["actions"][0]["responses"][0]["files"]
