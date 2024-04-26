@@ -35,7 +35,7 @@ async def root():
 
 @app.post("/validate")
 async def validate(api_key: str = Form(), json_file: UploadFile = File(...)) -> JSONResponse:
-    """A proxy to the apitest submission ClinVar API endpoint"""
+    """A proxy to the apitest submission ClinVar API endpoint. Returns the ID of the submission and the data summary report with eventual errors."""
     # Create a submission header
     header = build_header(api_key)
 
