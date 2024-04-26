@@ -10,7 +10,7 @@ from fastapi.responses import JSONResponse
 
 from preClinVar.__version__ import VERSION
 from preClinVar.build import build_header, build_submission
-from preClinVar.constants import DRY_RUN_SUBMISSION_URL, VALIDATE_SUBMISSION_URL
+from preClinVar.constants import DRY_RUN_SUBMISSION_URL, SUBMISSION_URL, VALIDATE_SUBMISSION_URL
 from preClinVar.file_parser import csv_lines, file_fields_to_submission, tsv_lines
 from preClinVar.validate import validate_submission
 
@@ -216,4 +216,20 @@ async def csv_2_json(
     return JSONResponse(
         status_code=400,
         content={"message": f"Created json file contains validation errors: {valid_results[1]}"},
+    )
+
+
+@app.post("/status")
+async def status(api_key: str = Form(), submission_id: str = Form()) -> JSONResponse:
+    """Returns the status (validation) of a submission."""
+
+    # Create a submission header
+    header = build_header(api_key)
+
+    actions_url = f"{SUBMISSION_URL}/{submission_id}/actions/"
+    actions_resp = requests.get(actions_url, headers=header)
+
+    return JSONResponse(
+        status_code=actions_resp.status_code,
+        content=actions_resp.json(),
     )

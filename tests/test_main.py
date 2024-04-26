@@ -7,7 +7,7 @@ import responses
 from fastapi.testclient import TestClient
 
 from preClinVar.__version__ import VERSION
-from preClinVar.constants import DRY_RUN_SUBMISSION_URL, VALIDATE_SUBMISSION_URL
+from preClinVar.constants import DRY_RUN_SUBMISSION_URL, SUBMISSION_URL, VALIDATE_SUBMISSION_URL
 from preClinVar.demo import (
     casedata_old_csv,
     casedata_old_csv_path,
@@ -367,7 +367,7 @@ def test_apitest_status():
         responses.GET,
         f"{VALIDATE_SUBMISSION_URL}/{DEMO_SUBMISSION_ID}/actions/",
         json={"actions": actions},
-        status=200,  # The ClinVar API returns code 201 when request is successful (created)
+        status=200,
     )
 
     # GIVEN a call to the apitest_status endpoint
@@ -379,3 +379,35 @@ def test_apitest_status():
     assert response.status_code == 200
     assert response.json()["actions"][0]["id"]
     assert response.json()["actions"][0]["responses"][0]["files"]
+
+
+@responses.activate
+def test_status_submitted():
+    """Test the status endpoint, proxy to the https://submit.ncbi.nlm.nih.gov/api/v1/submissions/SUBnnnnnn/actions ClinVar endpoint."""
+
+    # GIVEN a mocked submitted response from ClinVar:
+    actions: list[dict] = [
+        {
+            "id": f"{DEMO_SUBMISSION_ID}-1",
+            "responses": [],
+            "status": "submitted",
+            "targetDb": "clinvar",
+            "updated": "2024-04-26T13:39:24.384085Z",
+        }
+    ]
+
+    responses.add(
+        responses.GET,
+        f"{SUBMISSION_URL}/{DEMO_SUBMISSION_ID}/actions/",
+        json={"actions": actions},
+        status=200,
+    )
+
+    # GIVEN a call to the status endpoint
+    response = client.post(
+        "/status", data={"api_key": DEMO_API_KEY, "submission_id": DEMO_SUBMISSION_ID}
+    )
+
+    # THEN the response should contain the provided status
+    assert response.status_code == 200
+    assert response.json()["actions"][0]["status"] == "submitted"
