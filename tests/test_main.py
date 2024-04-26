@@ -290,8 +290,8 @@ def test_dry_run():
 
 
 @responses.activate
-def test_validate_wrong_api_key():
-    """Test the validate API proxy endpoint without a valid ClinVar API key"""
+def test_apitest_wrong_api_key():
+    """Test the apitest API proxy endpoint without a valid ClinVar API key"""
 
     # GIVEN a json submission file
     json_file = {"json_file": open(subm_json_path, "rb")}
@@ -304,7 +304,7 @@ def test_validate_wrong_api_key():
         status=401,  # The ClinVar API returs code 201 when request is successful (created)
     )
 
-    response = client.post("/validate", data={"api_key": DEMO_API_KEY}, files=json_file)
+    response = client.post("/apitest", data={"api_key": DEMO_API_KEY}, files=json_file)
 
     # THEN the ClinVar API should return "unauthorized"
     assert response.status_code == 401  # Not authorized
@@ -312,8 +312,8 @@ def test_validate_wrong_api_key():
 
 
 @responses.activate
-def test_validate():
-    """Test the endpoint validate, a proxy to ClinVar apitest, with a mocked ClinVar API response."""
+def test_apitest():
+    """Tests the endpoint apitest, a proxy to ClinVar apitest, with a mocked ClinVar API response."""
 
     # GIVEN a json submission file
     json_file = {"json_file": open(subm_json_path, "rb")}
@@ -326,7 +326,7 @@ def test_validate():
         status=201,  # The ClinVar API returs code 201 when request is successful (created)
     )
 
-    response = client.post("/validate", data={"api_key": DEMO_API_KEY}, files=json_file)
+    response = client.post("/apitest", data={"api_key": DEMO_API_KEY}, files=json_file)
 
     # THEN the ClinVar API proxy should return "success"
     assert response.status_code == 201  # Created
