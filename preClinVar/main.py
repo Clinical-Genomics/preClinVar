@@ -34,15 +34,15 @@ async def root():
 
 
 @app.post("/validate")
-async def validate(api_key: str = Form(), json_file: UploadFile = File(...)):
-    """A proxy to the validate submission ClinVar API endpoint"""
+async def validate(api_key: str = Form(), json_file: UploadFile = File(...)) -> JSONResponse:
+    """A proxy to the apitest submission ClinVar API endpoint"""
     # Create a submission header
     header = build_header(api_key)
 
     # Get json file content as dict:
     submission_obj = json.load(json_file.file)
 
-    # And use it in POST request to API
+    # And use it as data in a POST request to API
     data = {
         "actions": [
             {
@@ -52,10 +52,23 @@ async def validate(api_key: str = Form(), json_file: UploadFile = File(...)):
             }
         ]
     }
-    resp = requests.post(VALIDATE_SUBMISSION_URL, data=json.dumps(data), headers=header)
+    apitest_resp = requests.post(VALIDATE_SUBMISSION_URL, data=json.dumps(data), headers=header)
+    apitest_json: dict = apitest_resp.json()
+
+    # If submission was created, return eventual link for downloading json file with data-specific errors
+    if apitest_resp.status_code == 201:
+
+        apitest_actions_url = f"{VALIDATE_SUBMISSION_URL}/{apitest_json.get('id')}/actions/"
+        apitest_actions_resp = requests.get(apitest_actions_url, headers=header)
+
+        return JSONResponse(
+            status_code=apitest_actions_resp.status_code,
+            content=apitest_actions_resp.json(),
+        )
+
     return JSONResponse(
-        status_code=resp.status_code,
-        content=resp.json(),
+        status_code=apitest_resp.status_code,
+        content=apitest_json,
     )
 
 
