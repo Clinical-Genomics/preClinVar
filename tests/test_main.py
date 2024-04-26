@@ -312,16 +312,30 @@ def test_validate_wrong_api_key():
 
 
 @responses.activate
-def test_validate_error():
-    """Test the validated API proxy endpoint (with a mocked ClinVar API response)"""
+def test_validate():
+    """Test the endpoint validate, a proxy to ClinVar apitest, with a mocked ClinVar API response."""
 
-    # GIVEN a mocked POST response from CLinVar apitest endpoint
+    # GIVEN a json submission file
+    json_file = {"json_file": open(subm_json_path, "rb")}
+
+    # AND a mocked ClinVar API
     responses.add(
         responses.POST,
         VALIDATE_SUBMISSION_URL,
         json={"id": DEMO_SUBMISSION_ID},
-        status=201,  # The ClinVar API returns code 201 when request is successful (created)
+        status=201,  # The ClinVar API returs code 201 when request is successful (created)
     )
+
+    response = client.post("/validate", data={"api_key": DEMO_API_KEY}, files=json_file)
+
+    # THEN the ClinVar API proxy should return "success"
+    assert response.status_code == 201  # Created
+    assert response.json()["id"] == DEMO_SUBMISSION_ID
+
+
+@responses.activate
+def test_apitest_status():
+    """Test the endpoint that sends GET requests to the apitest actions ClinVar endpoint."""
 
     # GIVEN a mocked error response from apitest actions endpoint
     actions: list[dict] = [
@@ -356,12 +370,12 @@ def test_validate_error():
         status=200,  # The ClinVar API returns code 201 when request is successful (created)
     )
 
-    # GIVEN a json submission file
-    json_file = {"json_file": open(subm_json_path, "rb")}
+    # GIVEN a call to the apitest_status endpoint
+    response = client.post(
+        "/apitest-status", data={"api_key": DEMO_API_KEY, "submission_id": DEMO_SUBMISSION_ID}
+    )
 
-    response = client.post("/validate", data={"api_key": DEMO_API_KEY}, files=json_file)
-
-    # THEN the ClinVar API proxy should return the expected data
+    # THEN the response should contain the provided actions
     assert response.status_code == 200
     assert response.json()["actions"][0]["id"]
     assert response.json()["actions"][0]["responses"][0]["files"]
