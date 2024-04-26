@@ -23,9 +23,9 @@ Transforms csv submission files (Variant.csv and CaseData.csv) into a json submi
 
 Proxy endpoint to the ClinVar submissions API (dry-run): https://submit.ncbi.nlm.nih.gov/api/v1/submissions/?dry-run=true. Requires a valid API key and a json file containing a submission object. If the request is valid (and the json submission object is validated) returns a response with code 200 and json body with the message value "success".
 
-### validate
+### apitest
 
-Proxy endpoint to the ClinVar validate API endpoint: "https://submit.ncbi.nlm.nih.gov/apitest/v1/submissions". Requires a valid API key and a json file containing a submission object. If the json submission document is valid returns a submission ID which can be used for a real submission. If the json submission document is not validated, the endpoint returns a list of errors which will help fixing the document.
+Proxy endpoint to the validation API endpoint: (apitest) "https://submit.ncbi.nlm.nih.gov/apitest/v1/submissions". Requires a valid API key and a json file containing a submission object. If the json submission document is valid returns a submission ID which can be used for a real submission. If the json submission document is not validated, the endpoint returns a list of errors which will help fixing the document.
 
 ## Running the application using Docker-compose
 An example containing a demo setup for the app is included in the docker-compose file. Start the docker-compose demo using this command:

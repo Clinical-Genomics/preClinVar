@@ -1,6 +1,8 @@
 ## [unreleased]
 ### Added 
 - An endpoint `/apitest-status` that returns a response containing a link to the eventual json file with the submissions data errors
+### Changed
+- Renamed `/validate` endpoint to `/apitest`
 
 ## [2.5.2]
 ### Fixed
