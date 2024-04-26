@@ -1,4 +1,4 @@
-## [unreleased]
+## [2.6]
 ### Changed 
 - Expand the output of validate endpoint to return the link for downloading json file containing evantual submission errors
 
