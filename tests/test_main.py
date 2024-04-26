@@ -312,22 +312,56 @@ def test_validate_wrong_api_key():
 
 
 @responses.activate
-def test_validate():
+def test_validate_error():
     """Test the validated API proxy endpoint (with a mocked ClinVar API response)"""
 
-    # GIVEN a json submission file
-    json_file = {"json_file": open(subm_json_path, "rb")}
-
-    # AND a mocked ClinVar API
+    # GIVEN a mocked POST response from CLinVar apitest endpoint
     responses.add(
         responses.POST,
         VALIDATE_SUBMISSION_URL,
         json={"id": DEMO_SUBMISSION_ID},
-        status=201,  # The ClinVar API returs code 201 when request is successful (created)
+        status=201,  # The ClinVar API returns code 201 when request is successful (created)
     )
+
+    # GIVEN a mocked error response from apitest actions endpoint
+    actions: list[dict] = [
+        {
+            "id": "SUB14404390-1",
+            "targetDb": "clinvar-test",
+            "status": "error",
+            "updated": "2024-04-26T06:41:04.533900Z",
+            "responses": [
+                {
+                    "status": "error",
+                    "message": {
+                        "severity": "error",
+                        "errorCode": "2",
+                        "text": 'Your ClinVar submission processing status is "Error". Please find the details in the file referenced by actions[0].responses[0].files[0].url.',
+                    },
+                    "files": [
+                        {
+                            "url": "https://submit.ncbi.nlm.nih.gov/api/2.0/files/vxgc6vtt/sub14404390-summary-report.json/?format=attachment"
+                        }
+                    ],
+                    "objects": [],
+                }
+            ],
+        }
+    ]
+
+    responses.add(
+        responses.GET,
+        f"{VALIDATE_SUBMISSION_URL}/{DEMO_SUBMISSION_ID}/actions/",
+        json={"actions": actions},
+        status=200,  # The ClinVar API returns code 201 when request is successful (created)
+    )
+
+    # GIVEN a json submission file
+    json_file = {"json_file": open(subm_json_path, "rb")}
 
     response = client.post("/validate", data={"api_key": DEMO_API_KEY}, files=json_file)
 
-    # THEN the ClinVar API proxy should return "success"
-    assert response.status_code == 201  # Created
-    assert response.json()["id"] == DEMO_SUBMISSION_ID
+    # THEN the ClinVar API proxy should return the expected data
+    assert response.status_code == 200
+    assert response.json()["actions"][0]["id"]
+    assert response.json()["actions"][0]["responses"][0]["files"]

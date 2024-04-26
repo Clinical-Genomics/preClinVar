@@ -1,3 +1,7 @@
+## [unreleased]
+### Changed 
+- Expand the output of validate endpoint to return the link for downloading json file containing evantual submission errors
+
 ## [2.5.2]
 ### Fixed
 - Upload to Codecov step in `tests_n_coverage.yml` action
