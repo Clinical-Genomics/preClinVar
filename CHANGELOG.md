@@ -1,4 +1,8 @@
 
+## [unreleased]
+### Fixed
+- Updated setuptools to v.71 to fix a security issue
+
 ## [2.6]
 ### Added
 - An endpoint `/apitest-status` that returns a response containing the status of a test submission, with link to the eventual json file with the submissions data errors
