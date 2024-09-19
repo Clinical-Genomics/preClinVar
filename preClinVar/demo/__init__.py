@@ -22,5 +22,5 @@ variants_sv_breakpoints_csv_path = str(files(BASE_PATH).joinpath(variants_sv_bre
 variants_sv_range_coords_csv_path = str(files(BASE_PATH).joinpath(variants_sv_range_coords_csv))
 
 ###### Example of a json file submission ######
-subm_json = "submission.json"
-subm_json_path = str(files(BASE_PATH).joinpath(subm_json))
+clinsig_subm_json = "sample_clinical_significance_hgvs_submission.json"
+subm_json_path = str(files(BASE_PATH).joinpath(clinsig_subm_json))
