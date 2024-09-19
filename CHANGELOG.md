@@ -1,5 +1,7 @@
 
 ## [unreleased]
+### Changed
+- Updated API submission schema to the latest available on ncbi/clinvar
 ### Fixed
 - Updated setuptools to v.71 to fix a security issue
 - Updated issue templates
