@@ -1,5 +1,9 @@
 
 ## [unreleased]
+### Changed
+- Updated API submission schema to the latest available on `ncbi/clinvar` GitHub pages
+- Modified the json submission example to use one from the ClinVar GitHib repo (`sample_clinical_significance_hgvs_submission.json`)
+- Removed the example of an old json submission (before 2022-11-21) 
 ### Fixed
 - Updated setuptools to v.71 to fix a security issue
 - Updated issue templates
