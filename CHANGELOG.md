@@ -2,6 +2,7 @@
 ## [unreleased]
 ### Fixed
 - Updated setuptools to v.71 to fix a security issue
+- Updated issue templates
 
 ## [2.6]
 ### Added
