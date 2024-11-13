@@ -233,3 +233,30 @@ async def status(api_key: str = Form(), submission_id: str = Form()) -> JSONResp
         status_code=actions_resp.status_code,
         content=actions_resp.json(),
     )
+
+@app.post("/delete")
+async def delete(api_key: str = Form(), clinvar_accession: str = Form(), reason: str = Form()) -> JSONResponse:
+    """Delete ONE ClinVar submission."""
+
+    # Create a submission header
+    header = build_header(api_key)
+
+    # And use it in POST request to API
+    data = {
+      "clinvarDeletion": {
+        "accessionSet": [
+          {
+            "accession": clinvar_accession,
+            "reason": reason
+          }
+        ]
+      }
+    }
+    resp = requests.post(SUBMISSION_URL, data=json.dumps(data), headers=header)
+    return JSONResponse(
+        status_code=resp.status_code,
+        content=resp.json(),
+    )
+
+
+
