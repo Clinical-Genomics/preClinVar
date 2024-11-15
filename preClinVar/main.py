@@ -240,7 +240,7 @@ async def status(api_key: str = Form(), submission_id: str = Form()) -> JSONResp
 
 
 @app.post("/delete")
-async def dry_run(api_key: str = Form(), clinvar_accession: str = Form()):
+async def delete(api_key: str = Form(), clinvar_accession: str = Form()):
     """A proxy to the dry run submission ClinVar API endpoint"""
     # Create a submission header
     header = build_header(api_key)
