@@ -10,7 +10,11 @@ from fastapi.responses import JSONResponse
 
 from preClinVar.__version__ import VERSION
 from preClinVar.build import build_header, build_submission
-from preClinVar.constants import DRY_RUN_SUBMISSION_URL, SUBMISSION_URL, VALIDATE_SUBMISSION_URL
+from preClinVar.constants import (
+    DRY_RUN_SUBMISSION_URL,
+    SUBMISSION_URL,
+    VALIDATE_SUBMISSION_URL,
+)
 from preClinVar.file_parser import csv_lines, file_fields_to_submission, tsv_lines
 from preClinVar.validate import validate_submission
 
@@ -34,7 +38,9 @@ async def root():
 
 
 @app.post("/apitest-status")
-async def apitest_status(api_key: str = Form(), submission_id: str = Form()) -> JSONResponse:
+async def apitest_status(
+    api_key: str = Form(), submission_id: str = Form()
+) -> JSONResponse:
     """Returns the status (validation) of a test submission to the apitest endpoint."""
 
     # Create a submission header
@@ -156,7 +162,9 @@ async def tsv_2_json(
         )
     return JSONResponse(
         status_code=400,
-        content={"message": f"Created json file contains validation errors: {valid_results[1]}"},
+        content={
+            "message": f"Created json file contains validation errors: {valid_results[1]}"
+        },
     )
 
 
@@ -215,7 +223,9 @@ async def csv_2_json(
         )
     return JSONResponse(
         status_code=400,
-        content={"message": f"Created json file contains validation errors: {valid_results[1]}"},
+        content={
+            "message": f"Created json file contains validation errors: {valid_results[1]}"
+        },
     )
 
 
@@ -234,16 +244,18 @@ async def status(api_key: str = Form(), submission_id: str = Form()) -> JSONResp
         content=actions_resp.json(),
     )
 
+
 @app.post("/delete")
-async def dry_run(api_key: str = Form(), json_file: UploadFile = File(...)):
+async def dry_run(api_key: str = Form(), clinvar_accession: str = Form()):
     """A proxy to the dry run submission ClinVar API endpoint"""
     # Create a submission header
     header = build_header(api_key)
 
-    # Get json file content as dict:
-    delete_obj = json.load(json_file.file)
+    # Create a submission deletion object
+    delete_obj = {
+        "clinvarDeletion": {"accessionSet": [{"accession": clinvar_accession}]}
+    }
 
-    # And use it in POST request to API
     data = {
         "actions": [
             {
@@ -253,6 +265,7 @@ async def dry_run(api_key: str = Form(), json_file: UploadFile = File(...)):
             }
         ]
     }
+    # And send a POST request to the API
     resp = requests.post(SUBMISSION_URL, data=json.dumps(data), headers=header)
 
     # A successful response will be an empty response with code 204 (A dry-run submission was successful and no submission was created)
@@ -265,5 +278,3 @@ async def dry_run(api_key: str = Form(), json_file: UploadFile = File(...)):
         status_code=resp.status_code,
         content=resp.json(),
     )
-
-
