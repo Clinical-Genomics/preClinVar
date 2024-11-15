@@ -235,28 +235,35 @@ async def status(api_key: str = Form(), submission_id: str = Form()) -> JSONResp
     )
 
 @app.post("/delete")
-async def delete(api_key: str = Form(), clinvar_accession: str = Form(), reason: str = Form()) -> JSONResponse:
-    """Delete ONE ClinVar submission."""
-
+async def dry_run(api_key: str = Form(), json_file: UploadFile = File(...)):
+    """A proxy to the dry run submission ClinVar API endpoint"""
     # Create a submission header
     header = build_header(api_key)
 
+    # Get json file content as dict:
+    delete_obj = json.load(json_file.file)
+
     # And use it in POST request to API
     data = {
-      "clinvarDeletion": {
-        "accessionSet": [
-          {
-            "accession": clinvar_accession,
-            "reason": reason
-          }
+        "actions": [
+            {
+                "type": "AddData",
+                "targetDb": "clinvar",
+                "data": {"content": delete_obj},
+            }
         ]
-      }
     }
     resp = requests.post(SUBMISSION_URL, data=json.dumps(data), headers=header)
+
+    # A successful response will be an empty response with code 204 (A dry-run submission was successful and no submission was created)
+    if resp.status_code == 204:
+        return JSONResponse(
+            status_code=200,
+            content={"message": "success"},
+        )
     return JSONResponse(
         status_code=resp.status_code,
         content=resp.json(),
     )
-
 
 
