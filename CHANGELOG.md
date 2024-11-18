@@ -1,5 +1,7 @@
 
 ## [unreleased]
+### Added
+- Delete submission endpoint, with json example (under demo files)
 ### Changed
 - Updated API submission schema to the latest available on `ncbi/clinvar` GitHub pages
 - Modified the json submission example to use one from the ClinVar GitHib repo (`sample_clinical_significance_hgvs_submission.json`)

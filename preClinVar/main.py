@@ -10,7 +10,11 @@ from fastapi.responses import JSONResponse
 
 from preClinVar.__version__ import VERSION
 from preClinVar.build import build_header, build_submission
-from preClinVar.constants import DRY_RUN_SUBMISSION_URL, SUBMISSION_URL, VALIDATE_SUBMISSION_URL
+from preClinVar.constants import (
+    DRY_RUN_SUBMISSION_URL,
+    SUBMISSION_URL,
+    VALIDATE_SUBMISSION_URL,
+)
 from preClinVar.file_parser import csv_lines, file_fields_to_submission, tsv_lines
 from preClinVar.validate import validate_submission
 
@@ -232,4 +236,31 @@ async def status(api_key: str = Form(), submission_id: str = Form()) -> JSONResp
     return JSONResponse(
         status_code=actions_resp.status_code,
         content=actions_resp.json(),
+    )
+
+
+@app.post("/delete")
+async def delete(api_key: str = Form(), clinvar_accession: str = Form()):
+    """A proxy to the dry run submission ClinVar API endpoint"""
+    # Create a submission header
+    header = build_header(api_key)
+
+    # Create a submission deletion object
+    delete_obj = {"clinvarDeletion": {"accessionSet": [{"accession": clinvar_accession}]}}
+
+    data = {
+        "actions": [
+            {
+                "type": "AddData",
+                "targetDb": "clinvar",
+                "data": {"content": delete_obj},
+            }
+        ]
+    }
+    # And send a POST request to the API
+    resp = requests.post(SUBMISSION_URL, data=json.dumps(data), headers=header)
+
+    return JSONResponse(
+        status_code=resp.status_code,
+        content=resp.json(),
     )
