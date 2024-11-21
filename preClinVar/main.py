@@ -1,6 +1,7 @@
 import json
 import logging
 import re
+from contextlib import asynccontextmanager
 from typing import List
 
 import requests
@@ -16,16 +17,18 @@ from preClinVar.validate import validate_submission
 
 LOG = logging.getLogger("uvicorn.access")
 
-app = FastAPI()
 
-
-@app.on_event("startup")
-async def startup_event():
+@asynccontextmanager
+async def lifespan(app_: FastAPI):
     LOG = logging.getLogger("uvicorn.access")
     console_formatter = uvicorn.logging.ColourizedFormatter(
         "{levelprefix} {asctime} : {message}", style="{", use_colors=True
     )
     LOG.handlers[0].setFormatter(console_formatter)
+    yield
+
+
+app = FastAPI(lifespan=lifespan)
 
 
 @app.get("/")
