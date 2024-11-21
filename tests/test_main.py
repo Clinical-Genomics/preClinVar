@@ -37,6 +37,7 @@ OPTIONAL_PARAMETERS = {
     "assertionCriteriaDB": "PubMed",
     "assertionCriteriaID": "25741868",
 }
+DEMO_ACCESSION_ID = "SCV005395965"
 
 
 def test_heartbeat():
@@ -411,3 +412,25 @@ def test_status_submitted():
     # THEN the response should contain the provided status
     assert response.status_code == 200
     assert response.json()["actions"][0]["status"] == "submitted"
+
+
+@responses.activate
+def test_delete():
+    """Test the endpoint that deletes ClinVar submissions sing the API."""
+
+    # GIVEN a mocked submitted response from ClinVar:
+    responses.add(
+        responses.POST,
+        SUBMISSION_URL,
+        json={"id": DEMO_SUBMISSION_ID},
+        status=201,
+    )
+
+    # GIVEN a call to the delete endpoint
+    response = client.post(
+        "/delete", data={"api_key": DEMO_API_KEY, "clinvar_accession": DEMO_ACCESSION_ID}
+    )
+
+    # THEN the response should contain the provided status
+    assert response.status_code == 201
+    assert response.json()["id"] == DEMO_SUBMISSION_ID
