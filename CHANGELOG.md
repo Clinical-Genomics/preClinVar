@@ -10,6 +10,7 @@
 ### Fixed
 - Updated issue templates
 - Updated a number of libraries to address all current security advisories
+- Warnings in the Dockerfile
 
 ## [2.6]
 ### Added
