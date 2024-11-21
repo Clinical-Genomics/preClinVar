@@ -37,18 +37,16 @@ ENV GUNICORN_THREADS=1
 ENV GUNICORN_BIND="0.0.0.0:8000"
 ENV GUNICORN_TIMEOUT=400
 
-CMD [ \
-    "gunicorn", \
-    "--workers=${GUNICORN_WORKERS}", \
-    "--worker-class=uvicorn.workers.UvicornWorker", \
-    "--bind=${GUNICORN_BIND}", \
-    "--threads=${GUNICORN_THREADS}", \
-    "--timeout=${GUNICORN_TIMEOUT}", \
-    "--proxy-protocol", \
-    "--forwarded-allow-ips=10.0.2.100,127.0.0.1", \
-    "--log-syslog", \
-    "--access-logfile", "-", \
-    "--error-logfile", "-", \
-    "--log-level=debug", \
-    "preClinVar.main:app" \
-]
+ENTRYPOINT ["/bin/sh", "-c", "gunicorn \
+    --workers=${GUNICORN_WORKERS} \
+    --worker-class=uvicorn.workers.UvicornWorker \
+    --bind=${GUNICORN_BIND} \
+    --threads=${GUNICORN_THREADS} \
+    --timeout=${GUNICORN_TIMEOUT} \
+    --proxy-protocol \
+    --forwarded-allow-ips=10.0.2.100,127.0.0.1 \
+    --log-syslog \
+    --access-logfile '-' \
+    --error-logfile '-' \
+    --log-level=debug \
+    preClinVar.main:app"]

@@ -1,3 +1,6 @@
+## [2.7.1]
+### Fixed
+- Replace the CMD step of the Dockerfile with an ENTRYPOINT that uses `/bin/sh -c` to evaluates the shell commands and expand environment variables.
 
 ## [2.7]
 ### Added
