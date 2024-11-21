@@ -37,7 +37,7 @@ The server will be running and accepting requests sent from outside the containe
 
 ## Installing the application on a local conda environment
 
-Given a conda environment sontaining python 3.8 and [poetry](https://github.com/python-poetry/poetry), clone the repository from Github with the following command:
+Given a conda environment containing Python 3.9 and [poetry](https://github.com/python-poetry/poetry), clone the repository from Github with the following command:
 
 ```
 git clone https://github.com/Clinical-Genomics/preClinVar.git

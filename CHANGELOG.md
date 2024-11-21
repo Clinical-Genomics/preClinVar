@@ -6,9 +6,12 @@
 - Updated API submission schema to the latest available on `ncbi/clinvar` GitHub pages
 - Modified the json submission example to use one from the ClinVar GitHib repo (`sample_clinical_significance_hgvs_submission.json`)
 - Removed the example of an old json submission (before 2022-11-21) 
+- Updated actions using the latest base images and to run using Python 3.9
+- Docker image uses Python 3.11 instead of 3.8
 ### Fixed
 - Updated issue templates
 - Updated a number of libraries to address all current security advisories
+- Warnings in the Dockerfile
 
 ## [2.6]
 ### Added
