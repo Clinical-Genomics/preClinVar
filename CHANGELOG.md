@@ -1,5 +1,5 @@
 
-## [unreleased]
+## [2.7]
 ### Added
 - Delete submission endpoint, with json example (under demo files) and test
 ### Changed
