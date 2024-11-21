@@ -1,7 +1,7 @@
 ###########
 # BUILDER #
 ###########
-FROM clinicalgenomics/python3.8-venv:1.0 AS builder
+FROM clinicalgenomics/python3.11-venv:1.0 AS builder
 
 # Install and run commands from virtual environment
 RUN python3 -m venv /home/worker/venv
@@ -16,7 +16,7 @@ RUN poetry install --no-interaction
 #########
 # FINAL #
 #########
-FROM clinicalgenomics/python3.8-venv:1.0
+FROM clinicalgenomics/python3.11-venv:1.0
 
 RUN groupadd --gid 1000 worker && useradd -g worker --uid 1000 --create-home worker
 COPY --chown=worker:worker --from=builder /home/worker/venv /home/worker/venv
