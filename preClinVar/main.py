@@ -25,7 +25,7 @@ async def lifespan(app_: FastAPI):
         "{levelprefix} {asctime} : {message}", style="{", use_colors=True
     )
     LOG.handlers[0].setFormatter(console_formatter)
-    yield  # This is crucial for the lifespan context manager
+    yield
 
 
 app = FastAPI(lifespan=lifespan)
