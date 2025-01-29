@@ -41,9 +41,7 @@ async def root():
 
 
 @app.post("/apitest-status")
-async def apitest_status(
-    api_key: str = Form(), submission_id: str = Form()
-) -> JSONResponse:
+async def apitest_status(api_key: str = Form(), submission_id: str = Form()) -> JSONResponse:
     """Returns the status (validation) of a test submission to the apitest endpoint."""
 
     # Create a submission header
@@ -165,9 +163,7 @@ async def tsv_2_json(
         )
     return JSONResponse(
         status_code=400,
-        content={
-            "message": f"Created json file contains validation errors: {valid_results[1]}"
-        },
+        content={"message": f"Created json file contains validation errors: {valid_results[1]}"},
     )
 
 
@@ -226,9 +222,7 @@ async def csv_2_json(
         )
     return JSONResponse(
         status_code=400,
-        content={
-            "message": f"Created json file contains validation errors: {valid_results[1]}"
-        },
+        content={"message": f"Created json file contains validation errors: {valid_results[1]}"},
     )
 
 
@@ -255,9 +249,7 @@ async def delete(api_key: str = Form(), clinvar_accession: str = Form()):
     header = build_header(api_key)
 
     # Create a submission deletion object
-    delete_obj = {
-        "clinvarDeletion": {"accessionSet": [{"accession": clinvar_accession}]}
-    }
+    delete_obj = {"clinvarDeletion": {"accessionSet": [{"accession": clinvar_accession}]}}
 
     data = {
         "actions": [
