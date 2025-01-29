@@ -1,3 +1,9 @@
+## [unreleased]
+### Changed
+- Updated several libraries
+### Fixed
+- Renamed the software from preClinVar to preclinvar in pyproject.toml to fix the `No file/folder found for package preclinvar` installation error
+
 ## [2.7.1]
 ### Fixed
 - Replace the CMD step of the Dockerfile with an ENTRYPOINT that uses `/bin/sh -c` to evaluates the shell commands and expand environment variables.
