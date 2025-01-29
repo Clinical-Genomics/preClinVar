@@ -1,5 +1,5 @@
-from preClinVar.constants import CLNSIG_TERMS
-from preClinVar.file_parser import (
+from preclinvar.constants import CLNSIG_TERMS
+from preclinvar.file_parser import (
     set_item_clin_sig,
     set_item_condition_set,
     set_item_variant_set,

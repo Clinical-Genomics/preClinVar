@@ -6,9 +6,9 @@ from tempfile import NamedTemporaryFile
 import responses
 from fastapi.testclient import TestClient
 
-from preClinVar.__version__ import VERSION
-from preClinVar.constants import DRY_RUN_SUBMISSION_URL, SUBMISSION_URL, VALIDATE_SUBMISSION_URL
-from preClinVar.demo import (
+from preclinvar.__version__ import VERSION
+from preclinvar.constants import DRY_RUN_SUBMISSION_URL, SUBMISSION_URL, VALIDATE_SUBMISSION_URL
+from preclinvar.demo import (
     casedata_old_csv,
     casedata_old_csv_path,
     casedata_snv_csv,
@@ -25,7 +25,7 @@ from preClinVar.demo import (
     variants_sv_range_coords_csv,
     variants_sv_range_coords_csv_path,
 )
-from preClinVar.main import app
+from preclinvar.main import app
 
 client = TestClient(app)
 

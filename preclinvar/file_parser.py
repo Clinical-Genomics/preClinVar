@@ -3,7 +3,7 @@ import os
 from csv import DictReader
 from tempfile import NamedTemporaryFile
 
-from preClinVar.constants import CLNSIG_TERMS, CONDITIONS_MAP, SNV_COORDS, SV_COORDS
+from preclinvar.constants import CLNSIG_TERMS, CONDITIONS_MAP, SNV_COORDS, SV_COORDS
 
 LOG = logging.getLogger("uvicorn.access")
 

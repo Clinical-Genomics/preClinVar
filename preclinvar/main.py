@@ -9,11 +9,11 @@ import uvicorn
 from fastapi import FastAPI, File, Form, Request, UploadFile
 from fastapi.responses import JSONResponse
 
-from preClinVar.__version__ import VERSION
-from preClinVar.build import build_header, build_submission
-from preClinVar.constants import DRY_RUN_SUBMISSION_URL, SUBMISSION_URL, VALIDATE_SUBMISSION_URL
-from preClinVar.file_parser import csv_lines, file_fields_to_submission, tsv_lines
-from preClinVar.validate import validate_submission
+from preclinvar.__version__ import VERSION
+from preclinvar.build import build_header, build_submission
+from preclinvar.constants import DRY_RUN_SUBMISSION_URL, SUBMISSION_URL, VALIDATE_SUBMISSION_URL
+from preclinvar.file_parser import csv_lines, file_fields_to_submission, tsv_lines
+from preclinvar.validate import validate_submission
 
 LOG = logging.getLogger("uvicorn.access")
 

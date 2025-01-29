@@ -4,7 +4,7 @@ from typing import List, Tuple
 
 from jsonschema import Draft7Validator, validate
 
-from preClinVar.resources import subm_schema_path
+from preclinvar.resources import subm_schema_path
 
 LOG = logging.getLogger("uvicorn.access")
 

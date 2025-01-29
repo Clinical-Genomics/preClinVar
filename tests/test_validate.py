@@ -1,6 +1,6 @@
 import json
-from preClinVar.validate import validate_submission
-from preClinVar.demo import subm_json_path
+from preclinvar.validate import validate_submission
+from preclinvar.demo import subm_json_path
 
 
 def test_validate_submission():
