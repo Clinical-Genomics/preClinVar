@@ -1,3 +1,7 @@
+## [unreleased]
+### Fixed
+- GitHub action to use poetry v.1.7.1
+
 ## [2.7.1]
 ### Fixed
 - Replace the CMD step of the Dockerfile with an ENTRYPOINT that uses `/bin/sh -c` to evaluates the shell commands and expand environment variables.
