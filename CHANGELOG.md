@@ -1,6 +1,7 @@
 ## [unreleased]
 ### Changed
 - Improve README and endpoint descriptions specifying that `tsv_2_json` and `csv_2_json` endpoints support only coversion for germline submission files
+- PR template to be more compact and user friendly
 ### Fixed
 - GitHub action to use poetry v.1.7.1
 
