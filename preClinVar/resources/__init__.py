@@ -4,7 +4,9 @@ BASE_PATH = "preClinVar.resources"
 
 ###### submission schema json file ######
 
-subm_schema = "submission_schema.json"
+germline_subm_schema = "germline_submission_schema.json"
+somatic_subm_schema = "somatic_submission_schema.json"
 
 ###### Path to submission schema file ######
-subm_schema_path = str(files(BASE_PATH).joinpath(subm_schema))
+germline_subm_schema_path = str(files(BASE_PATH).joinpath(germline_subm_schema))
+somatic_subm_schema_path = str(files(BASE_PATH).joinpath(somatic_subm_schema))

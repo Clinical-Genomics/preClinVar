@@ -1,6 +1,7 @@
 import json
-from preClinVar.validate import validate_submission
+
 from preClinVar.demo import subm_json_path
+from preClinVar.validate import validate_submission
 
 
 def test_validate_submission():
@@ -12,4 +13,4 @@ def test_validate_submission():
     # THEN the submission should be validated and return no errors when validated against the ClinVar Schema
     with open(subm_json_path) as json_file:
         submission_dict = json.load(json_file)
-        assert validate_submission(submission_dict=submission_dict) == (True, [])
+        assert validate_submission(schema="germline", submission_dict=submission_dict) == (True, [])
