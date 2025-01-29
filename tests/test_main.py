@@ -15,7 +15,7 @@ from preClinVar.demo import (
     casedata_snv_csv_path,
     casedata_sv_csv,
     casedata_sv_csv_path,
-    subm_json_path,
+    germline_subm_json_path,
     variants_hgvs_csv,
     variants_hgvs_csv_path,
     variants_old_csv,
@@ -261,7 +261,7 @@ def test_dry_run_wrong_api_key():
     """Test the dry run API proxy without a valid ClinVar API key"""
 
     # GIVEN a json submission file
-    json_file = {"json_file": open(subm_json_path, "rb")}
+    json_file = {"json_file": open(germline_subm_json_path, "rb")}
 
     response = client.post("/dry-run", data={"api_key": DEMO_API_KEY}, files=json_file)
 
@@ -275,7 +275,7 @@ def test_dry_run():
     """Test the dry_run API proxy endpoint (with a mocked ClinVar API response)"""
 
     # GIVEN a json submission file
-    json_file = {"json_file": open(subm_json_path, "rb")}
+    json_file = {"json_file": open(germline_subm_json_path, "rb")}
 
     # AND a mocked ClinVar API
     responses.add(
@@ -295,7 +295,7 @@ def test_apitest_wrong_api_key():
     """Test the apitest API proxy endpoint without a valid ClinVar API key"""
 
     # GIVEN a json submission file
-    json_file = {"json_file": open(subm_json_path, "rb")}
+    json_file = {"json_file": open(germline_subm_json_path, "rb")}
 
     # AND a mocked ClinVar API
     responses.add(
@@ -317,7 +317,7 @@ def test_apitest():
     """Tests the endpoint apitest, a proxy to ClinVar apitest, with a mocked ClinVar API response."""
 
     # GIVEN a json submission file
-    json_file = {"json_file": open(subm_json_path, "rb")}
+    json_file = {"json_file": open(germline_subm_json_path, "rb")}
 
     # AND a mocked ClinVar API
     responses.add(
