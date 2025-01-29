@@ -11,7 +11,11 @@ from fastapi.responses import JSONResponse
 
 from preClinVar.__version__ import VERSION
 from preClinVar.build import build_header, build_submission
-from preClinVar.constants import DRY_RUN_SUBMISSION_URL, SUBMISSION_URL, VALIDATE_SUBMISSION_URL
+from preClinVar.constants import (
+    DRY_RUN_SUBMISSION_URL,
+    SUBMISSION_URL,
+    VALIDATE_SUBMISSION_URL,
+)
 from preClinVar.file_parser import csv_lines, file_fields_to_submission, tsv_lines
 from preClinVar.validate import validate_submission
 
@@ -37,7 +41,9 @@ async def root():
 
 
 @app.post("/apitest-status")
-async def apitest_status(api_key: str = Form(), submission_id: str = Form()) -> JSONResponse:
+async def apitest_status(
+    api_key: str = Form(), submission_id: str = Form()
+) -> JSONResponse:
     """Returns the status (validation) of a test submission to the apitest endpoint."""
 
     # Create a submission header
@@ -116,7 +122,7 @@ async def tsv_2_json(
     request: Request,
     files: List[UploadFile] = File(...),
 ):
-    """Create a json submission object using 2 TSV files (Variant.tsv and CaseData.tsv).
+    """Create a json submission object using 2 TSV files from a germline submission (Variant.tsv and CaseData.tsv).
     Validate the submission objects against the official schema:
     https://www.ncbi.nlm.nih.gov/clinvar/docs/api_http/
     """
@@ -159,7 +165,9 @@ async def tsv_2_json(
         )
     return JSONResponse(
         status_code=400,
-        content={"message": f"Created json file contains validation errors: {valid_results[1]}"},
+        content={
+            "message": f"Created json file contains validation errors: {valid_results[1]}"
+        },
     )
 
 
@@ -168,8 +176,8 @@ async def csv_2_json(
     request: Request,
     files: List[UploadFile] = File(...),
 ):
-    """Create a json submission object using 2 CSV files (Variant.csv and CaseData.csv).
-    Validate the submission objects agains the official schema:
+    """Create a json submission object using 2 CSV files from a germline submission (Variant.csv and CaseData.csv).
+    Validate the submission objects against the official schema:
     https://www.ncbi.nlm.nih.gov/clinvar/docs/api_http/
     """
 
@@ -218,7 +226,9 @@ async def csv_2_json(
         )
     return JSONResponse(
         status_code=400,
-        content={"message": f"Created json file contains validation errors: {valid_results[1]}"},
+        content={
+            "message": f"Created json file contains validation errors: {valid_results[1]}"
+        },
     )
 
 
@@ -245,7 +255,9 @@ async def delete(api_key: str = Form(), clinvar_accession: str = Form()):
     header = build_header(api_key)
 
     # Create a submission deletion object
-    delete_obj = {"clinvarDeletion": {"accessionSet": [{"accession": clinvar_accession}]}}
+    delete_obj = {
+        "clinvarDeletion": {"accessionSet": [{"accession": clinvar_accession}]}
+    }
 
     data = {
         "actions": [
