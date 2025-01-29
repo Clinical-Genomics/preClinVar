@@ -13,11 +13,11 @@ A running instance of the service is available at https://preclinvar.scilifelab.
 
 ### tsv_2_json
 
-Transforms tsv submission files (Variant.tsv and CaseData.tsv) into a json submission object, ready to be used to submit via the ClinVar API. This document is validated against the ClinVar API [submission schema](https://www.ncbi.nlm.nih.gov/clinvar/docs/api_http/)
+Transforms tsv submission files **from a germline submission** (Variant.tsv and CaseData.tsv) into a json submission object, ready to be used to submit via the ClinVar API. This document is validated against the ClinVar API [submission schema](https://www.ncbi.nlm.nih.gov/clinvar/docs/api_http/)
 
 ### csv_2_json
 
-Transforms csv submission files (Variant.csv and CaseData.csv) into a json submission object, ready to be used to submit via the ClinVar API. This document is validated against the ClinVar API [submission schema](https://www.ncbi.nlm.nih.gov/clinvar/docs/api_http/)
+Transforms csv submission files **from a germline submission** (Variant.csv and CaseData.csv) into a json submission object, ready to be used to submit via the ClinVar API. This document is validated against the ClinVar API [submission schema](https://www.ncbi.nlm.nih.gov/clinvar/docs/api_http/)
 
 ### dry_run
 

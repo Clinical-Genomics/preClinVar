@@ -11,7 +11,11 @@ from fastapi.responses import JSONResponse
 
 from preClinVar.__version__ import VERSION
 from preClinVar.build import build_header, build_submission
-from preClinVar.constants import DRY_RUN_SUBMISSION_URL, SUBMISSION_URL, VALIDATE_SUBMISSION_URL
+from preClinVar.constants import (
+    DRY_RUN_SUBMISSION_URL,
+    SUBMISSION_URL,
+    VALIDATE_SUBMISSION_URL,
+)
 from preClinVar.file_parser import csv_lines, file_fields_to_submission, tsv_lines
 from preClinVar.validate import validate_submission
 
@@ -116,7 +120,7 @@ async def tsv_2_json(
     request: Request,
     files: List[UploadFile] = File(...),
 ):
-    """Create a json submission object using 2 TSV files (Variant.tsv and CaseData.tsv).
+    """Create a json submission object using 2 TSV files from a germline submission (Variant.tsv and CaseData.tsv).
     Validate the submission objects against the official schema:
     https://www.ncbi.nlm.nih.gov/clinvar/docs/api_http/
     """
@@ -168,8 +172,8 @@ async def csv_2_json(
     request: Request,
     files: List[UploadFile] = File(...),
 ):
-    """Create a json submission object using 2 CSV files (Variant.csv and CaseData.csv).
-    Validate the submission objects agains the official schema:
+    """Create a json submission object using 2 CSV files from a germline submission (Variant.csv and CaseData.csv).
+    Validate the submission objects against the official schema:
     https://www.ncbi.nlm.nih.gov/clinvar/docs/api_http/
     """
 
