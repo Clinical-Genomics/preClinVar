@@ -1,6 +1,6 @@
 ## [unreleased]
 ### Added
-- `validate` endpoint, supporting validation of germline or somatic json submission against the official schema
+- `validate` endpoint, accepting germline or somatic json submissions and supporting validation against the official schema
 ### Changed
 - Improve README and endpoint descriptions specifying that `tsv_2_json` and `csv_2_json` endpoints support only coversion for germline submission files
 - PR template to be more compact and user friendly
