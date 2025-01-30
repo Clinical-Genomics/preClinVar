@@ -1,4 +1,4 @@
-## [unreleased]
+## [2.8]
 ### Added
 - `validate` endpoint, accepting germline or somatic json submissions and supporting validation against the official schema
 ### Changed
