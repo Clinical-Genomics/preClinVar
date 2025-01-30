@@ -334,6 +334,20 @@ def test_apitest():
     assert response.json()["id"] == DEMO_SUBMISSION_ID
 
 
+def test_validate():
+    """Test the endpoint that validates a json submission against the schema."""
+
+    # GIVEN a json submission file
+    json_file = {"json_file": open(germline_subm_json_path, "rb")}
+
+    # GIVEN a call to the validate endpoint
+    response = client.post("/validate", files=json_file)
+
+    # THEN the validation should be successful
+    assert response.status_code == 200
+    assert response.json()["message"] == "Validation OK"
+
+
 @responses.activate
 def test_apitest_status():
     """Test the endpoint that sends GET requests to the apitest actions ClinVar endpoint."""
