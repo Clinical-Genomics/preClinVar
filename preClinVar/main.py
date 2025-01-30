@@ -224,10 +224,9 @@ async def csv_2_json(
 
 @app.post("/validate")
 async def validate(json_file: UploadFile = File(...)) -> JSONResponse:
-    """Validates the a json submission (germline or somatic) against its respective schema."""
+    """Validates the a json submission (germline or somatic) against the official schema."""
     try:
         submission_dict = json.load(json_file.file)
-        # Validate submission object using official schema
         valid_results = validate_submission(submission_dict=submission_dict)
         if valid_results[0]:
             return JSONResponse(
