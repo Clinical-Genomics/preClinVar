@@ -225,8 +225,21 @@ async def csv_2_json(
 @app.post("/validate")
 async def validate(json_file: UploadFile = File(...)) -> JSONResponse:
     """Validates the a json submission (germline or somatic) against its respective schema."""
-    # Get json file content as dict:
-    submission_obj = json.load(json_file.file)
+    try:
+        submission_dict = json.load(json_file.file)
+        # Validate submission object using official schema
+        valid_results = validate_submission(submission_dict=submission_dict)
+        if valid_results[0]:
+            return JSONResponse(
+                status_code=200,
+                content={"message": "Validation OK"},
+            )
+        return JSONResponse(
+            status_code=400,
+            content={"message": f"Validation returned the following errors: {valid_results[1]}"},
+        )
+    except Exception as ex:
+        return JSONResponse(status_code=400, content={"message": f"{ex}"})
 
 
 @app.post("/status")
