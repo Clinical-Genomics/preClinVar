@@ -2,7 +2,7 @@ import json
 import logging
 import re
 from contextlib import asynccontextmanager
-from typing import List, Literal
+from typing import List
 
 import requests
 import uvicorn
@@ -151,7 +151,7 @@ async def tsv_2_json(
     build_submission(submission_dict, request)
 
     # Validate submission object using official schema
-    valid_results = validate_submission(schema="germline", submission_dict=submission_dict)
+    valid_results = validate_submission(submission_dict=submission_dict)
     if valid_results[0]:
         return JSONResponse(
             status_code=200,
@@ -210,7 +210,7 @@ async def csv_2_json(
         )
 
     # Validate submission object using official schema
-    valid_results = validate_submission(schema="germline", submission_dict=submission_dict)
+    valid_results = validate_submission(submission_dict=submission_dict)
     if valid_results[0]:
         return JSONResponse(
             status_code=200,
@@ -223,9 +223,7 @@ async def csv_2_json(
 
 
 @app.post("/validate")
-async def validate(
-    schema_type: Literal["germline", "somatic"], json_file: UploadFile = File(...)
-) -> JSONResponse:
+async def validate(json_file: UploadFile = File(...)) -> JSONResponse:
     """Validates the a json submission (germline or somatic) against its respective schema."""
     # Get json file content as dict:
     submission_obj = json.load(json_file.file)
