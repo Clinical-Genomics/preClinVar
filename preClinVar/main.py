@@ -11,11 +11,7 @@ from fastapi.responses import JSONResponse
 
 from preClinVar.__version__ import VERSION
 from preClinVar.build import build_header, build_submission
-from preClinVar.constants import (
-    DRY_RUN_SUBMISSION_URL,
-    SUBMISSION_URL,
-    VALIDATE_SUBMISSION_URL,
-)
+from preClinVar.constants import DRY_RUN_SUBMISSION_URL, SUBMISSION_URL, VALIDATE_SUBMISSION_URL
 from preClinVar.file_parser import csv_lines, file_fields_to_submission, tsv_lines
 from preClinVar.validate import validate_submission
 
@@ -155,7 +151,7 @@ async def tsv_2_json(
     build_submission(submission_dict, request)
 
     # Validate submission object using official schema
-    valid_results = validate_submission(submission_dict)
+    valid_results = validate_submission(submission_dict=submission_dict)
     if valid_results[0]:
         return JSONResponse(
             status_code=200,
@@ -214,7 +210,7 @@ async def csv_2_json(
         )
 
     # Validate submission object using official schema
-    valid_results = validate_submission(submission_dict)
+    valid_results = validate_submission(submission_dict=submission_dict)
     if valid_results[0]:
         return JSONResponse(
             status_code=200,
@@ -224,6 +220,25 @@ async def csv_2_json(
         status_code=400,
         content={"message": f"Created json file contains validation errors: {valid_results[1]}"},
     )
+
+
+@app.post("/validate")
+async def validate(json_file: UploadFile = File(...)) -> JSONResponse:
+    """Validates the a json submission (germline or somatic) against the official schema."""
+    try:
+        submission_dict = json.load(json_file.file)
+        valid_results = validate_submission(submission_dict=submission_dict)
+        if valid_results[0]:
+            return JSONResponse(
+                status_code=200,
+                content={"message": "Validation OK"},
+            )
+        return JSONResponse(
+            status_code=400,
+            content={"message": f"Validation returned the following errors: {valid_results[1]}"},
+        )
+    except Exception as ex:
+        return JSONResponse(status_code=400, content={"message": f"{ex}"})
 
 
 @app.post("/status")
