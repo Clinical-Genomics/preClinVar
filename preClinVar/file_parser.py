@@ -53,9 +53,9 @@ def set_item_clin_sig(item, variant_dict):
             clinsig = term
             break
 
-    clinsig_comment = variant_dict.get("Comment on clinical significance") or variant_dict.get(
-        "Comment on classification"
-    )
+    clinsig_comment = variant_dict.get(
+        "Comment on clinical significance"
+    ) or variant_dict.get("Comment on classification")
     last_eval = variant_dict.get("Date last evaluated")
     inherit_mode = variant_dict.get("Mode of inheritance")
 
@@ -83,7 +83,9 @@ def set_item_condition_set(item: dict, variant_dict: dict):
     # Check if condition ID is specified in Variant file
     cond_db: str = CONDITIONS_MAP.get(variant_dict.get("Condition ID type"))
     cond_values: str = variant_dict.get("Condition ID value")
-    multi_condition_explanation: str = variant_dict.get("Explanation for multiple conditions")
+    multi_condition_explanation: str = variant_dict.get(
+        "Explanation for multiple conditions"
+    )
 
     if cond_db and cond_values:
         cond_values = cond_values.split(";")
@@ -159,7 +161,7 @@ def set_item_record_status(item):
     item["recordStatus"] = "novel"
 
 
-def _parse_cooords(coords, variant_dict, coords_items):
+def parse_coords(coords, variant_dict, coords_items):
     """Parse coordinates for SNVs or SVs
 
     Args:
@@ -173,6 +175,11 @@ def _parse_cooords(coords, variant_dict, coords_items):
             continue
         try:
             coords[item["key"]] = item["format"](variant_dict[csv_key])
+            if (
+                csv_key == "Chromosome" and coords[item["key"]] == "M"
+            ):  # Remap chromosome 'M' to 'MT'
+                coords[item["key"]] = "MT"
+
         except Exception as ex:
             LOG.error(
                 f"Exception when converting {csv_key} value->{variant_dict[csv_key]} to {item['format']}"
@@ -186,7 +193,7 @@ def _set_snv_coordinates(coords, variant_dict):
         coords(dict): an empty dictionary
         variant_dict(dict): Example: {'##Local ID': '1d9ce6ebf2f82d913cfbe20c5085947b', 'Linking ID': '1d9ce6ebf2f82d913cfbe20c5085947b', 'Gene symbol': 'XDH', 'Reference sequence': 'NM_000379.4', 'HGVS': 'c.2751del', ..}
     """
-    _parse_cooords(coords, variant_dict, SNV_COORDS)
+    parse_coords(coords, variant_dict, SNV_COORDS)
 
 
 def _set_sv_coordinates(coords, variant_dict):
@@ -196,7 +203,7 @@ def _set_sv_coordinates(coords, variant_dict):
         coords(dict): an empty dictionary
         variant_dict(dict): Example: {'##Local ID': '1d9ce6ebf2f82d913cfbe20c5085947b', 'Linking ID': '1d9ce6ebf2f82d913cfbe20c5085947b', 'Gene symbol': 'XDH', 'Reference sequence': 'NM_000379.4', 'HGVS': 'c.2751del', ..}
     """
-    _parse_cooords(coords, variant_dict, SV_COORDS)
+    parse_coords(coords, variant_dict, SV_COORDS)
 
 
 def _set_chrom_coordinates(variant_dict):
@@ -280,7 +287,9 @@ def file_fields_to_submission(variants_lines, casedata_lines):
     items = []
     # Loop over the variants to submit and create a
     for line_dict in variants_lines:
-        item = {}  # For each variant in the csv file (one line), create a submission item
+        item = (
+            {}
+        )  # For each variant in the csv file (one line), create a submission item
         set_item_clin_sig(item, line_dict)
         set_item_condition_set(item, line_dict)
         set_item_local_id(item, line_dict)
