@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "preClinVar"
-version = "2.8.0"
+version = "2.8.1"
 description = "A ClinVar API submission helper written in FastAPI"
 authors = ["Chiara Rasi <rasi.chiara@gmail.com>"]
 license = "MIT"
