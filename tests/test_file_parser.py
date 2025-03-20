@@ -17,9 +17,7 @@ def test_set_item_clin_sig_fix_case():
     set_item_clin_sig(item, variant_dict)
 
     # THEN it's converted into a compliant term
-    assert (
-        item["clinicalSignificance"]["clinicalSignificanceDescription"] in CLNSIG_TERMS
-    )
+    assert item["clinicalSignificance"]["clinicalSignificanceDescription"] in CLNSIG_TERMS
 
 
 def test_set_item_variant_set_hgvs():
@@ -52,10 +50,7 @@ def test_set_item_condition_set():
     set_item_condition_set(item=item, variant_dict=variant_dict)
 
     # THEN it should contain the expected key/values
-    assert (
-        item["conditionSet"]["multipleConditionExplanation"]
-        == MULTIPLE_COND_EXPLANATION
-    )
+    assert item["conditionSet"]["multipleConditionExplanation"] == MULTIPLE_COND_EXPLANATION
     for condition in item["conditionSet"]["condition"]:
         assert condition["db"] == CONDITION_DB
         assert condition["id"] in OMIM_NUMBERS

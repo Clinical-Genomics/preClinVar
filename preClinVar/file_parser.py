@@ -53,9 +53,9 @@ def set_item_clin_sig(item, variant_dict):
             clinsig = term
             break
 
-    clinsig_comment = variant_dict.get(
-        "Comment on clinical significance"
-    ) or variant_dict.get("Comment on classification")
+    clinsig_comment = variant_dict.get("Comment on clinical significance") or variant_dict.get(
+        "Comment on classification"
+    )
     last_eval = variant_dict.get("Date last evaluated")
     inherit_mode = variant_dict.get("Mode of inheritance")
 
@@ -83,9 +83,7 @@ def set_item_condition_set(item: dict, variant_dict: dict):
     # Check if condition ID is specified in Variant file
     cond_db: str = CONDITIONS_MAP.get(variant_dict.get("Condition ID type"))
     cond_values: str = variant_dict.get("Condition ID value")
-    multi_condition_explanation: str = variant_dict.get(
-        "Explanation for multiple conditions"
-    )
+    multi_condition_explanation: str = variant_dict.get("Explanation for multiple conditions")
 
     if cond_db and cond_values:
         cond_values = cond_values.split(";")
@@ -287,9 +285,7 @@ def file_fields_to_submission(variants_lines, casedata_lines):
     items = []
     # Loop over the variants to submit and create a
     for line_dict in variants_lines:
-        item = (
-            {}
-        )  # For each variant in the csv file (one line), create a submission item
+        item = {}  # For each variant in the csv file (one line), create a submission item
         set_item_clin_sig(item, line_dict)
         set_item_condition_set(item, line_dict)
         set_item_local_id(item, line_dict)
