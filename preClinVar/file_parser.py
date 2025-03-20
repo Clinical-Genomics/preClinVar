@@ -159,7 +159,7 @@ def set_item_record_status(item):
     item["recordStatus"] = "novel"
 
 
-def _parse_cooords(coords, variant_dict, coords_items):
+def parse_coords(coords, variant_dict, coords_items):
     """Parse coordinates for SNVs or SVs
 
     Args:
@@ -173,6 +173,11 @@ def _parse_cooords(coords, variant_dict, coords_items):
             continue
         try:
             coords[item["key"]] = item["format"](variant_dict[csv_key])
+            if (
+                csv_key == "Chromosome" and coords[item["key"]] == "M"
+            ):  # Remap chromosome 'M' to 'MT'
+                coords[item["key"]] = "MT"
+
         except Exception as ex:
             LOG.error(
                 f"Exception when converting {csv_key} value->{variant_dict[csv_key]} to {item['format']}"
@@ -186,7 +191,7 @@ def _set_snv_coordinates(coords, variant_dict):
         coords(dict): an empty dictionary
         variant_dict(dict): Example: {'##Local ID': '1d9ce6ebf2f82d913cfbe20c5085947b', 'Linking ID': '1d9ce6ebf2f82d913cfbe20c5085947b', 'Gene symbol': 'XDH', 'Reference sequence': 'NM_000379.4', 'HGVS': 'c.2751del', ..}
     """
-    _parse_cooords(coords, variant_dict, SNV_COORDS)
+    parse_coords(coords, variant_dict, SNV_COORDS)
 
 
 def _set_sv_coordinates(coords, variant_dict):
@@ -196,7 +201,7 @@ def _set_sv_coordinates(coords, variant_dict):
         coords(dict): an empty dictionary
         variant_dict(dict): Example: {'##Local ID': '1d9ce6ebf2f82d913cfbe20c5085947b', 'Linking ID': '1d9ce6ebf2f82d913cfbe20c5085947b', 'Gene symbol': 'XDH', 'Reference sequence': 'NM_000379.4', 'HGVS': 'c.2751del', ..}
     """
-    _parse_cooords(coords, variant_dict, SV_COORDS)
+    parse_coords(coords, variant_dict, SV_COORDS)
 
 
 def _set_chrom_coordinates(variant_dict):

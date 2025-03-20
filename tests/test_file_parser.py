@@ -1,5 +1,6 @@
-from preClinVar.constants import CLNSIG_TERMS
+from preClinVar.constants import CLNSIG_TERMS, SNV_COORDS, SV_COORDS
 from preClinVar.file_parser import (
+    parse_coords,
     set_item_clin_sig,
     set_item_condition_set,
     set_item_variant_set,
@@ -53,3 +54,51 @@ def test_set_item_condition_set():
     for condition in item["conditionSet"]["condition"]:
         assert condition["db"] == CONDITION_DB
         assert condition["id"] in OMIM_NUMBERS
+
+
+def test_parse_coords_sv():
+    """Test the function that parse coordinates for a SV."""
+    # GIVEN a SV variant dictionary with coordinates
+    var_dict = {
+        "##Local ID": "1d9ce6ebf2f82d913cfbe20c5085947b",
+        "Chromosome": "7",
+        "Breakpoint 1": 100000,
+        "Breakpoint 2": 200000,
+        "Outer start": 90000,
+        "Inner start": 110000,
+        "Inner stop": 190000,
+        "Outer stop": 210000,
+    }
+
+    parsed_variant = {}
+    # WHEN the variant is parsed by the parse_coords function
+    parse_coords(parsed_variant, var_dict, SV_COORDS)
+
+    # THEN all the expected fields should be present
+    for _, items in SV_COORDS.items():
+        assert parsed_variant[items["key"]]
+
+
+def test_parse_coords_snv_m_chrom():
+    """Test the function that parse coordinates for a SNV."""
+
+    # GIVEN a SNV variant dictionary with coordinates
+    var_dict = {
+        "##Local ID": "1d9ce6ebf2f82d913cfbe20c5085947b",
+        "Chromosome": "M",
+        "Start": 1000,
+        "Stop": 1000,
+        "Reference allele": "G",
+        "Alternate allele": "A",
+    }
+
+    parsed_variant = {}
+    # WHEN the variant is parsed by the parse_coords function
+    parse_coords(parsed_variant, var_dict, SNV_COORDS)
+
+    # THEN all the expected fields should be present
+    for _, items in SNV_COORDS.items():
+        assert parsed_variant[items["key"]]
+
+    # And chromosome 'M' should be remapped to 'MT'
+    assert parsed_variant["chromosome"] == "MT"
