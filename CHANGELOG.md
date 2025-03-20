@@ -1,4 +1,4 @@
-## [unreleased]
+## [2.8.1]
 ### Fixed
 - Remap chromosome `M` to `MT`, which is the accepted format from ClinVar API
 
