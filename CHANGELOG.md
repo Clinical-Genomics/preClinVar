@@ -1,3 +1,7 @@
+## [unreleased]
+### Fixed
+- Denial of service (DoS) via deformation `multipart/form-data` boundary, by updating python-multipart (0.0.7 -> 0.0.20)
+
 ## [2.8.1]
 ### Fixed
 - Remap chromosome `M` to `MT`, which is the accepted format from ClinVar API
