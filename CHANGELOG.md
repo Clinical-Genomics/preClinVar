@@ -1,4 +1,6 @@
 ## [unreleased]
+### Added
+- a SECURITY.md file
 ### Fixed
 - Denial of service (DoS) via deformation `multipart/form-data` boundary, by updating python-multipart (0.0.7 -> 0.0.20)
 
