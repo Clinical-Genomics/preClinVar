@@ -124,6 +124,7 @@ async def tsv_2_json(
     casedata_lines = None
     variants_lines = None
 
+
     for file in files:
         file_lines = await tsv_lines(file)
         if not file_lines:
