@@ -55,6 +55,6 @@ def build_submission(subm_obj, request):
                 continue
             for var in subm_item["variantSet"].get("variant", []):
                 if var.get("chromosomeCoordinates"):
-                    coords["assembly"] = assembly
+                    var["chromosomeCoordinates"]["assembly"] = assembly
                 elif var.get("hgvs"):
                     subm_item["submittedAssembly"] = assembly
