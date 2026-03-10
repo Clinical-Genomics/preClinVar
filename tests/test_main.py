@@ -183,7 +183,6 @@ def test_csv_2_json_hgvs():
     assert json_resp["clinvarSubmission"][0]["submittedAssembly"]
 
 
-
 def test_csv_2_json_SV_breakpoints():
     """Test csv_2_json endpoint with a Variant file containing a SV described by exact coordinates (breakpoints)"""
 
