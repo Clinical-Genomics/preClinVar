@@ -204,6 +204,7 @@ async def csv_2_json(
         submission_dict = file_fields_to_submission(variants_lines, casedata_lines)
         build_submission(submission_dict, request)
     except Exception as ex:
+        LOG.warning(f"Error in build submission:{str(ex)}")
         return JSONResponse(
             status_code=400,
             content={"message": str(ex)},
@@ -211,11 +212,13 @@ async def csv_2_json(
 
     # Validate submission object using official schema
     valid_results = validate_submission(submission_dict=submission_dict)
+
     if valid_results[0]:
         return JSONResponse(
             status_code=200,
             content=submission_dict,
         )
+
     return JSONResponse(
         status_code=400,
         content={"message": f"Created json file contains validation errors: {valid_results[1]}"},
