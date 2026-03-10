@@ -211,6 +211,7 @@ async def csv_2_json(
 
     # Validate submission object using official schema
     valid_results = validate_submission(submission_dict=submission_dict)
+
     if valid_results[0]:
         return JSONResponse(
             status_code=200,

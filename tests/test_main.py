@@ -36,6 +36,7 @@ OPTIONAL_PARAMETERS = {
     "releaseStatus": "public",
     "assertionCriteriaDB": "PubMed",
     "assertionCriteriaID": "25741868",
+    "assembly": "GRCh37",
 }
 DEMO_ACCESSION_ID = "SCV005395965"
 
@@ -179,6 +180,7 @@ def test_csv_2_json_hgvs():
     json_resp = response.json()
     assert json_resp["clinvarSubmission"][0]["variantSet"]["variant"][0]["gene"]
     assert json_resp["clinvarSubmission"][0]["variantSet"]["variant"][0]["hgvs"]
+    assert json_resp["clinvarSubmission"][0]["submittedAssembly"]
 
 
 def test_csv_2_json_SV_breakpoints():
