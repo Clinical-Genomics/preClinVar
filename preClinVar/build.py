@@ -49,11 +49,12 @@ def build_submission(subm_obj, request):
         subm_obj["assertionCriteria"] = assertion_criteria
 
     assembly = query_params.get("assembly")
-    if assembly:  # Set genome assembly for all variants containing a chromosomeCoordinates field
+    if assembly:
         for subm_item in subm_obj.get("clinvarSubmission", []):
             if not "variantSet" in subm_item:
                 continue
             for var in subm_item["variantSet"].get("variant", []):
-                coords = var.get("chromosomeCoordinates")
-                if coords:
+                if var.get("chromosomeCoordinates"):
                     coords["assembly"] = assembly
+                elif var.get("hgvs"):
+                    subm_obj["submittedAssembly"] = assembly

@@ -36,6 +36,7 @@ OPTIONAL_PARAMETERS = {
     "releaseStatus": "public",
     "assertionCriteriaDB": "PubMed",
     "assertionCriteriaID": "25741868",
+    "assembly": "GRCh37"
 }
 DEMO_ACCESSION_ID = "SCV005395965"
 
