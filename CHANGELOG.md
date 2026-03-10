@@ -5,7 +5,7 @@
 - Updated submission schema according to NCBI changes
 ### Fixed
 - Denial of service (DoS) via deformation `multipart/form-data` boundary, by updating python-multipart (0.0.7 -> 0.0.20)
-- Create `submittedAssembly` field when variant is described bt HGVS 
+- Create `submittedAssembly` field when variant is described by HGVS 
 
 ## [2.8.1]
 ### Fixed
