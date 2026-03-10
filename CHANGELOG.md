@@ -1,4 +1,4 @@
-## [unreleased]
+## [2.9]
 ### Added
 - a SECURITY.md file
 ### Fixed
