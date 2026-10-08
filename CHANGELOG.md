@@ -1,3 +1,7 @@
+## []
+### Added
+- Add deprecation notice to README
+
 ## [2.9]
 ### Added
 - a SECURITY.md file

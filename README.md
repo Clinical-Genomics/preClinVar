@@ -5,6 +5,17 @@ A ClinVar API submission helper written in FastAPI.
 ![GitHub Release Date][github-release-date]
 [![Woke][woke-image]][woke-url]
 
+> **⚠️ Deprecation notice**
+>
+> This repository is on its way to being deprecated and is no longer actively maintained.
+>
+> The `preClinVar` helper was originally used as an intermediary between Scout and ClinVar. Since Scout 4.115, Scout communicates directly with ClinVar, so `preClinVar` is no longer needed for current versions of Scout.
+>
+> `preClinVar` will, however, remain available through the Clinical Genomics Portal for users running older versions of Scout that still depend on it.
+>
+> Small, straightforward fixes may still be considered, but no further development or major changes are planned. The repository will eventually be archived.
+
+
 ## Availability:
 
 A running instance of the service is available at https://preclinvar.scilifelab.se/docs
